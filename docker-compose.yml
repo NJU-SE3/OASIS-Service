@@ -1,0 +1,21 @@
+version: '2'
+
+services:
+  redis: # Redis缓存
+    image: redis
+    container_name: oasis-redis
+    command: redis-server --requirepass redis
+    ports:
+      - "6379:6379"
+#    volumes:
+#      - ./data:/data
+#      - ./redis.conf:/usr/local/etc/redis/redis.conf
+  rabbitmq:
+    hostname: myrabbitmq
+    image: rabbitmq:management
+    ports:
+      - 15672:15672
+      - 5672:5672
+    restart: always
+#    volumes:
+#      - ./data:/var/lib/rabbitmq
