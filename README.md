@@ -6,13 +6,62 @@
 
 #### 1.1 ASE 论文数据
 
-| column  | description |
-| ------- | ----------- |
-| index   | id          |
-| ...TODO |             |
-|         |             |
+映射关系
 
+| 名称            | 关系   |
+| --------------- | ------ |
+| 作者 - 论文     | 多对多 |
+| 作者 - 隶属机构 | 多对多 |
+| 会议 - 论文     | 多对多 |
 
+##### 作者 author
+
+| column | description |
+| ------ | ----------- |
+| id     | id 作者id   |
+| name   | 作者名字    |
+
+##### 隶属机构 affiliation
+
+| column | description |
+| ------ | ----------- |
+| id     |             |
+| name   | 机构名称    |
+
+##### 会议 conference
+
+| column | description |
+| ------ | ----------- |
+| id     |             |
+| name   | 会议名称    |
+
+##### 论文 paper
+
+| column          | description          |
+| --------------- | -------------------- |
+| id              |                      |
+| title           | 论文名称             |
+| abstract        | 摘要                 |
+| keywords        |                      |
+| Terms           | 术语，暂时放在论文内 |
+| citation_count  | 引用数               |
+| reference_count | 提及数               |
+
+---
+
+中间表
+
+##### author_conference
+
+| column        | description |
+| ------------- | ----------- |
+| author_id     |             |
+| conference_id |             |
+| paper_id      |             |
+| start_page    |             |
+| end_page      |             |
+| pdf_link      |             |
+| year          |             |
 
 ### 2. 迭代一目标
 

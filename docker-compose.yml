@@ -19,3 +19,13 @@ services:
     restart: always
 #    volumes:
 #      - ./data:/var/lib/rabbitmq
+  csv_mysql:
+    image: 'mysql:5.7.21'
+    container_name: csv_mysql
+    restart: always
+    environment:
+      - MYSQL_ROOT_PASSWORD=mysql
+      - MYSQL_DATABASE=se
+    ports:
+      - "3306:3306"
+    command: ['mysqld', '--character-set-server=utf8mb4', '--collation-server=utf8mb4_unicode_ci']
