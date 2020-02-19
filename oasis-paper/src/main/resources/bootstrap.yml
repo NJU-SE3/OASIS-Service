@@ -3,8 +3,11 @@ spring:
     name: client
   cloud:
     config:
-      label: dev
       profile: dev
       uri: http://localhost:8090/
       discovery:
         enabled: true
+        service-id: config-server
+      name: client
+eureka:
+  port: 8761

@@ -10,6 +10,8 @@ spring:
           uri: https://github.com/NJU-SE3/OASIS-Service
           search-paths: /config
           default-label: dev
+  application:
+    name: config-server
 eureka:
   port: 8761
 
