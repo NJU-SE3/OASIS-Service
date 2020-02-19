@@ -8,6 +8,9 @@ eureka:
   client:
     serviceUrl:
       defaultZone: http://${eureka.instance.hostname}:${eureka.port}/eureka/
+
+paper: oasis-paper:8080
+
 zuul:
   host:
     #zuul配置
@@ -19,5 +22,6 @@ zuul:
   routes:
     paper:
       path: /api/paper/**
+      url: http://${paper}/
       serviceId: oasis-paper
   include-debug-header: true

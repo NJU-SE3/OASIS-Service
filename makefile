@@ -6,21 +6,31 @@ SKIP_TEST = -Dmaven.test.skip=true
 JVM_RUN = java -jar
 LOCAL_DOCKER = dockerfiles/docker-compose-local.yml
 RUN_PATH = dockerfiles/docker-compose-prod.yml
+COMPOSE = docker-compose
 
 local-set:
-	docker-compose -f ${LOCAL_DOCKER} up -d
+	${COMPOSE} -f ${LOCAL_DOCKER} up -d
+
+local-stop:
+	${COMPOSE} -f ${LOCAL_DOCKER} down
 
 run:
-	docker-compose -f ${RUN_PATH} up -d
+	${COMPOSE} -f ${RUN_PATH} up -d
+
+stop:
+	${COMPOSE} -f ${RUN_PATH} down
+
+log:
+	${COMPOSE} -f ${RUN_PATH} logs -f
 
 clean:
 	mvn clean
 	bash scripts/rmi.sh
 
 test:
-	docker-compose -f ${LOCAL_DOCKER} up -d
+	${COMPOSE} -f ${LOCAL_DOCKER} up -d
 	mvn clean test
-	docker-compose -f ${LOCAL_DOCKER} down
+	${COMPOSE} -f ${LOCAL_DOCKER} down
 
 push_hub:
 	mvn clean compile jib:build -Pprod
