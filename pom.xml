@@ -5,6 +5,7 @@
     <modules>
         <module>oasis-framework</module>
         <module>oasis-eureka</module>
+        <module>oasis-config-server</module>
         <module>oasis-paper</module>
     </modules>
     <parent>
