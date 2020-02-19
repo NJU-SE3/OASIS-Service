@@ -19,8 +19,8 @@ clean:
 
 test:
 	docker-compose -f ${LOCAL_DOCKER} up -d
-	mvn test
-	docker-compse -f ${LOCAL_DOCKER} down
+	mvn clean test
+	docker-compose -f ${LOCAL_DOCKER} down
 
 push_hub:
-	mvn compile jib:build -Pprod
+	mvn clean compile jib:build -Pprod

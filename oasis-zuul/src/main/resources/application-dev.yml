@@ -20,5 +20,5 @@ zuul:
   routes:
     paper:
       path: /api/paper/**
-      serviceId: paper
+      serviceId: oasis-paper
   include-debug-header: true

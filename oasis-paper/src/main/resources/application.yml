@@ -8,5 +8,5 @@ spring:
   profiles:
     active: '@spring.profiles.active@'
   application:
-    name: paper
+    name: oasis-paper
 spring.main.allow-bean-definition-overriding: true

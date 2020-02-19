@@ -1,7 +1,5 @@
 # mysql 连接
 spring:
-  application:
-    name: paper
   profiles:
     active: prod
   datasource:

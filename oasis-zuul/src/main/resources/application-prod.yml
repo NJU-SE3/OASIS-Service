@@ -15,10 +15,9 @@ zuul:
     max-total-connections: 200
     connect-timeout-millis: 60000
     socket-timeout-millis: 60000
-  #关闭重试机制
   retryable: true
   routes:
     paper:
       path: /api/paper/**
-      serviceId: paper
+      serviceId: oasis-paper
   include-debug-header: true

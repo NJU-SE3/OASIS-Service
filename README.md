@@ -71,7 +71,7 @@
 
 - `windows / macOS` 系统下安装 `docker desktop` ；`linux` 下可以直接安装 `docker`
   - 配置好`docker` 的[阿里云](https://help.aliyun.com/document_detail/60750.html)仓库镜像
-- 根目录下，执行 `docker-compose up -d` 。这一步主要用于启动 `mysql` , `redis` , `rabbit`，需要保证主机的 3306  , 6379 , 15672 , 5672 均未被占用
+- 根目录下，执行 `make local-set` 。这一步主要用于启动 `mysql` , `redis` , `rabbit`，需要保证主机的 3306  , 6379 , 15672 , 5672 均未被占用
 
 ##### 2.1.2 maven
 
@@ -79,11 +79,9 @@
 
 #### 2.2 本地运行spring
 
-根目录下，直接运行
+根目录下，开启两个 *terminal*，分别输入 `mvn spring-boot:run -f oasis-eureka` 和 `mvn spring-boot:run -f oasis-paper`
 
-
-
-
+均运行完成后，浏览器内打开 `http://localhost:8080`，若出现 `Hello world`则表示成功
 
 ### 3. 迭代一目标
 
