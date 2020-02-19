@@ -8,7 +8,8 @@ spring:
       server:
         git:
           uri: https://github.com/NJU-SE3/OASIS-Service
-          search-paths: /oasis-config-server
+          search-paths: /config
+          default-label: dev
 eureka:
   port: 8761
 
