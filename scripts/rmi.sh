@@ -1,0 +1,1 @@
+docker rmi $(docker images | grep "caribou" | awk '{print $3}')

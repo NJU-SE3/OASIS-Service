@@ -5,10 +5,10 @@
     <parent>
         <groupId>oasi.top</groupId>
         <artifactId>oasis-root</artifactId>
-        <version>0.0.1-SNAPSHOT</version>
+        <version>latest</version>
     </parent>
     <artifactId>oasis-eureka</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
+    <version>latest</version>
     <name>oasis-eureka</name>
 
     <properties>
@@ -65,6 +65,7 @@
         </dependencies>
     </dependencyManagement>
     <build>
+        <finalName>oasis-eureka</finalName>
         <plugins>
             <plugin>
                 <groupId>org.springframework.boot</groupId>

@@ -5,10 +5,10 @@
     <parent>
         <groupId>oasi.top</groupId>
         <artifactId>oasis-root</artifactId>
-        <version>0.0.1-SNAPSHOT</version>
+        <version>latest</version>
     </parent>
     <artifactId>oasis-config-server</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
+    <version>latest</version>
     <properties>
         <java.version>1.8</java.version>
         <spring-cloud.version>Greenwich.SR2</spring-cloud.version>
@@ -24,11 +24,6 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-test</artifactId>
             <scope>test</scope>
-        </dependency>
-
-        <dependency>
-            <groupId>org.springframework.cloud</groupId>
-            <artifactId>spring-cloud-starter-eureka-client</artifactId>
         </dependency>
 
         <!--Spring Cloud微服务配置-->
@@ -48,6 +43,7 @@
     </dependencies>
 
     <build>
+        <finalName>oasis-config-server</finalName>
         <plugins>
             <plugin>
                 <groupId>org.springframework.boot</groupId>

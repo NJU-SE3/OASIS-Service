@@ -1,0 +1,13 @@
+server:
+  port: 8080 #服务的端口号
+spring:
+  profiles:
+    active: prod
+eureka:
+  instance:
+    hostname: oasis-eureka
+  client:
+    registerWithEureka: false   #表示是否将自己注册到Eureka Server，默认为true
+    fetchRegistry: false     #表示是否从Eureka Server获取注册信息，默认为true
+    serviceUrl:
+      defaultZone: http://${eureka.instance.hostname}:${server.port}/eureka/  #设置与Eureka Server交互的地址

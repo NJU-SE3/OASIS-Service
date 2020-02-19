@@ -1,0 +1,10 @@
+spring:
+  # Profile 动态环境调整
+  # mvn clean package -P<profile name>
+  application:
+    name: zuul
+  profiles:
+    active: '@spring.profiles.active@'
+
+spring.main.allow-bean-definition-overriding: true
+

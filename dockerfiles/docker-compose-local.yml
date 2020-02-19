@@ -1,0 +1,26 @@
+version: '2'
+
+services:
+  redis: # Redis缓存
+    image: redis
+    container_name: oasis-redis
+    command: redis-server --requirepass redis
+    ports:
+      - "6379:6379"
+  rabbitmq:
+    hostname: myrabbitmq
+    image: rabbitmq:management
+    ports:
+      - 15672:15672
+      - 5672:5672
+    restart: always
+  csv_mysql:
+    image: 'mysql:5.7.21'
+    container_name: csv_mysql
+    restart: always
+    environment:
+      - MYSQL_ROOT_PASSWORD=mysql
+      - MYSQL_DATABASE=se
+    ports:
+      - "3306:3306"
+    command: ['mysqld', '--character-set-server=utf8mb4', '--collation-server=utf8mb4_unicode_ci']

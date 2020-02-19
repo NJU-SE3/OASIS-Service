@@ -6,6 +6,7 @@
         <module>oasis-framework</module>
         <module>oasis-eureka</module>
         <module>oasis-config-server</module>
+        <module>oasis-zuul</module>
         <module>oasis-paper</module>
     </modules>
     <parent>
@@ -16,7 +17,7 @@
     </parent>
     <groupId>oasi.top</groupId>
     <artifactId>oasis-root</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
+    <version>latest</version>
     <name>${project.artifactId}</name>
     <packaging>pom</packaging>
     <properties>
@@ -38,11 +39,11 @@
         <docker.plugin.version>1.2.0</docker.plugin.version>
     </properties>
     <dependencies>
-<!--        <dependency>-->
-<!--            <groupId>com.h2database</groupId>-->
-<!--            <artifactId>h2</artifactId>-->
-<!--            <scope>runtime</scope>-->
-<!--        </dependency>-->
+        <dependency>
+            <groupId>com.h2database</groupId>
+            <artifactId>h2</artifactId>
+            <scope>runtime</scope>
+        </dependency>
     </dependencies>
     <build>
         <plugins>
@@ -50,6 +51,33 @@
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
             </plugin>
+            <plugin>
+                <groupId>com.google.cloud.tools</groupId>
+                <artifactId>jib-maven-plugin</artifactId>
+                <version>2.0.0</version>
+                <configuration>
+                    <from>
+                        <image>openjdk:alpine</image>
+                    </from>
+                    <to>
+                        <image>registry.cn-shanghai.aliyuncs.com/caribou/${project.artifactId}:${project.version}
+                        </image>
+                        <auth>
+                            <username>cariboufalcon</username>
+                            <password>oasi.top</password>
+                        </auth>
+                    </to>
+                </configuration>
+                <executions>
+                    <execution>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>build</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+
         </plugins>
     </build>
 </project>

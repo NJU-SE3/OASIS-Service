@@ -63,7 +63,29 @@
 | pdf_link      |             |
 | year          |             |
 
-### 2. 迭代一目标
+### 2. 本地运行指南
+
+#### 2.1 准备工作
+
+##### 2.1.1 docker配置
+
+- `windows / macOS` 系统下安装 `docker desktop` ；`linux` 下可以直接安装 `docker`
+  - 配置好`docker` 的[阿里云](https://help.aliyun.com/document_detail/60750.html)仓库镜像
+- 根目录下，执行 `docker-compose up -d` 。这一步主要用于启动 `mysql` , `redis` , `rabbit`，需要保证主机的 3306  , 6379 , 15672 , 5672 均未被占用
+
+##### 2.1.2 maven
+
+- 安装maven并且配置相关的阿里云代理
+
+#### 2.2 本地运行spring
+
+根目录下，直接运行
+
+
+
+
+
+### 3. 迭代一目标
 
 - 数据持久化与实体建模 (CSV to SQL)
 - 基本CURD、聚合查询
@@ -76,9 +98,9 @@
   - [ ] 会议论文爬取：确定需要爬取的论文sources
 - [ ] 业务逻辑编写
 - [x] Druid连接池
-- [ ] 微服务搭建
-  - [ ] 统一配置
-  - [ ] 熔断
+- [x] 微服务搭建
+  - [x] 统一配置
+  - [x] 熔断
 - [x] 多环境配置
 - [ ] 中间件部分实现
   - [x] Redis支持

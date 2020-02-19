@@ -1,0 +1,12 @@
+spring:
+  profiles:
+    active: test
+  jpa:
+    generate-ddl: false
+    # 自动生成sql语句
+    show-sql: true
+    hibernate:
+      ddl-auto: update
+  datasource:
+    # 使用h2数据库源
+    platform: h2

@@ -1,0 +1,57 @@
+version: '2'
+
+services:
+  oasis-redis: # Redis缓存
+    image: redis
+    container_name: oasis-redis
+    command: redis-server --requirepass redis
+    networks:
+      - oasis
+
+  oasis-rabbitmq:
+    hostname: oasis-rabbitmq
+    image: rabbitmq:management
+    restart: always
+    networks:
+      - oasis
+
+  oasis-mysql:
+    image: 'mysql:5.7.21'
+    container_name: oasis-mysql
+    restart: always
+    environment:
+      - MYSQL_ROOT_PASSWORD=mysql
+      - MYSQL_DATABASE=se
+    command: ['mysqld', '--character-set-server=utf8mb4', '--collation-server=utf8mb4_unicode_ci']
+    networks:
+      - oasis
+
+  oasis-eureka:
+    image: 'registry.cn-shanghai.aliyuncs.com/caribou/oasis-eureka:latest'
+    container_name: oasis-eureka
+    restart: always
+    ports:
+      - "8081:8080"
+    networks:
+      - oasis
+
+  oasis-zuul:
+    image: 'registry.cn-shanghai.aliyuncs.com/caribou/oasis-zuul'
+    container_name: oasis-zuul
+    restart: always
+    ports:
+      - "8080:8080"
+    networks:
+      - oasis
+
+
+  oasis-paper:
+    image: 'registry.cn-shanghai.aliyuncs.com/caribou/oasis-paper'
+    container_name: oasis-paper
+    restart: always
+    networks:
+      - oasis
+
+networks:
+  oasis:
+    driver: bridge
