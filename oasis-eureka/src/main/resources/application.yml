@@ -1,0 +1,5 @@
+server:
+  port: 8761 #服务的端口号
+spring:
+  profiles:
+    active: '@spring.profiles.active@'

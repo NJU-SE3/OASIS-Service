@@ -5,10 +5,9 @@ import javax.persistence.Entity;
 import javax.persistence.Table;
 
 @Entity
-@Table(name = "author")
-public class Author extends BaseEntity {
-    //
-    @Column()
+@Table(name = "affiliation")
+public class Affiliation extends BaseEntity {
+    @Column
     private String name;
 
     public String getName() {

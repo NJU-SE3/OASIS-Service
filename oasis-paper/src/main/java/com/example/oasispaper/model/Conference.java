@@ -5,11 +5,10 @@ import javax.persistence.Entity;
 import javax.persistence.Table;
 
 @Entity
-@Table(name = "author")
-public class Author extends BaseEntity {
-    //
-    @Column()
-    private String name;
+@Table(name = "conference")
+public class Conference extends BaseEntity {
+    @Column
+    private String name;    //会议名称
 
     public String getName() {
         return name;
