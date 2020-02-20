@@ -1,0 +1,39 @@
+version: '3'
+
+services:
+  nginx-proxy:
+    image: jwilder/nginx-proxy
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - /etc/nginx/certs
+      - /etc/nginx/vhost.d
+      - /usr/share/nginx/html
+      - /var/run/docker.sock:/tmp/docker.sock:ro
+    networks:
+      - proxy
+    deploy:
+      restart_policy:
+        condition: on-failure
+      replicas: 1
+      placement:
+        constraints: [node.role == manager]
+#  letsencrypt-nginx-proxy-companion:
+#    image: jrcs/letsencrypt-nginx-proxy-companion
+#    container_name: nginx-proxy-letsencrypt
+#    volumes_from:
+#      - nginx-proxy
+#    volumes:
+#      - /var/run/docker.sock:/var/run/docker.sock:ro
+#    networks:
+#      - proxy
+#    deploy:
+#      restart_policy:
+#        condition: on-failure
+#      replicas: 1
+#      placement:
+#        constraints: [node.role == manager]
+networks:
+  proxy:
+    external: true

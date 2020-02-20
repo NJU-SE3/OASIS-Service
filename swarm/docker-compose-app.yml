@@ -1,0 +1,33 @@
+version: '3'
+
+services:
+  oasis-paper:
+    image: 'registry.cn-shanghai.aliyuncs.com/caribou/oasis-paper'
+    container_name: oasis-paper
+    restart: always
+    ports:
+      - "8000:8080"
+    networks:
+      - oasis
+    deploy:
+      restart_policy:
+        condition: on-failure
+      replicas: 1
+
+  oasis-zuul:
+    image: 'registry.cn-shanghai.aliyuncs.com/caribou/oasis-zuul'
+    container_name: oasis-zuul
+    restart: always
+    ports:
+      - "8080:8080"
+    networks:
+      - oasis
+    deploy:
+      restart_policy:
+        condition: on-failure
+      replicas: 1
+      placement:
+        constraints: [node.role == manager]
+networks:
+  oasis:
+    external: true
