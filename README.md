@@ -79,9 +79,17 @@
 
 #### 2.2 本地运行spring
 
-根目录下，开启两个 *terminal*，分别输入 `mvn spring-boot:run -f oasis-eureka` 和 `mvn spring-boot:run -f oasis-paper`
+根目录下，开启两个 *terminal*，分别输入
+
+- `mvn install -Dmaven.test.skip=true`
+
+-  `mvn spring-boot:run -f oasis-eureka` 
+- `mvn spring-boot:run -f oasis-zuul`
+-  `mvn spring-boot:run -f oasis-paper`
 
 均运行完成后，浏览器内打开 `http://localhost:8080`，若出现 `Hello world`则表示成功
+
+> 特别注意，本机进行调试时，需要开启 `zull` 网关才能匹配到正确的 `api` 。故需要开启 `zuul`
 
 ### 3. 迭代一目标
 
@@ -98,7 +106,7 @@
 - [x] Druid连接池
 - [x] 微服务搭建
   - [x] 统一配置
-  - [x] 熔断
+  - [x] Swarm 主从分布式架构
 - [x] 多环境配置
 - [ ] 中间件部分实现
   - [x] Redis支持

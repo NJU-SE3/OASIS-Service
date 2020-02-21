@@ -7,18 +7,25 @@ services:
     command: redis-server --requirepass redis
     networks:
       - oasis
+    ports:
+      - "6379:6379"
     deploy:
       restart_policy:
         condition: on-failure
-      replicas: 1
+      replicas: 5
 
   oasis-rabbitmq:
     hostname: oasis-rabbitmq
     image: rabbitmq:management
     restart: always
+    ports:
+      - "5672:5672"
     networks:
       - oasis
-
+    deploy:
+      restart_policy:
+        condition: on-failure
+      replicas: 4
   oasis-mysql:
     image: 'mysql:5.7.21'
     container_name: oasis-mysql
@@ -27,12 +34,14 @@ services:
       - MYSQL_ROOT_PASSWORD=mysql
       - MYSQL_DATABASE=se
     command: ['mysqld', '--character-set-server=utf8mb4', '--collation-server=utf8mb4_unicode_ci']
+    ports:
+      - "3306:3306"
     networks:
       - oasis
     deploy:
       restart_policy:
         condition: on-failure
-      replicas: 1
+      replicas: 5
 
   oasis-eureka:
     image: 'registry.cn-shanghai.aliyuncs.com/caribou/oasis-eureka:latest'
