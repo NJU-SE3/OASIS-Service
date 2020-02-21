@@ -67,6 +67,13 @@
                             <password>oasi.top</password>
                         </auth>
                     </to>
+                    <!--容器相关的属性-->
+                    <container>
+                        <!--要暴露的端口-->
+                        <ports>
+                            <port>8080</port>
+                        </ports>
+                    </container>
                 </configuration>
                 <executions>
                     <execution>

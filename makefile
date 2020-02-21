@@ -36,4 +36,4 @@ push_hub:
 	mvn clean compile jib:build -Pprod
 
 source_swarm:
-	scp -r swarm/* root@101.37.116.201:/root/swarm/.
+	scp -r swarm/* root@wxj:/root/swarm/.

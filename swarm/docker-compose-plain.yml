@@ -1,0 +1,78 @@
+version: '3'
+
+services:
+  oasis-redis: # Redis缓存
+    image: redis
+    container_name: oasis-redis
+    command: redis-server --requirepass redis
+    networks:
+      - oasis
+    deploy:
+      restart_policy:
+        condition: on-failure
+      replicas: 1
+
+  oasis-rabbitmq:
+    hostname: oasis-rabbitmq
+    image: rabbitmq:management
+    restart: always
+    networks:
+      - oasis
+    deploy:
+      restart_policy:
+        condition: on-failure
+      replicas: 1
+  oasis-mysql:
+    image: 'mysql:5.7.21'
+    container_name: oasis-mysql
+    restart: always
+    environment:
+      - MYSQL_ROOT_PASSWORD=mysql
+      - MYSQL_DATABASE=se
+    command: ['mysqld', '--character-set-server=utf8mb4', '--collation-server=utf8mb4_unicode_ci']
+    networks:
+      - oasis
+    deploy:
+      restart_policy:
+        condition: on-failure
+      replicas: 1
+  oasis-eureka:
+    image: 'registry.cn-shanghai.aliyuncs.com/caribou/oasis-eureka:latest'
+    container_name: oasis-eureka
+    restart: always
+    networks:
+      - oasis
+    deploy:
+      restart_policy:
+        condition: on-failure
+      replicas: 1
+
+  oasis-paper:
+    image: 'registry.cn-shanghai.aliyuncs.com/caribou/oasis-paper'
+    container_name: oasis-paper
+    restart: always
+    networks:
+      - oasis
+
+  oasis-zuul:
+    image: 'registry.cn-shanghai.aliyuncs.com/caribou/oasis-zuul'
+    container_name: oasis-zuul
+    restart: always
+    networks:
+      - oasis
+      - proxy
+    environment:
+      - VIRTUAL_HOST=39.96.75.119
+      - VIRTUAL_PORT=8080
+      - LETSENCRYPT_HOST=39.96.75.119
+      - LETSENCRYPT_EMAIL=1071956678@qq.com
+    deploy:
+      restart_policy:
+        condition: on-failure
+      replicas: 1
+
+networks:
+  oasis:
+    external: true
+  proxy:
+    external: true
