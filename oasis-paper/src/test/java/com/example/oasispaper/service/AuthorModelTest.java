@@ -18,11 +18,5 @@ public class AuthorModelTest {
 
     @Test
     public void run() {
-        Author author = new Author();
-        author.setId(3);
-        authorRepository.save(author);
-
-        List<Author> list = authorRepository.findAll();
-        assert list.size() == 1;
     }
 }

@@ -16,12 +16,14 @@ public class PaperQueryVO extends BaseVO {
 
     private String terms;       //术语
 
+    private String keywords;    //论文关键字
+
     private List<AuthorInner> authors;  //作者列表
 
     public static class AuthorInner {
+
         private String name;     //作者名
         private String affiliation; //机构
-
         public String getName() {
             return name;
         }
@@ -37,8 +39,8 @@ public class PaperQueryVO extends BaseVO {
         public void setAffiliation(String affiliation) {
             this.affiliation = affiliation;
         }
-    }
 
+    }
     public PaperQueryVO() {
     }
 
@@ -80,5 +82,13 @@ public class PaperQueryVO extends BaseVO {
 
     public void setAuthors(List<AuthorInner> authors) {
         this.authors = authors;
+    }
+
+    public String getKeywords() {
+        return keywords;
+    }
+
+    public void setKeywords(String keywords) {
+        this.keywords = keywords;
     }
 }

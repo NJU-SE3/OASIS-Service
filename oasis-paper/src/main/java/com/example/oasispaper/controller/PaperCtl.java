@@ -1,13 +1,13 @@
 package com.example.oasispaper.controller;
 
 import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson.JSONObject;
+import com.example.oasispaper.model.VO.PaperQueryVO;
 import com.example.oasispaper.service.PaperService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController()
 public class PaperCtl {
@@ -30,6 +30,11 @@ public class PaperCtl {
         JSONArray res = new JSONArray();
         res.addAll(paperService.paperQuery(query, pageNum, pageSize));
         return res;
+    }
+
+    @PostMapping(path = "/paper")
+    public void insertPaper(@RequestBody PaperQueryVO paper) {
+        paperService.insertPaperVO(paper);
     }
 
 

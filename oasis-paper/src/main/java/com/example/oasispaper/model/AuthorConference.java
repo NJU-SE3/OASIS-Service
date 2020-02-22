@@ -5,7 +5,7 @@ import javax.persistence.Entity;
 import javax.persistence.Table;
 
 @Entity
-@Table
+@Table(name = "author_conference")
 public class AuthorConference extends BaseEntity {
     @Column(name = "author_id")
     private int authorId;
@@ -17,16 +17,16 @@ public class AuthorConference extends BaseEntity {
     private int paperId;
 
     @Column(name = "start_page")
-    private int startPage;
+    private int startPage = 0;
 
     @Column(name = "end_page")
-    private int endPage;
+    private int endPage = 0;
 
     @Column(name = "pdf_link")
-    private String link;
+    private String link = "";
 
     @Column(name = "year")
-    private int year;
+    private int year = 0;
 
     public AuthorConference() {
     }

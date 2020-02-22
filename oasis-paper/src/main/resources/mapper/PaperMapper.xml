@@ -1,25 +1,31 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.example.oasispaper.mapper.PaperMapper">
-    <select id="findById"
-            resultMap="paperQueryMap">
-        SELECT
-            *
-        FROM
-        paper p
-        where p.id = #{id}
-    </select>
-    <resultMap id="paperQueryMap" type="com.example.oasispaper.model.Paper">
-        <id property="id" column="id"/>
-        <result property="title" column="keywords"/>
-    </resultMap>
+<mapper namespace="com.example.oasispaper.mapper.QueryMapper">
     <select id="queryAll"
             resultMap="paperVO">
-        select * from paper p
-        where p.title like '%${key}%'
+        select distinct
+        p.id as id , p.title as title , p.abstract as abstract , con.conference_name as conference, p.terms as terms,p.keywords as keywords
+        from
+        author_conference acon join author au on acon.author_id = au.id
+        join conference con on acon.conference_id = con.id
+        join paper p on acon.paper_id = p.id
+        where
+        CONCAT_WS('',
+        au.author_name,
+        p.title,
+        p.terms,
+        p.abstract ,
+        p.keywords,
+        con.conference_name
+        )
+        REGEXP #{key}
     </select>
     <resultMap id="paperVO" type="com.example.oasispaper.model.VO.PaperQueryVO">
-        <id property="id" column="id"/>
+        <id property="id" column="p.id"/>
         <result property="title" column="title"/>
+        <result property="abstra" column="abstract"/>
+        <result property="conference" column="conference"/>
+        <result property="terms" column="terms"/>
+        <result property="keywords" column="keywords"/>
     </resultMap>
 </mapper>

@@ -7,8 +7,8 @@ import javax.persistence.Table;
 @Entity
 @Table(name = "affiliation")
 public class Affiliation extends BaseEntity {
-    @Column
-    private String name;
+    @Column(name = "affiliation_name")
+    private String name = "";
 
     public String getName() {
         return name;

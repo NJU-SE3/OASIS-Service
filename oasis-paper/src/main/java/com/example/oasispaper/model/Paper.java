@@ -8,22 +8,22 @@ import javax.persistence.Table;
 @Table(name = "paper")
 public class Paper extends BaseEntity {
     @Column
-    private String title;       //论文名
+    private String title = "";       //论文名
 
     @Column(name = "abstract")
-    private String abstra;      //摘要
+    private String abstra = "";      //摘要
 
     @Column(name = "keywords")
-    private String keywords;    //关键词及
+    private String keywords = "";    //关键词及
 
     @Column(name = "terms")     //术语
-    private String terms;
+    private String terms = "";
 
     @Column(name = "citation_count")
-    private int citationCount;
+    private int citationCount = 0;
 
     @Column(name = "reference_count")
-    private int referenceCount;
+    private int referenceCount = 0;
 
     public String getTitle() {
         return title;

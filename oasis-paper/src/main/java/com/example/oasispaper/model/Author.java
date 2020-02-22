@@ -7,9 +7,11 @@ import javax.persistence.Table;
 @Entity
 @Table(name = "author")
 public class Author extends BaseEntity {
-    //
-    @Column()
-    private String name;
+    @Column(name = "affiliation_id")
+    private int affiliationId;
+
+    @Column(name = "author_name")
+    private String name = "";
 
     public String getName() {
         return name;
@@ -17,5 +19,13 @@ public class Author extends BaseEntity {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public int getAffiliationId() {
+        return affiliationId;
+    }
+
+    public void setAffiliationId(int affiliationId) {
+        this.affiliationId = affiliationId;
     }
 }
