@@ -10,3 +10,8 @@ spring:
   application:
     name: oasis-paper
 spring.main.allow-bean-definition-overriding: true
+
+mybatis:
+  mapper-locations: classpath:mapper/*.xml
+  type-aliases-package: com.example.oasispaper.model
+  config-location: classpath:mybatis.xml

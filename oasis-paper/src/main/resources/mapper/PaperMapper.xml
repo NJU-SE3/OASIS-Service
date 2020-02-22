@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.example.oasispaper.mapper.PaperMapper">
+    <select id="findById"
+            resultMap="paperQueryMap">
+        SELECT
+            *
+        FROM
+        paper p
+        where p.id = #{id}
+    </select>
+    <resultMap id="paperQueryMap" type="com.example.oasispaper.model.Paper">
+        <id property="id" column="id"/>
+        <result property="title" column="keywords"/>
+    </resultMap>
+    <select id="queryAll"
+            resultMap="paperVO">
+        select * from paper p
+        where p.title like '%${key}%'
+    </select>
+    <resultMap id="paperVO" type="com.example.oasispaper.model.VO.PaperQueryVO">
+        <id property="id" column="id"/>
+        <result property="title" column="title"/>
+    </resultMap>
+</mapper>

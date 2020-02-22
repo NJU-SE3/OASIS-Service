@@ -21,7 +21,7 @@ zuul:
   retryable: true
   routes:
     paper:
-      path: /api/paper/**
+      path: /api/**
       url: http://${paper}/
       serviceId: oasis-paper
   include-debug-header: true
