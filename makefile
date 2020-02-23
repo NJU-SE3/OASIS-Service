@@ -33,7 +33,7 @@ test:
 	${COMPOSE} -f ${LOCAL_DOCKER} down
 
 push_hub:
-	mvn clean compile jib:build -Pprod
+	mvn clean package -Pprod
 
 source_swarm:
 	scp -r swarm/* root@wxj:/root/swarm/.

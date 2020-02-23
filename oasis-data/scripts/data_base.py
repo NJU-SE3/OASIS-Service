@@ -1,21 +1,24 @@
+import json
+
 import pandas as pd
+import requests
 from pandas import DataFrame
 from sqlalchemy import create_engine
 
 """
 已有的列
 ASE:
-Document Title 文章名称
-Authors         作者(多个)
-affiliations    机构(和前面的一一对应)
-publication title 发表论文的会议
-publication year  发表论文的年
-start-page      开始页(可以根据这个知道每篇论文的页数)
-volume          ???
-end-page        结束页
-abstract        论文概要
-PDF Link        论文链接
-keywords        关键字
+Document Title 文章名称+
+Authors         作者(多个) +
+affiliations    机构(和前面的一一对应) +
+publication title 发表论文的会议 +
+publication year  发表论文的年 +
+start-page      开始页(可以根据这个知道每篇论文的页数) + 
+volume          ??? +
+end-page        结束页 +
+abstract        论文概要 +
+PDF Link        论文链接 +
+keywords        关键字 +
 IEEE Terms , Controlled Terms , Non-Controlled Terms 术语
 Citation count  文章引用计数      (citation 和 reference都需要)
 Reference Count  
@@ -69,6 +72,42 @@ def col_formatter(df: 'DataFrame'):
     pass
 
 
+def run(path):
+    df = pd.read_csv(path)
+
+    for i, row in df.iterrows():
+        for key in cols:
+            if pd.isna(row[key]):
+                row[key] = ""
+        a_list, aff_list = row['Authors'].split(';'), \
+                           row['Author Affiliations'].split(';')
+        n1, n2 = len(a_list), len(aff_list)
+        authors = []
+        for i in range(max(n1, n2)):
+            a1, a2 = a_list[i] if i < n1 else "", aff_list[i] if i < n2 else ""
+            authors.append(
+                {
+                    "name": a1,
+                    "affiliation": a2
+                }
+            )
+        terms = ','.join([row['IEEE Terms'], row['INSPEC Controlled Terms'], row['INSPEC Non-Controlled Terms']])
+        data = {
+            "title": row["Document Title"],
+            "abstract": row["Abstract"],
+            "conference": row["Publisher"],
+            "terms": terms if terms != ",," else "",
+            "keywords": row['Author Keywords'],
+            "startPage": row['Start Page'],
+            "endPage": row['End Page'],
+            "pdfLink": row['PDF Link'],
+            "citationCount": 0 if row['Article Citation Count'] == "" else row['Article Citation Count'],
+            "referenceCount": 0 if row['Reference Count'] == "" else row['Reference Count'],
+            "year": int(row['Publication Year']),
+            "authors": authors
+        }
+        requests.post('http://localhost:17900/api/paper', data=json.dumps(data), headers={'Content-Type': 'application/json'})
+
 if __name__ == '__main__':
-    df = pd.read_csv('../resources/ase.csv')
-    create_user(df, 1)
+    run('../resources/icse.csv')
+    run('../resources/ase.csv')

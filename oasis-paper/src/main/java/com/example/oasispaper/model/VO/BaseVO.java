@@ -3,13 +3,13 @@ package com.example.oasispaper.model.VO;
 import java.io.Serializable;
 
 public class BaseVO implements Serializable {
-    private int id;
+    private long id;
 
-    public int getId() {
+    public long getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(long id) {
         this.id = id;
     }
 }

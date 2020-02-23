@@ -1,6 +1,7 @@
 package com.example.oasispaper.mapper;
 
-import com.example.oasispaper.model.VO.PaperQueryVO;
+import com.example.oasispaper.model.VO.AuthorVO;
+import com.example.oasispaper.model.VO.PaperVO;
 import com.example.oasispaper.repository.PaperRepository;
 import com.example.oasispaper.service.PaperService;
 import com.github.pagehelper.Page;
@@ -43,25 +44,31 @@ public class QueryMapperTest {
 
     @Test
     public void mapQuery() {
-        Page<PaperQueryVO> papers = PageHelper.startPage(10, 10)
+        Page<PaperVO> papers = PageHelper.startPage(10, 10)
                 .doSelectPage(() -> queryMapper.queryAll("wxj"));
         assertEquals(papers.size(), 1);
     }
 
     private void paperConstruct() {
-        PaperQueryVO VO = new PaperQueryVO();
+        PaperVO VO = new PaperVO();
         VO.setTitle("I'm title");
         VO.setAbstra("I'm abstract");
         VO.setConference("IEEE");
         VO.setKeywords("I'm keywords");
         VO.setTerms("I'm terms");
-        List<PaperQueryVO.AuthorInner> list = new LinkedList<>();
-        PaperQueryVO.AuthorInner inner =
-                new PaperQueryVO.AuthorInner();
+        VO.setStartPage("0");
+        VO.setEndPage("100");
+        VO.setPdfLink("www.baidu.com");
+        VO.setCitationCount(10);
+        VO.setReferenceCount(20);
+        VO.setYear(10000);
+        List<AuthorVO> list = new LinkedList<>();
+        AuthorVO inner =
+                new AuthorVO();
         inner.setAffiliation("nju");
         inner.setName("wxj");
         list.add(inner);
-        inner = new PaperQueryVO.AuthorInner();
+        inner = new AuthorVO();
         inner.setAffiliation("pku");
         inner.setName("khellokk");
         list.add(inner);

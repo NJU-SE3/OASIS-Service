@@ -4,23 +4,24 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
 
+//发布实体
 @Entity
-@Table(name = "author_conference")
-public class AuthorConference extends BaseEntity {
+@Table(name = "publication")
+public class Publication extends BaseEntity {
     @Column(name = "author_id")
-    private int authorId;
+    private Long authorId;
 
     @Column(name = "conference_id")
-    private int conferenceId;
+    private Long conferenceId;
 
     @Column(name = "paper_id")
-    private int paperId;
+    private Long paperId;
 
     @Column(name = "start_page")
-    private int startPage = 0;
+    private String startPage = "";
 
     @Column(name = "end_page")
-    private int endPage = 0;
+    private String endPage = "";
 
     @Column(name = "pdf_link")
     private String link = "";
@@ -28,46 +29,46 @@ public class AuthorConference extends BaseEntity {
     @Column(name = "year")
     private int year = 0;
 
-    public AuthorConference() {
+    public Publication() {
     }
 
-    public int getAuthorId() {
+    public Long getAuthorId() {
         return authorId;
     }
 
-    public void setAuthorId(int authorId) {
+    public void setAuthorId(Long authorId) {
         this.authorId = authorId;
     }
 
-    public int getConferenceId() {
+    public Long getConferenceId() {
         return conferenceId;
     }
 
-    public void setConferenceId(int conferenceId) {
+    public void setConferenceId(Long conferenceId) {
         this.conferenceId = conferenceId;
     }
 
-    public int getPaperId() {
+    public Long getPaperId() {
         return paperId;
     }
 
-    public void setPaperId(int paperId) {
+    public void setPaperId(Long paperId) {
         this.paperId = paperId;
     }
 
-    public int getStartPage() {
+    public String getStartPage() {
         return startPage;
     }
 
-    public void setStartPage(int startPage) {
+    public void setStartPage(String startPage) {
         this.startPage = startPage;
     }
 
-    public int getEndPage() {
+    public String getEndPage() {
         return endPage;
     }
 
-    public void setEndPage(int endPage) {
+    public void setEndPage(String endPage) {
         this.endPage = endPage;
     }
 

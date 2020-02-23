@@ -8,7 +8,7 @@ import javax.persistence.Table;
 @Table(name = "author")
 public class Author extends BaseEntity {
     @Column(name = "affiliation_id")
-    private int affiliationId;
+    private Long affiliationId;
 
     @Column(name = "author_name")
     private String name = "";
@@ -21,11 +21,11 @@ public class Author extends BaseEntity {
         this.name = name;
     }
 
-    public int getAffiliationId() {
+    public Long getAffiliationId() {
         return affiliationId;
     }
 
-    public void setAffiliationId(int affiliationId) {
+    public void setAffiliationId(Long affiliationId) {
         this.affiliationId = affiliationId;
     }
 }

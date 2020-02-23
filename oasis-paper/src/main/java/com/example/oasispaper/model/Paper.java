@@ -10,13 +10,13 @@ public class Paper extends BaseEntity {
     @Column
     private String title = "";       //论文名
 
-    @Column(name = "abstract")
+    @Column(name = "abstract", columnDefinition = "text")
     private String abstra = "";      //摘要
 
-    @Column(name = "keywords")
+    @Column(name = "keywords", columnDefinition = "text")
     private String keywords = "";    //关键词及
 
-    @Column(name = "terms")     //术语
+    @Column(name = "terms", columnDefinition = "text")     //术语
     private String terms = "";
 
     @Column(name = "citation_count")
