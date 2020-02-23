@@ -8,5 +8,5 @@ spring:
     hibernate:
       ddl-auto: update
   datasource:
-    # 使用h2数据库源
     platform: h2
+

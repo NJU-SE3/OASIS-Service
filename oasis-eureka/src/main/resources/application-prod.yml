@@ -5,7 +5,7 @@ spring:
     active: prod
 eureka:
   instance:
-    hostname: 39.96.75.119
+    hostname: 106.14.140.93
   client:
     registerWithEureka: false   #表示是否将自己注册到Eureka Server，默认为true
     fetchRegistry: false     #表示是否从Eureka Server获取注册信息，默认为true

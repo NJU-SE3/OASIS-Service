@@ -1,0 +1,11 @@
+version: '3'
+
+# wxj
+# ES app
+services:
+  oasis-paper:
+    image: 'registry.cn-shanghai.aliyuncs.com/caribou/oasis-paper'
+    container_name: oasis-paper
+    restart: always
+    ports:
+      - "8080:8080"

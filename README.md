@@ -83,13 +83,9 @@
 
 - `mvn install -Dmaven.test.skip=true`
 
--  `mvn spring-boot:run -f oasis-eureka` 
-- `mvn spring-boot:run -f oasis-zuul`
 -  `mvn spring-boot:run -f oasis-paper`
 
 均运行完成后，浏览器内打开 `http://localhost:8080`，若出现 `Hello world`则表示成功
-
-> 特别注意，本机进行调试时，需要开启 `zull` 网关才能匹配到正确的 `api` 。故需要开启 `zuul`
 
 ### 3. 迭代一目标
 

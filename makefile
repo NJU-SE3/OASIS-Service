@@ -9,7 +9,7 @@ RUN_PATH = dockerfiles/docker-compose-prod.yml
 COMPOSE = docker-compose
 
 local-set:
-	${COMPOSE} -f ${LOCAL_DOCKER} up -d
+	${COMPOSE} -f ${LOCAL_DOCKER} up -d --build
 
 local-stop:
 	${COMPOSE} -f ${LOCAL_DOCKER} down
@@ -28,12 +28,10 @@ clean:
 	bash scripts/rmi.sh
 
 test:
-	${COMPOSE} -f ${LOCAL_DOCKER} up -d
-	mvn clean test
-	${COMPOSE} -f ${LOCAL_DOCKER} down
+	mvn clean test -Dmaven.package.skip=true
 
 push_hub:
-	mvn clean package -Pprod
+	mvn clean package -Pprod -Dmaven.test.skip=true
 
 source_swarm:
 	scp -r swarm/* root@wxj:/root/swarm/.

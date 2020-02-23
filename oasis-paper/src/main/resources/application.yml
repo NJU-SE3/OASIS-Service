@@ -1,7 +1,5 @@
 server:
   port: 8080
-eureka:
-  port: 8761
 spring:
   # Profile 动态环境调整
   # mvn clean package -P<profile name>
@@ -14,3 +12,11 @@ spring.main.allow-bean-definition-overriding: true
 mybatis:
   mapper-locations: classpath:mapper/*.xml
   type-aliases-package: com.example.oasispaper.model
+
+eureka:
+  port: 8761
+  instance:
+    hostname: 106.14.140.93
+  client:
+    serviceUrl:
+      defaultZone: http://${eureka.instance.hostname}:8761/eureka/

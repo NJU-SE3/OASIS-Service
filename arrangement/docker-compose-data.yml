@@ -1,29 +1,30 @@
 version: '2'
 
+# dly
 services:
-  redis: # Redis缓存
+  oasis-redis: # Redis缓存
     image: redis
     container_name: oasis-redis
     command: redis-server --requirepass redis
     ports:
       - "6379:6379"
-  rabbitmq:
-    hostname: myrabbitmq
+
+
+  oasis-rabbitmq:
+    hostname: oasis-rabbitmq
     image: rabbitmq:management
+    restart: always
     ports:
-      - 15672:15672
-      - 5672:5672
-    restart: always
+      - "5672:5672"
+
   oasis-mysql:
-    image: caribouf/oasis-mysql
-    container_name: csv_mysql
+    image: caribouf/oasis-mysql:latest
+    container_name: oasis-mysql
     restart: always
-#    build:
-#      context: .
-#      dockerfile: Dockerfile-mysql
     environment:
       - MYSQL_ROOT_PASSWORD=mysql
       - MYSQL_DATABASE=se
+    command: ['mysqld', '--character-set-server=utf8mb4', '--collation-server=utf8mb4_unicode_ci']
     ports:
       - "3306:3306"
-    command: ['mysqld', '--character-set-server=utf8mb4', '--collation-server=utf8mb4_unicode_ci']
+

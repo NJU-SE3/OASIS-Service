@@ -4,12 +4,12 @@ server:
 eureka:
   port: 8761
   instance:
-    hostname: 39.96.75.119
+    hostname: 106.14.140.93
   client:
     serviceUrl:
       defaultZone: http://${eureka.instance.hostname}:${eureka.port}/eureka/
 
-paper: 39.96.75.119:8000
+paper: 39.96.75.119:8080
 
 zuul:
   host:
