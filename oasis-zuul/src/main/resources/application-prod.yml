@@ -10,7 +10,7 @@ eureka:
       defaultZone: http://${eureka.instance.hostname}:${eureka.port}/eureka/
 
 paper: 39.96.75.119:8080
-
+document: 39.96.75.119:8081
 zuul:
   host:
     #zuul配置
@@ -20,6 +20,9 @@ zuul:
     socket-timeout-millis: 60000
   retryable: true
   routes:
+    document:
+      path: /api/query/**
+      url: http://${document}/
     paper:
       path: /api/**
       url: http://${paper}/

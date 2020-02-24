@@ -28,3 +28,13 @@ services:
     ports:
       - "3306:3306"
 
+  mongodb:
+    image: bitnami/mongodb:4.0
+    container_name: oasis-mongo
+    restart: always
+    ports:
+      - "27017:27017"
+    environment:
+      - MONGODB_USERNAME=root
+      - MONGODB_PASSWORD=mongo
+      - MONGODB_DATABASE=se

@@ -79,18 +79,6 @@ def run(path):
         for key in cols:
             if pd.isna(row[key]):
                 row[key] = ""
-        a_list, aff_list = row['Authors'].split(';'), \
-                           row['Author Affiliations'].split(';')
-        n1, n2 = len(a_list), len(aff_list)
-        authors = []
-        for i in range(max(n1, n2)):
-            a1, a2 = a_list[i] if i < n1 else "", aff_list[i] if i < n2 else ""
-            authors.append(
-                {
-                    "name": a1,
-                    "affiliation": a2
-                }
-            )
         terms = ','.join([row['IEEE Terms'], row['INSPEC Controlled Terms'], row['INSPEC Non-Controlled Terms']])
         data = {
             "title": row["Document Title"],
@@ -104,9 +92,11 @@ def run(path):
             "citationCount": 0 if row['Article Citation Count'] == "" else row['Article Citation Count'],
             "referenceCount": 0 if row['Reference Count'] == "" else row['Reference Count'],
             "year": int(row['Publication Year']),
-            "authors": authors
+            "authors": row['Authors'],
+            "affiliations": row['Author Affiliations']
         }
-        requests.post('http://localhost:17900/api/paper', data=json.dumps(data), headers={'Content-Type': 'application/json'})
+        requests.post('http://localhost:8080/paper', data=json.dumps(data),
+                      headers={'Content-Type': 'application/json'})
 
 if __name__ == '__main__':
     run('../resources/icse.csv')

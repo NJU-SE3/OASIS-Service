@@ -9,3 +9,9 @@ services:
     restart: always
     ports:
       - "8080:8080"
+  oasis-document:
+    image: 'registry.cn-shanghai.aliyuncs.com/caribou/oasis-document'
+    container_name: oasis-document
+    restart: always
+    ports:
+      - "8081:8080"
