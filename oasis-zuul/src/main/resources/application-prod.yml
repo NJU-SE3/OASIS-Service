@@ -1,0 +1,29 @@
+server:
+  port: 8080
+#配置eureka服务地址
+eureka:
+  port: 8761
+  instance:
+    hostname: 106.14.140.93
+  client:
+    serviceUrl:
+      defaultZone: http://${eureka.instance.hostname}:${eureka.port}/eureka/
+
+paper: 39.96.75.119:8080
+document: 39.96.75.119:8081
+zuul:
+  host:
+    #zuul配置
+    max-per-route-connections: 50
+    max-total-connections: 200
+    connect-timeout-millis: 60000
+    socket-timeout-millis: 60000
+  retryable: true
+  routes:
+    document:
+      path: /api/query/**
+      url: http://${document}/
+    paper:
+      path: /api/**
+      url: http://${paper}/
+  include-debug-header: true

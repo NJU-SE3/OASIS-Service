@@ -1,0 +1,1 @@
+docker exec -i citicup-mysql mysqldump -uroot -pmysql citicup > sql/framework.sql

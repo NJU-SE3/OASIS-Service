@@ -1,0 +1,40 @@
+version: '2'
+
+# dly
+services:
+  oasis-redis: # Redis缓存
+    image: redis
+    container_name: oasis-redis
+    command: redis-server --requirepass redis
+    ports:
+      - "6379:6379"
+
+
+  oasis-rabbitmq:
+    hostname: oasis-rabbitmq
+    image: rabbitmq:management
+    restart: always
+    ports:
+      - "5672:5672"
+
+  oasis-mysql:
+    image: caribouf/oasis-mysql:latest
+    container_name: oasis-mysql
+    restart: always
+    environment:
+      - MYSQL_ROOT_PASSWORD=mysql
+      - MYSQL_DATABASE=se
+    command: ['mysqld', '--character-set-server=utf8mb4', '--collation-server=utf8mb4_unicode_ci']
+    ports:
+      - "3306:3306"
+
+  mongodb:
+    image: bitnami/mongodb:4.0
+    container_name: oasis-mongo
+    restart: always
+    ports:
+      - "27017:27017"
+    environment:
+      - MONGODB_USERNAME=root
+      - MONGODB_PASSWORD=mongo
+      - MONGODB_DATABASE=se
