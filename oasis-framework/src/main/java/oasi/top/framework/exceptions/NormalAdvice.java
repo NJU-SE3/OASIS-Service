@@ -5,6 +5,7 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
+import org.springframework.web.client.HttpClientErrorException;
 
 import javax.persistence.EntityNotFoundException;
 
@@ -21,6 +22,18 @@ public class NormalAdvice {
     private String entityNotFoundHandler(EntityNotFoundException e) {
         return e.getMessage();
     }
+
+
+    /**
+     * 400 Bad request
+     */
+    @ResponseBody
+    @ExceptionHandler(HttpClientErrorException.BadRequest.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    private String badRequest(HttpClientErrorException.BadRequest e) {
+        return "bad request";
+    }
+
 
     /**
      * 未知错误 500
