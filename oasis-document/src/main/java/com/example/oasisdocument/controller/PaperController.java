@@ -36,25 +36,30 @@ public class PaperController {
 
     //初次数据查询
     @GetMapping("/paper/list")
-    public JSONArray queryPaper(HttpServletRequest request,
-                                @RequestParam(name = "query") String query,
-                                @RequestParam(name = "returnFacets") String returnFacets,
-                                @RequestParam(name = "pageNum", defaultValue = "0") int pageNum,
-                                @RequestParam(name = "pageSize", defaultValue = "10") int pageSize) {
+    public JSONObject queryPaper(HttpServletRequest request,
+                                 @RequestParam(name = "query") String query,
+                                 @RequestParam(name = "returnFacets") String returnFacets,
+                                 @RequestParam(name = "pageNum", defaultValue = "0") int pageNum,
+                                 @RequestParam(name = "pageSize", defaultValue = "10") int pageSize) {
         HttpSession session = request.getSession();
         List<String> keys = Arrays.asList(query.split(" ")).stream()
                 .filter((String s) -> !s.isBlank()).collect(Collectors.toList());
         assert keys.size() >= 1;
         List<Paper> list = paperService.queryPaper(keys, returnFacets.toLowerCase());
-        if (list.isEmpty()) return JSONArray.parseArray(JSON.toJSONString(list));
+        if (list.isEmpty()) return JSONArray.parseObject(JSON.toJSONString(list));
         //分页
-        List<Paper> ans = pageHelper.of(list, pageSize, pageNum);
-        if (null == ans) throw new BadReqException();
-        //根据ip进行sesssion存储
+        List<Paper> pagedList = pageHelper.of(list, pageSize, pageNum);
+        if (null == pagedList) throw new BadReqException();
+        //根据ip进行session存储
         session.setAttribute(request.getRemoteAddr(), list);
         session.setAttribute(request.getRemoteAddr() + "reqinfo",
                 request.getParameterMap());
-        return JSONArray.parseArray(JSON.toJSONString(ans));
+        //装配
+        JSONObject summary = paperService.papersSummary(list);
+        JSONObject ans = new JSONObject();
+        ans.put("summary", summary);
+        ans.put("papers", pagedList);
+        return ans;
     }
 
     /**
@@ -70,16 +75,13 @@ public class PaperController {
             //查询全集
             List<Paper> list = (List<Paper>) session.getAttribute(request.getRemoteAddr());
             Map<String, String[]> params =
-                    (Map<String, String[]>) session.getAttribute(request.getRemoteAddr() +
-                            "reqinfo");
+                    (Map<String, String[]>) session.getAttribute(request.getRemoteAddr() + "reqinfo");
             //添加新限制
             list = paperService.queryPaperRefine(list, refinements);
             int pageNum = Integer.parseInt(params.getOrDefault("pageNum", new String[]{"0"})[0]),
                     pageSize = Integer.parseInt(params.getOrDefault("pageSize", new String[]{"10"})[0]);
             List<Paper> ans = pageHelper.of(list, pageSize, pageNum);
             if (null == ans) throw new BadReqException();
-
-
             return JSONArray.parseArray(JSON.toJSONString(ans));
         } catch (BadReqException e) {
             throw e;

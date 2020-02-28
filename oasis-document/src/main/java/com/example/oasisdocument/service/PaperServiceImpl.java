@@ -1,9 +1,11 @@
 package com.example.oasisdocument.service;
 
+import com.alibaba.fastjson.JSONObject;
 import com.example.oasisdocument.docs.Paper;
 import com.example.oasisdocument.exceptions.BadReqException;
 import com.example.oasisdocument.repository.PaperRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.stereotype.Service;
@@ -20,7 +22,7 @@ public class PaperServiceImpl implements PaperService {
     private MongoTemplate mongoTemplate;
 
     @Override
-//    @Cacheable(cacheNames = "paperQuery", unless = "#result==null")
+    @Cacheable(cacheNames = "paperQuery", unless = "#result==null")
     public List<Paper> queryPaper(List<String> keys, String returnFacets) throws BadReqException {
         List<Paper> papers = paperRepository.findAll();
         papers = papers.stream()
@@ -40,7 +42,7 @@ public class PaperServiceImpl implements PaperService {
     }
 
     @Override
-//    @Cacheable(cacheNames = "queryPaperRefine", unless = "#result==null")
+    @Cacheable(cacheNames = "queryPaperRefine", unless = "#result==null")
     public List<Paper> queryPaperRefine(List<Paper> papers, List<String> refinements) {
         //conference , term , author , affiliation , year
         Map<String, List<String>> hash = refineAnalysis(refinements);
@@ -89,6 +91,48 @@ public class PaperServiceImpl implements PaperService {
                 .collect(Collectors.toList());
 
         return papers;
+    }
+
+    @Override
+    public JSONObject papersSummary(List<Paper> papers) {
+        //conference , term , author , affiliation
+        JSONObject ans = new JSONObject();
+        //author
+        final Map<String, Integer> authorHash = new HashMap<>();
+        papers.forEach((Paper p) -> {
+                    List<String> authorNames = Arrays.stream(p.getAuthors().split(";")).map(String::trim).collect(Collectors.toList());
+                    for (String name : authorNames) {
+                        authorHash.put(name, authorHash.getOrDefault(name, 0) + 1);
+                    }
+                });
+        ans.put("author", authorHash);
+        //conference
+        final Map<String, Integer> conferHash = new HashMap<>();
+        papers.forEach((Paper p) -> {
+                    String name = p.getConference();
+                    conferHash.put(name, conferHash.getOrDefault(name, 0) + 1);
+                });
+        ans.put("conference", conferHash);
+        //term
+        final Map<String, Integer> termHash = new HashMap<>();
+        papers.forEach((Paper p) -> {
+            List<String> termNames = Arrays.stream(p.getTerms().split(";")).map(String::trim).collect(Collectors.toList());
+            for (String name : termNames) {
+                termHash.put(name, termHash.getOrDefault(name, 0) + 1);
+            }
+        });
+        ans.put("term", termHash);
+        //affiliation
+        final Map<String, Integer> affiliationHash = new HashMap<>();
+        papers.forEach((Paper p) -> {
+            List<String> affiliationNames = Arrays.stream(p.getAffiliations().split(";")).map(String::trim).collect(Collectors.toList());
+            for (String name : affiliationNames) {
+                affiliationHash.put(name, affiliationHash.getOrDefault(name, 0) + 1);
+            }
+        });
+        ans.put("affiliation", affiliationHash);
+
+        return ans;
     }
 
     private Map<String, List<String>> refineAnalysis(final List<String> refinements) {
