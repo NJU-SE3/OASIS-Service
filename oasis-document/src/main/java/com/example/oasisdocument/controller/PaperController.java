@@ -78,6 +78,9 @@ public class PaperController {
                     (Map<String, String[]>) session.getAttribute(request.getRemoteAddr() + "reqinfo");
             //添加新限制
             list = paperService.queryPaperRefine(list, refinements);
+            if (list.isEmpty()) {
+                return new JSONArray();
+            }
             int pageNum = Integer.parseInt(params.getOrDefault("pageNum", new String[]{"0"})[0]),
                     pageSize = Integer.parseInt(params.getOrDefault("pageSize", new String[]{"10"})[0]);
             List<Paper> ans = pageHelper.of(list, pageSize, pageNum);
