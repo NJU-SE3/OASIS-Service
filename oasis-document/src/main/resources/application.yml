@@ -8,6 +8,8 @@ spring:
     active: '@spring.profiles.active@'
   application:
     name: oasis-document
+  session:
+    store-type: redis
 spring.main.allow-bean-definition-overriding: true
 
 

@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
+import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
@@ -23,17 +24,9 @@ public class PaperServiceImpl implements PaperService {
 
     @Override
     @Cacheable(cacheNames = "paperQuery", unless = "#result==null")
-    public List<Paper> queryPaper(List<String> keys, String returnFacets) throws BadReqException {
-        List<Paper> papers = paperRepository.findAll();
-        papers = papers.stream()
-                .filter((Paper p) -> {
-                    String line = paper2Str(p, returnFacets);
-                    for (String key : keys) {
-                        if (!line.contains(key)) return false;
-                    }
-                    return true;
-                }).collect(Collectors.toList());
-        return papers;
+    public List<Paper> queryPaper(String key, String returnFacets) throws BadReqException {
+        Criteria criteria = fetchCriteriaViaKey(key, returnFacets);
+        return mongoTemplate.find(new Query(criteria), Paper.class);
     }
 
     @Override
@@ -46,50 +39,60 @@ public class PaperServiceImpl implements PaperService {
     public List<Paper> queryPaperRefine(List<Paper> papers, List<String> refinements) {
         //conference , term , author , affiliation , year
         Map<String, List<String>> hash = refineAnalysis(refinements);
-        papers = papers.stream()
-                .filter((Paper paper) -> {
-                    if (!hash.containsKey("year")) return true;
-                    String val = hash.get("year").get(0);
-                    String[] set = val.split("_");
-                    if (set.length != 2) throw new BadReqException();
-                    int start = Integer.parseInt(set[0]),
-                            end = Integer.parseInt(set[1]);
-                    return paper.getYear() <= end && paper.getYear() >= start;
-                })
-                .filter((Paper paper) -> {
-                    if (!hash.containsKey("author")) return true;
-                    String line = paper.getAuthors();
-                    for (String v : hash.get("author")) {
-                        if (line.contains(v)) return true;
-                    }
-                    return false;
-                })
-                .filter((Paper paper) -> {
-                    if (!hash.containsKey("term")) return true;
-                    String line = paper.getTerms();
-                    for (String v : hash.get("term")) {
-                        if (line.contains(v)) return true;
-                    }
-                    return false;
-                })
-                .filter((Paper paper) -> {
-                    if (!hash.containsKey("conference")) return true;
-                    String line = paper.getTerms();
-                    for (String v : hash.get("conference")) {
-                        if (line.contains(v)) return true;
-                    }
-                    return false;
-                })
-                .filter((Paper paper) -> {
-                    if (!hash.containsKey("affiliation")) return true;
-                    String line = paper.getTerms();
-                    for (String v : hash.get("affiliation")) {
-                        if (line.contains(v)) return true;
-                    }
-                    return false;
-                })
-                .collect(Collectors.toList());
+        if (papers == null || papers.isEmpty()) return new LinkedList<>();
 
+        if (hash.containsKey("year")) {
+            papers = papers.stream()
+                    .filter((Paper paper) -> {
+                        String val = hash.get("year").get(0);
+                        String[] set = val.split("_");
+                        if (set.length != 2) throw new BadReqException();
+                        int start = Integer.parseInt(set[0]),
+                                end = Integer.parseInt(set[1]);
+                        return paper.getYear() <= end && paper.getYear() >= start;
+                    }).collect(Collectors.toList());
+            if (papers.isEmpty()) return papers;
+        }
+        if (hash.containsKey("author")) {
+            papers = papers.stream().filter((Paper paper) -> {
+                String line = paper.getAuthors();
+                for (String v : hash.get("author")) {
+                    if (line.contains(v)) return true;
+                }
+                return false;
+            }).collect(Collectors.toList());
+            if (papers.isEmpty()) return papers;
+        }
+
+        if (hash.containsKey("term")) {
+            papers = papers.stream().filter((Paper paper) -> {
+                String line = paper.getTerms();
+                for (String v : hash.get("term")) {
+                    if (line.contains(v)) return true;
+                }
+                return false;
+            }).collect(Collectors.toList());
+            if (papers.isEmpty()) return papers;
+        }
+        if (hash.containsKey("conference")) {
+            papers = papers.stream().filter((Paper paper) -> {
+                String line = paper.getTerms();
+                for (String v : hash.get("conference")) {
+                    if (line.contains(v)) return true;
+                }
+                return false;
+            }).collect(Collectors.toList());
+            if (papers.isEmpty()) return papers;
+        }
+        if (hash.containsKey("affiliation")) {
+            papers = papers.stream().filter((Paper paper) -> {
+                String line = paper.getTerms();
+                for (String v : hash.get("affiliation")) {
+                    if (line.contains(v)) return true;
+                }
+                return false;
+            }).collect(Collectors.toList());
+        }
         return papers;
     }
 
@@ -148,44 +151,39 @@ public class PaperServiceImpl implements PaperService {
         return ans;
     }
 
-    private String paper2Str(Paper paper, String returnFacets) throws BadReqException {
-        StringBuilder sb = new StringBuilder();
+    private Criteria fetchCriteriaViaKey(String key, String returnFacets) throws BadReqException {
+        Criteria criteria;
         switch (returnFacets) {
             case "all":
-                sb.append(paper.getAffiliations()).append(paper.getTitle()).append(paper.getConference())
-                        .append(paper.getAuthors()).append(paper.getKeywords()).append(paper.getTerms());
+                criteria = getQueryCriteria(key);
                 break;
             case "title":
-                sb.append(paper.getTitle());
+                criteria = Criteria.where("title").regex(key);
                 break;
             case "conferences":
-                sb.append(paper.getConference());
+                criteria = Criteria.where("conference").regex(key);
                 break;
-
             case "terms":
-                sb.append(paper.getTerms());
+                criteria = Criteria.where("terms").regex(key);
                 break;
-
             case "keywords":
-                sb.append(paper.getKeywords());
+                criteria = Criteria.where("keywords").regex(key);
                 break;
-
             case "authors":
-                sb.append(paper.getAuthors());
+                criteria = Criteria.where("authors").regex(key);
                 break;
-
             case "affiliations":
-                sb.append(paper.getAffiliations());
+                criteria = Criteria.where("affiliations").regex(key);
                 break;
             default:
                 throw new BadReqException();
         }
-        return sb.toString();
+        return criteria;
     }
 
     private Criteria getQueryCriteria(String key) {
         List<String> fields = Arrays.asList("title", "conference", "terms",
-                "keywords", "authors", "affiliation");
+                "keywords", "authors", "affiliations");
         List<Criteria> criterias = fields.stream()
                 .map((String name) -> Criteria.where(name).regex(key))
                 .collect(Collectors.toList());
