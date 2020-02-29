@@ -5,6 +5,7 @@ import com.example.oasisdocument.docs.Paper;
 import com.example.oasisdocument.exceptions.BadReqException;
 import com.example.oasisdocument.repository.PaperRepository;
 import com.example.oasisdocument.service.PaperService;
+import com.example.oasisdocument.utils.Pair;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.mongodb.core.MongoTemplate;
@@ -101,23 +102,24 @@ public class PaperServiceImpl implements PaperService {
     public JSONObject papersSummary(List<Paper> papers) {
         //conference , term , author , affiliation
         JSONObject ans = new JSONObject();
+        final int limit = 5;
         if (papers == null || papers.isEmpty()) return ans;
         //author
         final Map<String, Integer> authorHash = new HashMap<>();
         papers.forEach((Paper p) -> {
-                    List<String> authorNames = Arrays.stream(p.getAuthors().split(";")).map(String::trim).collect(Collectors.toList());
-                    for (String name : authorNames) {
-                        authorHash.put(name, authorHash.getOrDefault(name, 0) + 1);
-                    }
-                });
-        ans.put("author", authorHash);
+            List<String> authorNames = Arrays.stream(p.getAuthors().split(";")).map(String::trim).collect(Collectors.toList());
+            for (String name : authorNames) {
+                authorHash.put(name, authorHash.getOrDefault(name, 0) + 1);
+            }
+        });
+        ans.put("author", transformHash(authorHash, 5));
         //conference
         final Map<String, Integer> conferHash = new HashMap<>();
         papers.forEach((Paper p) -> {
-                    String name = p.getConference();
-                    conferHash.put(name, conferHash.getOrDefault(name, 0) + 1);
-                });
-        ans.put("conference", conferHash);
+            String name = p.getConference();
+            conferHash.put(name, conferHash.getOrDefault(name, 0) + 1);
+        });
+        ans.put("conference", transformHash(conferHash, 5));
         //term
         final Map<String, Integer> termHash = new HashMap<>();
         papers.forEach((Paper p) -> {
@@ -126,7 +128,7 @@ public class PaperServiceImpl implements PaperService {
                 termHash.put(name, termHash.getOrDefault(name, 0) + 1);
             }
         });
-        ans.put("term", termHash);
+        ans.put("term", transformHash(termHash, 10));
         //affiliation
         final Map<String, Integer> affiliationHash = new HashMap<>();
         papers.forEach((Paper p) -> {
@@ -135,7 +137,7 @@ public class PaperServiceImpl implements PaperService {
                 affiliationHash.put(name, affiliationHash.getOrDefault(name, 0) + 1);
             }
         });
-        ans.put("affiliation", affiliationHash);
+        ans.put("affiliation", transformHash(affiliationHash, 5));
 
         return ans;
     }
@@ -193,5 +195,15 @@ public class PaperServiceImpl implements PaperService {
         ans.orOperator(criterias.get(0), criterias.get(1), criterias.get(2),
                 criterias.get(3), criterias.get(4), criterias.get(5));
         return ans;
+    }
+
+    private <K> List<Pair<K, Integer>> transformHash(Map<K, Integer> hash, final int limit) {
+        List<Pair<K, Integer>> ans = new LinkedList<>();
+        for (K k : hash.keySet()) {
+            ans.add(new Pair<>(k, hash.get(k)));
+        }
+        ans.sort((o1, o2) -> o2.getSecond() - o1.getSecond());
+        ans = ans.subList(0, Math.min(ans.size(), limit));
+        return new LinkedList<>(ans);
     }
 }

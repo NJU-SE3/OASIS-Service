@@ -38,15 +38,26 @@ public class ReportController {
     }
 
     //被引用论文数最多作者TOP10的堆叠柱状图
+    //TODO: 修改为持久化, 并且删减paper内容
     @GetMapping("/author/rank/paper_cnt")
-    public Map<String, List<Paper>> getAuthorOfMostPaper(@RequestParam(name = "rank", defaultValue = "10") int rank) {
-        return reportService.getAuthorOfMostPaper(rank);
+    public JSONObject getAuthorOfMostPaper(@RequestParam(name = "rank", defaultValue = "10") int rank) {
+        Map<String, List<Paper>> hash = reportService.getAuthorOfMostPaper(rank);
+        JSONObject ans = new JSONObject();
+        for (String key : hash.keySet()) {
+            List<Paper> papers = hash.get(key);
+            JSONArray array = papers.stream()
+                    .map(this::simplifyPaper)
+                    .collect(Collectors.toCollection(JSONArray::new));
+            ans.put(key, array);
+        }
+        return ans;
     }
 
     //被引用数最多的论文TOP K
     @GetMapping("/paper/rank/citation")
-    public List<Paper> getPaperRankViaCitation(@RequestParam(name = "rank", defaultValue = "10") int rank) {
-        return reportService.getPaperRankViaCitation(rank);
+    public List<JSONObject> getPaperRankViaCitation(@RequestParam(name = "rank", defaultValue = "10") int rank) {
+        return reportService.getPaperRankViaCitation(rank).stream()
+                .map(this::simplifyPaper).collect(Collectors.toList());
     }
 
 
@@ -61,5 +72,16 @@ public class ReportController {
                     object.put("count", pair.getSecond());
                     return object;
                 }).collect(Collectors.toCollection(JSONArray::new));
+    }
+
+    private JSONObject simplifyPaper(Paper paper) {
+        JSONObject ans = new JSONObject();
+        //标题、作者、引用数、PDF link , year
+        ans.put("title", paper.getTitle());
+        ans.put("authors", paper.getAuthors());
+        ans.put("citationCount", paper.getCitationCount());
+        ans.put("pdfLink", paper.getPdfLink());
+        ans.put("year", paper.getYear());
+        return ans;
     }
 }

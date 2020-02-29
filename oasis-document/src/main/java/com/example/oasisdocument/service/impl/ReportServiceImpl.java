@@ -111,8 +111,12 @@ public class ReportServiceImpl implements ReportService {
     @Override
     @Cacheable(cacheNames = "getPapersViaAuthor", unless = "#result==null")
     public List<Paper> getPapersViaAuthor(String authorName) {
+        final int limit = 5;
         Query query = new Query(Criteria.where("authors").regex(authorName));
-        return mongoTemplate.find(query, Paper.class);
+        List<Paper> ans = mongoTemplate.find(query, Paper.class);
+        ans.sort((o1, o2) -> o2.getCitationCount() - o1.getCitationCount());
+        ans = ans.subList(0, Math.min(limit, ans.size()));
+        return new LinkedList<>(ans);
     }
 
 
