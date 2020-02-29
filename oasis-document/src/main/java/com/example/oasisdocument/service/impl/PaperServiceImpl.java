@@ -1,9 +1,10 @@
-package com.example.oasisdocument.service;
+package com.example.oasisdocument.service.impl;
 
 import com.alibaba.fastjson.JSONObject;
 import com.example.oasisdocument.docs.Paper;
 import com.example.oasisdocument.exceptions.BadReqException;
 import com.example.oasisdocument.repository.PaperRepository;
+import com.example.oasisdocument.service.PaperService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.mongodb.core.MongoTemplate;

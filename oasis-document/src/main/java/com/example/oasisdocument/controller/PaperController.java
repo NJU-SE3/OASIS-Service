@@ -11,14 +11,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import java.util.Arrays;
 import java.util.List;
 import java.util.UUID;
-import java.util.stream.Collectors;
 
 @RestController
+@RequestMapping("/api/query")
 public class PaperController {
     private static final Logger logger = LoggerFactory.getLogger(PaperController.class);
 
@@ -45,9 +43,6 @@ public class PaperController {
         String qid = UUID.randomUUID().toString().replaceAll("-", "");
         ;
         HttpSession session = request.getSession();
-//        List<String> keys = Arrays.stream(query.split(" "))
-//                .filter((String s) -> !s.trim().isEmpty()).collect(Collectors.toList());
-//        assert keys.size() >= 1;
         List<Paper> list = paperService.queryPaper(query, returnFacets.toLowerCase());
         session.setAttribute(qid, list);
         if (list.isEmpty()) {
