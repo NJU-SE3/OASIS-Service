@@ -32,7 +32,7 @@ test:
 
 push_hub:
 	mvn clean package -Pprod -Dmaven.test.skip=true
-
+# mongo数据导入
 mongo-import:
-	docker cp dockerfiles/mongo-seed/paper.json oasis-mongo:/.
+	docker cp back/paper.json oasis-mongo:/.
 	docker exec -it oasis-mongo mongoimport -u root -p mongo -d se -c papers --drop paper.json
