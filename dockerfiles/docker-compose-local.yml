@@ -18,9 +18,6 @@ services:
     image: caribouf/oasis-mysql
     container_name: oasis-mysql
     restart: always
-    #    build:
-    #      context: .
-    #      dockerfile: Dockerfile-mysql
     environment:
       - MYSQL_ROOT_PASSWORD=mysql
       - MYSQL_DATABASE=se
@@ -32,6 +29,7 @@ services:
     image: bitnami/mongodb:4.0
     container_name: oasis-mongo
     restart: always
+    user: root
     ports:
       - "27017:27017"
     environment:

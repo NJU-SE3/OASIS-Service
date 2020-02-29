@@ -95,7 +95,7 @@ def run(path):
             "authors": row['Authors'],
             "affiliations": row['Author Affiliations']
         }
-        requests.post('http://localhost:8080/paper', data=json.dumps(data),
+        requests.post('http://localhost:8081/api/query/paper', data=json.dumps(data),
                       headers={'Content-Type': 'application/json'})
 
 if __name__ == '__main__':

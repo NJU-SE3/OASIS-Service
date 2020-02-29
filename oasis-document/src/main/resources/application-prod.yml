@@ -55,7 +55,7 @@ spring:
   redis:
     host: ${data-host}
     port: 6379
-    timeout: 600
+    timeout: 6000
     password: redis
     jedis:
       pool:

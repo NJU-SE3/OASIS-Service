@@ -101,6 +101,7 @@ public class PaperServiceImpl implements PaperService {
     public JSONObject papersSummary(List<Paper> papers) {
         //conference , term , author , affiliation
         JSONObject ans = new JSONObject();
+        if (papers == null || papers.isEmpty()) return ans;
         //author
         final Map<String, Integer> authorHash = new HashMap<>();
         papers.forEach((Paper p) -> {

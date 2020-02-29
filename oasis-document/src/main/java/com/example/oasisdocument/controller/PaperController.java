@@ -31,7 +31,14 @@ public class PaperController {
         return "hello world";
     }
 
-    //初次数据查询
+    /**
+     * 初次数据查询
+     *
+     * @param query        : 查询关键字
+     * @param returnFacets : 返回具体类型
+     * @param pageNum      : 页号
+     * @param pageSize     : 页大小
+     */
     @GetMapping("/paper/list")
     public JSONObject queryPaper(
             @RequestParam(name = "query") String query,
@@ -41,7 +48,6 @@ public class PaperController {
             HttpServletRequest request) {
         //set id
         String qid = UUID.randomUUID().toString().replaceAll("-", "");
-        ;
         HttpSession session = request.getSession();
         List<Paper> list = paperService.queryPaper(query, returnFacets.toLowerCase());
         session.setAttribute(qid, list);
@@ -64,6 +70,8 @@ public class PaperController {
      * 进一步筛选查询
      *
      * @param refinements : 新的限制. year , title , conferences , terms , keywords , authors , affiliations
+     * @param pageNum     : 页号
+     * @param pageSize    : 页大小
      */
     @GetMapping("/paper/refine")
     public List<Paper> queryPaperRefine(@RequestParam(name = "qid") String qid,
@@ -93,12 +101,22 @@ public class PaperController {
         }
     }
 
+    /**
+     * 添加新paper接口
+     *
+     * @param paper : paper实体
+     */
     @PostMapping(path = "/paper")
     public void insertPaper(@RequestBody JSONObject paper) {
         Paper entity = paper.toJavaObject(Paper.class);
         paperService.insert(entity);
     }
 
+    /**
+     * 获取指定的查询id下的论文summary
+     *
+     * @param qid : query id
+     */
     @GetMapping(path = "/paper/summary")
     public JSONObject getPaperSummary(@RequestParam(name = "qid") String qid,
                                       HttpServletRequest request) {
