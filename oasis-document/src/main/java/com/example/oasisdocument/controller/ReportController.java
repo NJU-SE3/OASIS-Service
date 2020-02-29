@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 /**
@@ -38,13 +39,13 @@ public class ReportController {
 
     //被引用论文数最多作者TOP10的堆叠柱状图
     @GetMapping("/author/rank/paper_cnt")
-    public List<Paper> getAuthorOfMostPaper() {
-        return null;
+    public Map<String, List<Paper>> getAuthorOfMostPaper(@RequestParam(name = "rank", defaultValue = "10") int rank) {
+        return reportService.getAuthorOfMostPaper(rank);
     }
 
     //被引用数最多的论文TOP K
     @GetMapping("/paper/rank/citation")
-    public List<Paper> getPaperRankViaCitation(@RequestParam(name = "rank") int rank) {
+    public List<Paper> getPaperRankViaCitation(@RequestParam(name = "rank", defaultValue = "10") int rank) {
         return reportService.getPaperRankViaCitation(rank);
     }
 

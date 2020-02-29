@@ -6,6 +6,7 @@ import com.example.oasisdocument.utils.Pair;
 
 import java.util.Collection;
 import java.util.List;
+import java.util.Map;
 
 public interface ReportService {
     List<Pair<String, Integer>> getWordCloudOfYear(int year);
@@ -13,4 +14,8 @@ public interface ReportService {
     List<Paper> getPaperRankViaCitation(int rank);
 
     List<Pair<Integer,Integer>> getPaperTrend();
+
+    Map<String, List<Paper>> getAuthorOfMostPaper(int rank);
+
+    List<Paper> getPapersViaAuthor(String authorName);
 }

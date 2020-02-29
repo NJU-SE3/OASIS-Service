@@ -3,12 +3,14 @@ package com.example.oasisdocument.service.impl;
 import com.example.oasisdocument.docs.Paper;
 import com.example.oasisdocument.repository.PaperRepository;
 import com.example.oasisdocument.service.ReportService;
+import com.example.oasisdocument.utils.PageHelper;
 import com.example.oasisdocument.utils.Pair;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.mongodb.core.MongoTemplate;
+import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Service;
 
@@ -23,6 +25,9 @@ public class ReportServiceImpl implements ReportService {
 
     @Autowired
     private PaperRepository paperRepository;
+
+    @Autowired
+    private PageHelper pageHelper;
 
     @Override
     @Cacheable(cacheNames = "getWordCloudOfYear", unless = "#result==null")
@@ -41,6 +46,7 @@ public class ReportServiceImpl implements ReportService {
                 map.put(s, map.getOrDefault(s, 0) + 1);
             }
         }
+        //去除长尾
 //        map.entrySet().removeIf(entry -> entry.getValue() <= lowerBound);
         List<Pair<String, Integer>> sumUp = new LinkedList<>();
         for (String word : map.keySet()) {
@@ -63,10 +69,51 @@ public class ReportServiceImpl implements ReportService {
     @Cacheable(cacheNames = "getPaperTrend", unless = "#result==null")
     public List<Pair<Integer, Integer>> getPaperTrend() {
         Map<Integer, Integer> hash = new HashMap<>();
-        paperRepository.findAll().forEach((Paper p) -> hash.put(p.getYear(), hash.getOrDefault(p.getYear(), 0) + 1));
+        paperRepository.findAll()
+                .forEach((Paper p) -> hash.put(p.getYear(), hash.getOrDefault(p.getYear(), 0) + 1));
         return hash.keySet().stream()
                 .map((Integer key) -> new Pair<>(key, hash.get(key)))
                 .sorted(Comparator.comparingInt(Pair::getFirst))
                 .collect(Collectors.toList());
     }
+
+    @Override
+    @Cacheable(cacheNames = "getAuthorOfMostPapers", unless = "#result==null")
+    public Map<String, List<Paper>> getAuthorOfMostPaper(int rank) {
+        //find authors
+        Set<String> authorNames = new HashSet<>();
+        paperRepository.findAll()
+                .forEach((Paper p) -> {
+                    String[] names = p.getAuthors().split(";");
+                    for (String name : names) {
+                        name = name.trim();
+                        if (!name.isEmpty())
+                            authorNames.add(name);
+                    }
+                });
+        Map<String, List<Paper>> mapAuthorPapers = new HashMap<>();
+        List<Pair<String, Integer>> pairs = new LinkedList<>();
+
+        for (String name : authorNames) {
+            List<Paper> papers = getPapersViaAuthor(name);
+            mapAuthorPapers.put(name, papers);
+            pairs.add(new Pair<>(name, papers.size()));
+        }
+        pairs.sort((o1, o2) -> o2.getSecond() - o1.getSecond());
+        Map<String, List<Paper>> ans = new HashMap<>();
+        for (int i = 0; i < Math.min(rank, pairs.size()); ++i) {
+            String name = pairs.get(i).getFirst();
+            ans.put(name, mapAuthorPapers.get(name));
+        }
+        return ans;
+    }
+
+    @Override
+    @Cacheable(cacheNames = "getPapersViaAuthor", unless = "#result==null")
+    public List<Paper> getPapersViaAuthor(String authorName) {
+        Query query = new Query(Criteria.where("authors").regex(authorName));
+        return mongoTemplate.find(query, Paper.class);
+    }
+
+
 }
