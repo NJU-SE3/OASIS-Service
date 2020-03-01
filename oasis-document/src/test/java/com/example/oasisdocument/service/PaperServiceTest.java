@@ -48,24 +48,12 @@ public class PaperServiceTest {
         //限定authors查询
         papers = paperService.queryPaper(key, "authors");
         assertNotNull(papers);
-        assertEquals(0, papers.size());
+        assertNotEquals(0, papers.size());
     }
 
     @Test
     public void queryTest4() {
         List<String> fields = Arrays.asList("title", "conferences", "terms",
-                "keywords", "authors", "affiliations");
-        for (String f : fields) {
-            List<Paper> papers = paperService.queryPaper("java",
-                    f);
-            assertNotNull(papers);
-        }
-    }
-
-    //错误参数处理
-    @Test(expected = BadReqException.class)
-    public void queryTest5() {
-        List<String> fields = Arrays.asList("title", "conference", "terms",
                 "keywords", "authors", "affiliations");
         for (String f : fields) {
             List<Paper> papers = paperService.queryPaper("java",

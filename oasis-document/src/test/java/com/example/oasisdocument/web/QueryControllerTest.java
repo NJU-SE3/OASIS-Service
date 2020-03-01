@@ -59,7 +59,7 @@ public class QueryControllerTest {
 
 
     private String sampleQuery() throws Exception {
-        final String uri = "/api/query/paper/list";
+        final String uri = "/query/paper/list";
         final int defaultPageSize = 10;
         MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
         params.put("query", Collections.singletonList("java"));
@@ -85,7 +85,7 @@ public class QueryControllerTest {
 
     private JSONObject summary() throws Exception {
         String qid = sampleQuery();
-        String summaryUri = "/api/query/paper/summary";
+        String summaryUri = "/query/paper/summary";
         MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
         params.put("qid", Collections.singletonList(qid));
         params.put("refinements", Collections.singletonList(""));

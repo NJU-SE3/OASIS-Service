@@ -28,7 +28,7 @@ clean:
 	bash scripts/rmi.sh
 
 test:
-	mvn clean test -Dmaven.package.skip=true
+	mvn clean test -Dmaven.package.skip=true -Ptest
 
 push_hub:
 	mvn clean package -Pprod -Dmaven.test.skip=true
