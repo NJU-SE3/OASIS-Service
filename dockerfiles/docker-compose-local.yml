@@ -4,7 +4,7 @@ services:
   redis: # Redis缓存
     image: redis
     container_name: oasis-redis
-    command: redis-server --requirepass redis
+    command: redis-server
     ports:
       - "6379:6379"
   rabbitmq:

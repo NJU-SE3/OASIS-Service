@@ -25,7 +25,7 @@ public class PaperServiceImpl implements PaperService {
     private MongoTemplate mongoTemplate;
 
     @Override
-    @Cacheable(cacheNames = "paper", unless = "#result==null")
+//    @Cacheable(cacheNames = "paper", key = "#key", unless = "#result==null")
     public List<Paper> queryPaper(String key, String returnFacets) throws BadReqException {
         Criteria criteria = fetchCriteriaViaKey(key, returnFacets);
         return mongoTemplate.find(new Query(criteria), Paper.class);

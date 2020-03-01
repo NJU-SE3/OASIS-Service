@@ -30,7 +30,7 @@ public class ReportServiceImpl implements ReportService {
     private PageHelper pageHelper;
 
     @Override
-    @Cacheable(cacheNames = "report", key = "#year", unless = "#result==null")
+//    @Cacheable(cacheNames = "report", key = "#year", unless = "#result==null")
     public List<Pair<String, Integer>> getWordCloudOfYear(int year) {
         //词云的下阈值
         final int lowerBound = 5;
@@ -58,7 +58,7 @@ public class ReportServiceImpl implements ReportService {
     }
 
     @Override
-    @Cacheable(cacheNames = "report", key = "#rank", unless = "#result==null")
+//    @Cacheable(cacheNames = "report", key = "#rank", unless = "#result==null")
     public List<Paper> getPaperRankViaCitation(int rank) {
         Query query = new Query();
         query.with(new Sort(Sort.Direction.DESC, "citationCount"));
@@ -66,7 +66,7 @@ public class ReportServiceImpl implements ReportService {
     }
 
     @Override
-    @Cacheable(cacheNames = "report", key = "papertrend", unless = "#result==null")
+//    @Cacheable(cacheNames = "report", key = "papertrend", unless = "#result==null")
     public List<Pair<Integer, Integer>> getPaperTrend() {
         Map<Integer, Integer> hash = new HashMap<>();
         paperRepository.findAll()
@@ -78,7 +78,7 @@ public class ReportServiceImpl implements ReportService {
     }
 
     @Override
-    @Cacheable(cacheNames = "report", unless = "#result==null")
+//    @Cacheable(cacheNames = "report", unless = "#result==null")
     public Map<String, List<Paper>> getAuthorOfMostPaper(int rank) {
         //find authors
         Set<String> authorNames = new HashSet<>();
@@ -109,7 +109,7 @@ public class ReportServiceImpl implements ReportService {
     }
 
     @Override
-    @Cacheable(cacheNames = "report", key = "#authorName", unless = "#result==null")
+//    @Cacheable(cacheNames = "report", key = "#authorName", unless = "#result==null")
     public List<Paper> getPapersViaAuthor(String authorName) {
         final int limit = 5;
         Query query = new Query(Criteria.where("authors").regex(authorName));
