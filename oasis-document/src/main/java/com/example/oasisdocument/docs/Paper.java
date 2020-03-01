@@ -52,16 +52,6 @@ public class Paper extends BaseEntity {
     public Paper() {
     }
 
-    public static Criteria getQueryCriteria(String key) {
-        List<String> fields = Arrays.asList("title", "conference", "terms",
-                "keywords", "authors", "affiliation");
-        List<Criteria> criterias = fields.stream()
-                .map((String name) -> Criteria.where(name).regex(key))
-                .collect(Collectors.toList());
-        Criteria ans = new Criteria();
-        ans.orOperator(criterias.get(0), criterias.get(1), criterias.get(2), criterias.get(3), criterias.get(4), criterias.get(5));
-        return ans;
-    }
 
     public String getTitle() {
         return title;

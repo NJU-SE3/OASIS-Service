@@ -32,6 +32,12 @@ test:
 
 push_hub:
 	mvn clean package -Pprod -Dmaven.test.skip=true
+# mongo数据导入
+mongo-import:
+	docker cp back/paper.json oasis-mongo:/.
+	docker exec -it oasis-mongo mongoimport -u root -p mongo -d se -c papers --drop paper.json
 
-source_swarm:
-	scp -r swarm/* root@wxj:/root/swarm/.
+deploy-app:
+	docker-compose -f docker-compose-app.yml pull
+	docker-compose -f docker-compose-app.yml up -d
+

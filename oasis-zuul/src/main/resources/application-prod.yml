@@ -21,9 +21,6 @@ zuul:
   retryable: true
   routes:
     document:
-      path: /api/query/**
-      url: http://${document}/
-    paper:
       path: /api/**
-      url: http://${paper}/
+      url: http://${document}/
   include-debug-header: true

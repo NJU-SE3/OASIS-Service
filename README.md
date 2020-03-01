@@ -72,6 +72,7 @@
 - `windows / macOS` 系统下安装 `docker desktop` ；`linux` 下可以直接安装 `docker`
   - 配置好`docker` 的[阿里云](https://help.aliyun.com/document_detail/60750.html)仓库镜像
 - 根目录下，执行 `make local-set` 。这一步主要用于启动 `mysql` , `redis` , `rabbit`，需要保证主机的 3306  , 6379 , 15672 , 5672 均未被占用
+- 执行 `make mongo-import` 进行数据初始化
 
 ##### 2.1.2 maven
 
@@ -83,9 +84,7 @@
 
 - `mvn install -Dmaven.test.skip=true`
 
--  `mvn spring-boot:run -f oasis-paper`
-
-均运行完成后，浏览器内打开 `http://localhost:8080`，若出现 `Hello world`则表示成功
+-  `mvn spring-boot:run -f oasis-document`
 
 ### 3. 迭代一目标
 
@@ -95,18 +94,17 @@
 
 `TODO list`
 
-- [ ] 爬取脚本编写
-  - [ ] 建模与持久化
-  - [ ] 会议论文爬取：确定需要爬取的论文sources
-- [ ] 业务逻辑编写
+- [x] 爬取脚本编写
+  - [x] 建模与持久化
+  - [x] 会议论文爬取：确定需要爬取的论文sources
+- [x] 业务逻辑编写
 - [x] Druid连接池
 - [x] 微服务搭建
   - [x] 统一配置
   - [x] Swarm 主从分布式架构
 - [x] 多环境配置
-- [ ] 中间件部分实现
+- [x] 中间件部分实现
   - [x] Redis支持
   - [x] RabbitMQ消息队列
-  - [ ] 接口限流
-- [ ] 压力测试
+- [x] 测试
 
