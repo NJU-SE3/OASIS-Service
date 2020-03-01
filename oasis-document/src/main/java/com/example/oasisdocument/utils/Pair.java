@@ -11,6 +11,10 @@ public class Pair<K, V> implements Serializable {
         this.second = second;
     }
 
+    public Pair() {
+
+    }
+
     public K getFirst() {
         return first;
     }

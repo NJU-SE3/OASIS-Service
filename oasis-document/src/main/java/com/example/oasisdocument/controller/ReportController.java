@@ -20,7 +20,7 @@ import java.util.stream.Collectors;
  * 具体报表信息统计
  */
 @RestController
-@RequestMapping("/api/report")
+@RequestMapping("/report")
 public class ReportController {
     @Autowired
     private ReportService reportService;
@@ -31,8 +31,8 @@ public class ReportController {
         return reportService.getPaperTrend().stream()
                 .map((Pair<Integer, Integer> pair) -> {
                     JSONObject object = new JSONObject();
-                    object.put("year", pair.getFirst());
-                    object.put("count", pair.getSecond());
+                    object.put("year", String.valueOf(pair.getFirst()));
+                    object.put("count", String.valueOf(pair.getSecond()));
                     return object;
                 }).collect(Collectors.toCollection(JSONArray::new));
     }
@@ -57,7 +57,8 @@ public class ReportController {
     @GetMapping("/paper/rank/citation")
     public List<JSONObject> getPaperRankViaCitation(@RequestParam(name = "rank", defaultValue = "10") int rank) {
         return reportService.getPaperRankViaCitation(rank).stream()
-                .map(this::simplifyPaper).collect(Collectors.toList());
+                .map(this::simplifyPaper)
+                .collect(Collectors.toList());
     }
 
 
@@ -79,9 +80,9 @@ public class ReportController {
         //标题、作者、引用数、PDF link , year
         ans.put("title", paper.getTitle());
         ans.put("authors", paper.getAuthors());
-        ans.put("citationCount", paper.getCitationCount());
+        ans.put("citationCount", String.valueOf(paper.getCitationCount()));
         ans.put("pdfLink", paper.getPdfLink());
-        ans.put("year", paper.getYear());
+        ans.put("year", String.valueOf(paper.getYear()));
         return ans;
     }
 }

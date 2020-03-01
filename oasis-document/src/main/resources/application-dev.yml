@@ -54,13 +54,7 @@ spring:
   redis:
     host: localhost
     port: 6379
-    timeout: 6000
-    password:
-    jedis:
-      pool:
-        max-active: 1000
-        max-idle: 500
-        max-wait: 500
+
 
   rabbitmq:
     host: localhost

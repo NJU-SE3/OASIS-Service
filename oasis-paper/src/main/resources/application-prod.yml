@@ -1,10 +1,13 @@
 # mysql 连接
-data-ip: 101.37.116.201
+mysql-ip: oasis-mysql
+redis-ip: oasis-redis
+rabbit-ip: oasis-rabbit
+
 spring:
   profiles:
     active: prod
   datasource:
-    url: jdbc:mysql://${data-ip}:3306/se?useUnicode=true&characterEncode=utf-8&allowMultiQueries=true&useSSL=false
+    url: jdbc:mysql://${mysql-ip}:3306/se?useUnicode=true&characterEncode=utf-8&allowMultiQueries=true&useSSL=false
     username: root
     password: mysql
     driver-class-name: com.mysql.cj.jdbc.Driver
@@ -52,10 +55,9 @@ spring:
     hibernate:
       ddl-auto: update
   redis:
-    host: ${data-ip}
+    host: ${redis-ip}
     port: 6379
     timeout: 600
-    password: redis
     jedis:
       pool:
         max-active: 1000
@@ -63,7 +65,7 @@ spring:
         max-wait: 500
 
   rabbitmq:
-    host: ${data-ip}
+    host: ${rabbit-ip}
     port: 5672
     username: guest
     password: guest

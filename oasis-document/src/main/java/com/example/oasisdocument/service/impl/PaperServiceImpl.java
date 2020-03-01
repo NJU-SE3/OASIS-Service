@@ -11,6 +11,7 @@ import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
+import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
@@ -25,7 +26,7 @@ public class PaperServiceImpl implements PaperService {
     private MongoTemplate mongoTemplate;
 
     @Override
-//    @Cacheable(cacheNames = "paper", key = "#key", unless = "#result==null")
+    @Cacheable(cacheNames = "paper", key = "#key", unless = "#result==null")
     public List<Paper> queryPaper(String key, String returnFacets) throws BadReqException {
         Criteria criteria = fetchCriteriaViaKey(key, returnFacets);
         return mongoTemplate.find(new Query(criteria), Paper.class);

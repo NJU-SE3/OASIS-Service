@@ -1,8 +1,10 @@
-data-host: 101.37.116.201
+mongo-ip: oasis-mongo
+redis-ip: oasis-redis
+rabbit-ip: oasis-rabbit
 spring:
   data:
     mongodb:
-      uri: mongodb://root:mongo@${data-host}:27017/se
+      uri: mongodb://root:mongo@${mongo-ip}:27017/se
   profiles:
     active: prod
   h2:
@@ -53,18 +55,15 @@ spring:
     hibernate:
       ddl-auto: update
   redis:
-    host: ${data-host}
-    port: 6379
-    timeout: 5000
-    password:
+    host: ${redis-ip}
+#    port: 6379
     jedis:
       pool:
         max-active: 1000
         max-idle: 500
         max-wait: 500
-
   rabbitmq:
-    host: ${data-host}
+    host: ${rabbit-ip}
     port: 5672
     username: guest
     password: guest
