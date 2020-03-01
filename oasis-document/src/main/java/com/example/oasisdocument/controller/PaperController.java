@@ -16,7 +16,7 @@ import java.util.List;
 import java.util.UUID;
 
 @RestController
-@RequestMapping("/api/query")
+@RequestMapping("/query")
 public class PaperController {
     private static final Logger logger = LoggerFactory.getLogger(PaperController.class);
 
