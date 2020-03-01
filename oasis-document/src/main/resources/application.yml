@@ -21,3 +21,6 @@ eureka:
     serviceUrl:
       defaultZone: http://${eureka.instance.hostname}:8761/eureka/
 
+# seconds
+cache.default.expire-time: 120
+cache.user.expire-time: 180

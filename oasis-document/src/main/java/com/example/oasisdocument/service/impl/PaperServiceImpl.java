@@ -25,7 +25,7 @@ public class PaperServiceImpl implements PaperService {
     private MongoTemplate mongoTemplate;
 
     @Override
-    @Cacheable(cacheNames = "paperQuery", unless = "#result==null")
+    @Cacheable(cacheNames = "paper", unless = "#result==null")
     public List<Paper> queryPaper(String key, String returnFacets) throws BadReqException {
         Criteria criteria = fetchCriteriaViaKey(key, returnFacets);
         return mongoTemplate.find(new Query(criteria), Paper.class);
@@ -37,7 +37,6 @@ public class PaperServiceImpl implements PaperService {
     }
 
     @Override
-    @Cacheable(cacheNames = "queryPaperRefine", unless = "#result==null")
     public List<Paper> queryPaperRefine(List<Paper> papers, List<String> refinements) {
         //conference , term , author , affiliation , year
         Map<String, List<String>> hash = refineAnalysis(refinements);
