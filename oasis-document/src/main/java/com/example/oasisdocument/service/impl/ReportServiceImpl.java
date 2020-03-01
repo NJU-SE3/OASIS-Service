@@ -79,7 +79,7 @@ public class ReportServiceImpl implements ReportService {
 
     @Override
     @Cacheable(cacheNames = "getAuthorOfMostPaper", key = "#rank", unless = "#result==null")
-    public Map<String, List<Paper>> getAuthorOfMostPaper(int rank) {
+    public List<Pair<String, List<Paper>>> getAuthorOfMostPaper(int rank) {
         //find authors
         Set<String> authorNames = new HashSet<>();
         paperRepository.findAll()
@@ -100,12 +100,13 @@ public class ReportServiceImpl implements ReportService {
             pairs.add(new Pair<>(name, papers.size()));
         }
         pairs.sort((o1, o2) -> o2.getSecond() - o1.getSecond());
-        Map<String, List<Paper>> ans = new HashMap<>();
+        List<Pair<String, List<Paper>>> res =
+                new LinkedList<>();
         for (int i = 0; i < Math.min(rank, pairs.size()); ++i) {
             String name = pairs.get(i).getFirst();
-            ans.put(name, mapAuthorPapers.get(name));
+            res.add(new Pair<>(name, mapAuthorPapers.get(name)));
         }
-        return ans;
+        return res;
     }
 
     @Override

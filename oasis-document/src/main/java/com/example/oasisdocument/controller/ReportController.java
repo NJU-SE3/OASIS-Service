@@ -13,7 +13,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
-import java.util.Map;
 import java.util.stream.Collectors;
 
 /**
@@ -40,17 +39,18 @@ public class ReportController {
     //被引用论文数最多作者TOP10的堆叠柱状图
     //TODO: 修改为持久化, 并且删减paper内容
     @GetMapping("/author/rank/paper_cnt")
-    public JSONObject getAuthorOfMostPaper(@RequestParam(name = "rank", defaultValue = "10") int rank) {
-        Map<String, List<Paper>> hash = reportService.getAuthorOfMostPaper(rank);
-        JSONObject ans = new JSONObject();
-        for (String key : hash.keySet()) {
-            List<Paper> papers = hash.get(key);
-            JSONArray array = papers.stream()
-                    .map(this::simplifyPaper)
-                    .collect(Collectors.toCollection(JSONArray::new));
-            ans.put(key, array);
-        }
-        return ans;
+    public JSONArray getAuthorOfMostPaper(@RequestParam(name = "rank", defaultValue = "10") int rank) {
+        List<Pair<String, List<Paper>>> list = reportService.getAuthorOfMostPaper(rank);
+        return list.stream()
+                .map((Pair<String, List<Paper>> pair) -> {
+                    List<Paper> papers = pair.getSecond();
+                    JSONObject object = new JSONObject();
+                    object.put("author",pair.getFirst());
+                    object.put("papers",papers.stream()
+                            .map(this::simplifyPaper)
+                            .collect(Collectors.toCollection(JSONArray::new)));
+                    return object;
+                }).collect(Collectors.toCollection(JSONArray::new));
     }
 
     //被引用数最多的论文TOP K
