@@ -42,7 +42,6 @@ public class PaperServiceImpl implements PaperService {
         //conference , term , author , affiliation , year
         Map<String, List<String>> hash = refineAnalysis(refinements);
         if (papers == null || papers.isEmpty()) return new LinkedList<>();
-
         if (hash.containsKey("year")) {
             papers = papers.stream()
                     .filter((Paper paper) -> {

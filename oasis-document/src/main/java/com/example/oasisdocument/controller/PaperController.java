@@ -42,9 +42,10 @@ public class PaperController {
      * @param returnFacets : 返回具体类型
      * @param pageNum      : 页号
      * @param pageSize     : 页大小
+     * @return
      */
     @GetMapping("/paper/list")
-    public List<Paper> queryPaper(
+    public JSONObject queryPaper(
             @RequestParam(name = "query") String query,
             @RequestParam(name = "returnFacets") String returnFacets,
             @RequestParam(name = "pageNum", defaultValue = "0") int pageNum,
@@ -55,14 +56,20 @@ public class PaperController {
         String qid = UUID.randomUUID().toString().replaceAll("-", "");
         List<Paper> list = paperService.queryPaper(query, returnFacets.toLowerCase());
         if (list.isEmpty()) {
-            return list;
+            JSONObject ans = new JSONObject();
+            ans.put("papers", list);
+            ans.put("itemCnt", list.size());
+            return ans;
         }
         //分页
         List<Paper> pagedList = pageHelper.of(list, pageSize, pageNum);
         if (null == pagedList) throw new BadReqException();
         request.getSession().setAttribute(qid, list);
         cookieUtil.set(response, "qid", qid);
-        return pagedList;
+        JSONObject ans = new JSONObject();
+        ans.put("papers", pagedList);
+        ans.put("itemCnt", list.size());
+        return ans;
     }
 
     /**
@@ -73,7 +80,7 @@ public class PaperController {
      * @param pageSize    : 页大小
      */
     @GetMapping("/paper/refine")
-    public List<Paper> queryPaperRefine(
+    public JSONObject queryPaperRefine(
             @CookieValue(name = "qid") String qid,
             @RequestParam(name = "refinements") List<String> refinements,
             @RequestParam(name = "pageNum", defaultValue = "0") int pageNum,
@@ -86,12 +93,18 @@ public class PaperController {
             //添加新限制
             list = paperService.queryPaperRefine(list, refinements);
             if (list.isEmpty()) {
-                return list;
+                JSONObject ans = new JSONObject();
+                ans.put("papers", list);
+                ans.put("itemCnt", list.size());
+                return ans;
             }
             //需要用到分页信息
             List<Paper> ans = pageHelper.of(list, pageSize, pageNum);
             if (null == ans) throw new BadReqException();
-            return ans;
+            JSONObject t = new JSONObject();
+            t.put("papers", ans);
+            t.put("itemCnt", list.size());
+            return t;
         } catch (BadReqException e) {
             throw e;
         } catch (RuntimeException e) {
