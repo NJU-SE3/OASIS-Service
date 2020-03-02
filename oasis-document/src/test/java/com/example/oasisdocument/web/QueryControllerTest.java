@@ -18,6 +18,7 @@ import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.context.WebApplicationContext;
 
+import javax.servlet.http.Cookie;
 import java.util.Collections;
 import java.util.List;
 
@@ -33,6 +34,9 @@ public class QueryControllerTest {
     private MockMvc mockMvc;
     @Autowired
     private WebApplicationContext wac;
+
+
+    private Cookie cookies[];
 
     @Before
     public void prepare() {
@@ -58,7 +62,7 @@ public class QueryControllerTest {
     }
 
 
-    private String sampleQuery() throws Exception {
+    private void sampleQuery() throws Exception {
         final String uri = "/query/paper/list";
         final int defaultPageSize = 10;
         MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
@@ -73,23 +77,22 @@ public class QueryControllerTest {
         String body = result.getResponse().getContentAsString();
         JSONObject object = JSONObject.parseObject(body);
         //判定返回包合法结构
-        assertThat(object.containsKey("qid")).isTrue();
         assertThat(object.containsKey("papers")).isTrue();
         List<Paper> paperList = (List<Paper>) object.get("papers");
         //判定分页结果
         assertThat(paperList).isNotNull();
         assertThat(paperList.size()).isBetween(0, defaultPageSize);
-        return object.getString("qid");
+        cookies = result.getResponse().getCookies();
     }
 
 
     private JSONObject summary() throws Exception {
-        String qid = sampleQuery();
+        sampleQuery();
         String summaryUri = "/query/paper/summary";
         MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
-        params.put("qid", Collections.singletonList(qid));
         params.put("refinements", Collections.singletonList(""));
         MvcResult result = mockMvc.perform(get(summaryUri)
+                .cookie(cookies)
                 .params(params))
                 .andExpect(status().isOk())
                 .andReturn();
