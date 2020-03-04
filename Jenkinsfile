@@ -1,14 +1,30 @@
 pipeline {
-    agent none
+    agent any
     stages {
-        stage('Back-end') {
+        stage('Checkout') {
             steps {
-                sh 'mvn --version'
+                echo 'Checkout'
+                checkout([$class: 'GitSCM', branches: [[name: '*/master']], doGenerateSubmoduleConfigurations: false, extensions: [], submoduleCfg: [], userRemoteConfigs: [[url: 'https://github.com/NJU-SE3/OASIS-Service']]])
             }
         }
-        stage('Front-end') {
+        stage('Build') {
             steps {
-                sh 'node --version'
+                echo 'Building'
+                sh 'mvn clean'
+            }
+        }
+        stage('Test') {
+            steps {
+                echo 'Testing'
+                sh 'ls'
+            }
+        }
+        stage('Deploy') {
+            steps {
+                echo 'Deploying'
+                sh '''
+                ssh root@39.96.75.119 'cd service && make deploy-app'
+                '''
             }
         }
     }
