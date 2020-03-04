@@ -11,7 +11,6 @@ import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
-import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
@@ -25,11 +24,46 @@ public class PaperServiceImpl implements PaperService {
     @Autowired
     private MongoTemplate mongoTemplate;
 
+    /**
+     * 内部类, 专门用于实现
+     */
+    private static class PaperRanker implements Comparator<Paper> {
+        private String key;
+        // title , authors , affiliations ,conferences ,  keywords , terms ,
+        private static final int[] rankRules = {100, 40, 30, 5, 1, 1};
+
+        public PaperRanker(String key) {
+            this.key = key;
+        }
+
+        @Override
+        public int compare(Paper p1, Paper p2) {
+            int r1 = getRank(p1), r2 = getRank(p2);
+            return r2 - r1;
+        }
+
+        private int getRank(Paper paper) {
+            int rank = 0;
+            if (paper.getTitle().matches(key)) {
+                rank += rankRules[0];
+            }
+            if (paper.getAuthors().matches(key)) rank += rankRules[1];
+            if (paper.getAffiliations().matches(key)) rank += rankRules[2];
+            if (paper.getConference().matches(key)) rank += rankRules[3];
+            if (paper.getKeywords().matches(key)) rank += rankRules[4];
+            if (paper.getTerms().matches(key)) rank += rankRules[5];
+            return rank;
+        }
+    }
+
     @Override
-    @Cacheable(cacheNames = "paper", key = "#key", unless = "#result==null")
-    public List<Paper> queryPaper(String key, String returnFacets) throws BadReqException {
+    @Cacheable(cacheNames = "paper", unless = "#result==null")
+    public List<Paper> queryPaper(final String key, final String returnFacets) throws BadReqException {
         Criteria criteria = fetchCriteriaViaKey(key, returnFacets);
-        return mongoTemplate.find(new Query(criteria), Paper.class);
+        List<Paper> papers = mongoTemplate.find(new Query(criteria), Paper.class);
+        if (returnFacets.equals("all"))
+            papers.sort(new PaperRanker(key));
+        return papers;
     }
 
     @Override

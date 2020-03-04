@@ -48,7 +48,7 @@ public class PaperServiceTest {
         //限定authors查询
         papers = paperService.queryPaper(key, "authors");
         assertNotNull(papers);
-        assertNotEquals(0, papers.size());
+        assertEquals(0, papers.size());
     }
 
     @Test
