@@ -16,7 +16,13 @@ pipeline {
         stage('Test') {
             steps {
                 echo 'Testing'
-                sh 'mvn test'
+                echo "starting unitTest......"
+                sh 'mvn org.jacoco:jacoco-maven-plugin:prepare-agent -f pom.xml clean test -Dautoconfig.skip=true -Dmaven.test.skip=false -Dmaven.test.failure.ignore=true'
+            }
+        }
+        stage('JacocoPublisher') {
+            steps {
+                 jacoco()
             }
         }
         stage('Deploy') {
