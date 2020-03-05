@@ -7,3 +7,5 @@ spring:
     name: zuul
 spring.main.allow-bean-definition-overriding: true
 
+zuul:
+  sensitive-headers: "*"

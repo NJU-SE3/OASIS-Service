@@ -3,12 +3,7 @@ package com.example.oasisdocument.docs;
 import com.alibaba.fastjson.annotation.JSONField;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
-import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.redis.core.index.Indexed;
-
-import java.util.Arrays;
-import java.util.List;
-import java.util.stream.Collectors;
 
 @Document(collection = "papers")
 public class Paper extends BaseEntity {

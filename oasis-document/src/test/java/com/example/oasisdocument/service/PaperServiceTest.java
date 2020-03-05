@@ -17,7 +17,7 @@ import static org.junit.Assert.*;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
-@ActiveProfiles("dev")
+@ActiveProfiles("test")
 public class PaperServiceTest {
     @Autowired
     private PaperService paperService;
@@ -54,18 +54,6 @@ public class PaperServiceTest {
     @Test
     public void queryTest4() {
         List<String> fields = Arrays.asList("title", "conferences", "terms",
-                "keywords", "authors", "affiliations");
-        for (String f : fields) {
-            List<Paper> papers = paperService.queryPaper("java",
-                    f);
-            assertNotNull(papers);
-        }
-    }
-
-    //错误参数处理
-    @Test(expected = BadReqException.class)
-    public void queryTest5() {
-        List<String> fields = Arrays.asList("title", "conference", "terms",
                 "keywords", "authors", "affiliations");
         for (String f : fields) {
             List<Paper> papers = paperService.queryPaper("java",

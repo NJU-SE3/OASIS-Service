@@ -22,9 +22,9 @@ services:
       - oasis
       - proxy
     environment:
-      - VIRTUAL_HOST=citicup.top
+      - VIRTUAL_HOST=api.oasi.top
       - VIRTUAL_PORT=8080
-      - LETSENCRYPT_HOST=citicup.top
+      - LETSENCRYPT_HOST=api.oasi.top
       - LETSENCRYPT_EMAIL=1071956678@qq.com
 networks:
   proxy:

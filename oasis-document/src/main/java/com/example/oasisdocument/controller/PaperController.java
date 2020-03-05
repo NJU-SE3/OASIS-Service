@@ -4,6 +4,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.example.oasisdocument.docs.Paper;
 import com.example.oasisdocument.exceptions.BadReqException;
 import com.example.oasisdocument.service.PaperService;
+import com.example.oasisdocument.utils.CookieUtil;
 import com.example.oasisdocument.utils.PageHelper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -11,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.util.List;
 import java.util.UUID;
@@ -19,6 +21,8 @@ import java.util.UUID;
 @RequestMapping("/query")
 public class PaperController {
     private static final Logger logger = LoggerFactory.getLogger(PaperController.class);
+    @Autowired
+    private CookieUtil cookieUtil;
 
     @Autowired
     private PaperService paperService;
@@ -38,6 +42,7 @@ public class PaperController {
      * @param returnFacets : 返回具体类型
      * @param pageNum      : 页号
      * @param pageSize     : 页大小
+     * @return
      */
     @GetMapping("/paper/list")
     public JSONObject queryPaper(
@@ -45,24 +50,25 @@ public class PaperController {
             @RequestParam(name = "returnFacets") String returnFacets,
             @RequestParam(name = "pageNum", defaultValue = "0") int pageNum,
             @RequestParam(name = "pageSize", defaultValue = "10") int pageSize,
-            HttpServletRequest request) {
+            HttpServletRequest request,
+            HttpServletResponse response) {
         //set id
         String qid = UUID.randomUUID().toString().replaceAll("-", "");
-        HttpSession session = request.getSession();
         List<Paper> list = paperService.queryPaper(query, returnFacets.toLowerCase());
-        session.setAttribute(qid, list);
         if (list.isEmpty()) {
-            JSONObject object = new JSONObject();
-            object.put("papers", list);
-            object.put("qid", qid);
-            return object;
+            JSONObject ans = new JSONObject();
+            ans.put("papers", list);
+            ans.put("itemCnt", list.size());
+            return ans;
         }
         //分页
         List<Paper> pagedList = pageHelper.of(list, pageSize, pageNum);
         if (null == pagedList) throw new BadReqException();
+        request.getSession().setAttribute(qid, list);
+        cookieUtil.set(response, "qid", qid);
         JSONObject ans = new JSONObject();
         ans.put("papers", pagedList);
-        ans.put("qid", qid);
+        ans.put("itemCnt", list.size());
         return ans;
     }
 
@@ -74,11 +80,12 @@ public class PaperController {
      * @param pageSize    : 页大小
      */
     @GetMapping("/paper/refine")
-    public List<Paper> queryPaperRefine(@RequestParam(name = "qid") String qid,
-                                        @RequestParam(name = "refinements") List<String> refinements,
-                                        @RequestParam(name = "pageNum", defaultValue = "0") int pageNum,
-                                        @RequestParam(name = "pageSize", defaultValue = "10") int pageSize,
-                                        HttpServletRequest request) throws Exception {
+    public JSONObject queryPaperRefine(
+            @CookieValue(name = "qid") String qid,
+            @RequestParam(name = "refinements") List<String> refinements,
+            @RequestParam(name = "pageNum", defaultValue = "0") int pageNum,
+            @RequestParam(name = "pageSize", defaultValue = "10") int pageSize,
+            HttpServletRequest request) throws Exception {
         HttpSession session = request.getSession();
         try {
             //查询全集
@@ -86,12 +93,18 @@ public class PaperController {
             //添加新限制
             list = paperService.queryPaperRefine(list, refinements);
             if (list.isEmpty()) {
-                return list;
+                JSONObject ans = new JSONObject();
+                ans.put("papers", list);
+                ans.put("itemCnt", list.size());
+                return ans;
             }
             //需要用到分页信息
             List<Paper> ans = pageHelper.of(list, pageSize, pageNum);
             if (null == ans) throw new BadReqException();
-            return ans;
+            JSONObject t = new JSONObject();
+            t.put("papers", ans);
+            t.put("itemCnt", list.size());
+            return t;
         } catch (BadReqException e) {
             throw e;
         } catch (RuntimeException e) {
@@ -118,7 +131,7 @@ public class PaperController {
      * @param qid : query id
      */
     @GetMapping(path = "/paper/summary")
-    public JSONObject getPaperSummary(@RequestParam(name = "qid") String qid,
+    public JSONObject getPaperSummary(@CookieValue(name = "qid") String qid,
                                       HttpServletRequest request) {
         //fetch list
         List<Paper> list = (List<Paper>) request.getSession().getAttribute(qid);

@@ -1,13 +1,11 @@
-server:
-  port: 8080
-
-# mysql 连接
+test-ip: 106.14.140.93
 spring:
+  data:
+    mongodb:
+      uri: mongodb://root:mongo@${test-ip}:27017/se
+  profiles:
+    active: test
   datasource:
-    url: jdbc:mysql://localhost:3306/se?useUnicode=true&characterEncode=utf-8&allowMultiQueries=true&useSSL=false
-    username: root
-    password: mysql
-    #    driver-class-name: com.mysql.cj.jdbc.Driver
     # druid
     type: com.alibaba.druid.pool.DruidDataSource
     druid:
@@ -38,28 +36,26 @@ spring:
         login-password: 123456
         reset-enable: false
         url-pattern: /druid/*
-          # 添加IP白名单
-          #allow:
-          # 添加IP黑名单，当白名单和黑名单重复时，黑名单优先级更高
+        # 添加IP白名单
+        #allow:
+        # 添加IP黑名单，当白名单和黑名单重复时，黑名单优先级更高
         #deny:
       web-stat-filter:
         # 添加过滤规则
         url-pattern: /*
         # 忽略过滤格式
-  # Redis
-  redis:
-    host: localhost
-    port: 6379
-    timeout: 600
-    password: redis
-    jedis:
-      pool:
-        max-active: 1000
-        max-idle: 500
-        max-wait: 500
+    # Redis
+    jpa:
+      show-sql: true
+      hibernate:
+        ddl-auto: update
+    redis:
+      host: ${test-ip}
+      port: 6379
 
-  rabbitmq:
-    host: localhost
-    port: 5672
-    username: guest
-    password: guest
+
+    rabbitmq:
+      host: ${test-ip}
+      port: 5672
+      username: guest
+      password: guest
