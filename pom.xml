@@ -7,8 +7,8 @@
         <module>oasis-eureka</module>
         <module>oasis-config-server</module>
         <module>oasis-zuul</module>
-        <module>oasis-paper</module>
         <module>oasis-document</module>
+        <module>oasis-paper</module>
     </modules>
     <parent>
         <groupId>org.springframework.boot</groupId>
