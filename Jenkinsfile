@@ -4,7 +4,7 @@ pipeline {
         stage('Checkout') {
             steps {
                 echo 'Checkout'
-                checkout([$class: 'GitSCM', branches: [[name: '*/master']], doGenerateSubmoduleConfigurations: false, extensions: [], submoduleCfg: [], userRemoteConfigs: [[url: 'https://github.com/NJU-SE3/OASIS-Service']]])
+                git credentialsId: 'jenkinstoken', url: 'http://212.129.149.40/171250027_expelliarmus/backend-cold4'
             }
         }
         stage('Build') {
