@@ -57,7 +57,7 @@ public class PaperServiceImpl implements PaperService {
     }
 
     @Override
-    @Cacheable(cacheNames = "paper", unless = "#result==null")
+//    @Cacheable(cacheNames = "paper", unless = "#result==null")
     public List<Paper> queryPaper(final String key, final String returnFacets) throws BadReqException {
         Criteria criteria = fetchCriteriaViaKey(key, returnFacets);
         List<Paper> papers = mongoTemplate.find(new Query(criteria), Paper.class);
@@ -111,7 +111,7 @@ public class PaperServiceImpl implements PaperService {
         }
         if (hash.containsKey("conference")) {
             papers = papers.stream().filter((Paper paper) -> {
-                String line = paper.getTerms();
+                String line = paper.getConference();
                 for (String v : hash.get("conference")) {
                     if (line.contains(v)) return true;
                 }
@@ -121,7 +121,7 @@ public class PaperServiceImpl implements PaperService {
         }
         if (hash.containsKey("affiliation")) {
             papers = papers.stream().filter((Paper paper) -> {
-                String line = paper.getTerms();
+                String line = paper.getAffiliations();
                 for (String v : hash.get("affiliation")) {
                     if (line.contains(v)) return true;
                 }
