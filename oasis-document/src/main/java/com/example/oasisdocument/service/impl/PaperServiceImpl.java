@@ -140,7 +140,8 @@ public class PaperServiceImpl implements PaperService {
         //author
         final Map<String, Integer> authorHash = new HashMap<>();
         papers.forEach((Paper p) -> {
-            List<String> authorNames = Arrays.stream(p.getAuthors().split(";")).map(String::trim).collect(Collectors.toList());
+            List<String> authorNames = Arrays.stream(p.getAuthors().split(";"))
+                    .map(String::trim).collect(Collectors.toList());
             for (String name : authorNames) {
                 authorHash.put(name, authorHash.getOrDefault(name, 0) + 1);
             }
@@ -156,7 +157,8 @@ public class PaperServiceImpl implements PaperService {
         //term
         final Map<String, Integer> termHash = new HashMap<>();
         papers.forEach((Paper p) -> {
-            List<String> termNames = Arrays.stream(p.getTerms().split(";")).map(String::trim).collect(Collectors.toList());
+            List<String> termNames = Arrays.stream(p.getTerms().split(";"))
+                    .map(String::trim).collect(Collectors.toList());
             for (String name : termNames) {
                 termHash.put(name, termHash.getOrDefault(name, 0) + 1);
             }
@@ -165,7 +167,8 @@ public class PaperServiceImpl implements PaperService {
         //affiliation
         final Map<String, Integer> affiliationHash = new HashMap<>();
         papers.forEach((Paper p) -> {
-            List<String> affiliationNames = Arrays.stream(p.getAffiliations().split(";")).map(String::trim).collect(Collectors.toList());
+            List<String> affiliationNames = Arrays.stream(p.getAffiliations().split(";"))
+                    .map(String::trim).collect(Collectors.toList());
             for (String name : affiliationNames) {
                 affiliationHash.put(name, affiliationHash.getOrDefault(name, 0) + 1);
             }
