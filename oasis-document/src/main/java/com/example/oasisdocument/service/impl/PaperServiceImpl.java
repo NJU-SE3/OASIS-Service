@@ -57,7 +57,7 @@ public class PaperServiceImpl implements PaperService {
     }
 
     @Override
-//    @Cacheable(cacheNames = "paper", unless = "#result==null")
+    @Cacheable(cacheNames = "paper", unless = "#result==null")
     public List<Paper> queryPaper(final String key, final String returnFacets) throws BadReqException {
         Criteria criteria = fetchCriteriaViaKey(key, returnFacets);
         List<Paper> papers = mongoTemplate.find(new Query(criteria), Paper.class);
@@ -178,6 +178,7 @@ public class PaperServiceImpl implements PaperService {
     private Map<String, List<String>> refineAnalysis(final List<String> refinements) {
         Map<String, List<String>> ans = new HashMap<>();
         for (String refine : refinements) {
+            //year:name
             String[] sp = refine.split(":");
             if (sp.length != 2) throw new BadReqException();
             sp[0] = sp[0].toLowerCase();    //小写
