@@ -1,5 +1,6 @@
 package com.example.oasisdocument.controller;
 
+import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.example.oasisdocument.docs.Paper;
 import com.example.oasisdocument.exceptions.BadReqException;
@@ -14,6 +15,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import java.util.Base64;
 import java.util.List;
 import java.util.UUID;
 
@@ -54,7 +56,8 @@ public class PaperController {
             HttpServletResponse response) {
         //set id
         String qid = UUID.randomUUID().toString().replaceAll("-", "");
-        List<Paper> list = paperService.queryPaper(query, returnFacets.toLowerCase());
+        List<Paper> list = paperService.queryPaper(query.toLowerCase(),
+                returnFacets.toLowerCase());
         if (list.isEmpty()) {
             JSONObject ans = new JSONObject();
             ans.put("papers", list);
