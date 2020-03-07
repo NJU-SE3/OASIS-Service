@@ -30,7 +30,7 @@ public class PaperServiceImpl implements PaperService {
     private static class PaperRanker implements Comparator<Paper> {
         private String key;
         // title , authors , affiliations ,conferences ,  keywords , terms ,
-        private static final int[] rankRules = {100, 40, 30, 5, 1, 1};
+        private static final int[] rankRules = {Integer.MAX_VALUE, 40, 30, 5, 1, 1};
 
         public PaperRanker(String key) {
             this.key = key;
@@ -44,21 +44,22 @@ public class PaperServiceImpl implements PaperService {
 
         private int getRank(Paper paper) {
             int rank = 0;
-            if (paper.getTitle().matches(key)) {
+            if (paper.getTitle().contains(key)) {
                 rank += rankRules[0];
             }
-            if (paper.getAuthors().matches(key)) rank += rankRules[1];
-            if (paper.getAffiliations().matches(key)) rank += rankRules[2];
-            if (paper.getConference().matches(key)) rank += rankRules[3];
-            if (paper.getKeywords().matches(key)) rank += rankRules[4];
-            if (paper.getTerms().matches(key)) rank += rankRules[5];
+            if (paper.getAuthors().contains(key)) rank += rankRules[1];
+            if (paper.getAffiliations().contains(key)) rank += rankRules[2];
+            if (paper.getConference().contains(key)) rank += rankRules[3];
+            if (paper.getKeywords().contains(key)) rank += rankRules[4];
+            if (paper.getTerms().contains(key)) rank += rankRules[5];
             return rank;
         }
     }
 
     @Override
     @Cacheable(cacheNames = "paper", unless = "#result==null")
-    public List<Paper> queryPaper(final String key, final String returnFacets) throws BadReqException {
+    public List<Paper> queryPaper(final String key, final String returnFacets)
+            throws BadReqException {
         Criteria criteria = fetchCriteriaViaKey(key, returnFacets);
         List<Paper> papers = mongoTemplate.find(new Query(criteria), Paper.class);
         if (returnFacets.equals("all"))
@@ -102,8 +103,10 @@ public class PaperServiceImpl implements PaperService {
         if (hash.containsKey("term")) {
             papers = papers.stream().filter((Paper paper) -> {
                 String line = paper.getTerms();
+                Set<String> targetSet = Arrays.stream(line.split(";"))
+                        .map(String::trim).collect(Collectors.toSet());
                 for (String v : hash.get("term")) {
-                    if (line.contains(v)) return true;
+                    if (targetSet.contains(v)) return true;
                 }
                 return false;
             }).collect(Collectors.toList());
@@ -122,8 +125,11 @@ public class PaperServiceImpl implements PaperService {
         if (hash.containsKey("affiliation")) {
             papers = papers.stream().filter((Paper paper) -> {
                 String line = paper.getAffiliations();
+                Set<String> targetSet = Arrays.stream(line.split(";"))
+                        .map(String::trim)
+                        .collect(Collectors.toSet());
                 for (String v : hash.get("affiliation")) {
-                    if (line.contains(v)) return true;
+                    if (targetSet.contains(v)) return true;
                 }
                 return false;
             }).collect(Collectors.toList());
@@ -140,8 +146,9 @@ public class PaperServiceImpl implements PaperService {
         //author
         final Map<String, Integer> authorHash = new HashMap<>();
         papers.forEach((Paper p) -> {
-            List<String> authorNames = Arrays.stream(p.getAuthors().split(";"))
-                    .map(String::trim).collect(Collectors.toList());
+            Set<String> authorNames = Arrays.stream(p.getAuthors().split(";"))
+                    .map(String::trim)
+                    .collect(Collectors.toSet());
             for (String name : authorNames) {
                 authorHash.put(name, authorHash.getOrDefault(name, 0) + 1);
             }
@@ -157,8 +164,8 @@ public class PaperServiceImpl implements PaperService {
         //term
         final Map<String, Integer> termHash = new HashMap<>();
         papers.forEach((Paper p) -> {
-            List<String> termNames = Arrays.stream(p.getTerms().split(";"))
-                    .map(String::trim).collect(Collectors.toList());
+            Set<String> termNames = Arrays.stream(p.getTerms().split(";"))
+                    .map(String::trim).collect(Collectors.toSet());
             for (String name : termNames) {
                 termHash.put(name, termHash.getOrDefault(name, 0) + 1);
             }
@@ -167,8 +174,10 @@ public class PaperServiceImpl implements PaperService {
         //affiliation
         final Map<String, Integer> affiliationHash = new HashMap<>();
         papers.forEach((Paper p) -> {
-            List<String> affiliationNames = Arrays.stream(p.getAffiliations().split(";"))
-                    .map(String::trim).collect(Collectors.toList());
+            Set<String> affiliationNames = Arrays.stream(p.getAffiliations().split(";"))
+                    .map(String::trim)
+                    .filter((String s) -> !s.equals(""))
+                    .collect(Collectors.toSet());
             for (String name : affiliationNames) {
                 affiliationHash.put(name, affiliationHash.getOrDefault(name, 0) + 1);
             }
@@ -199,22 +208,22 @@ public class PaperServiceImpl implements PaperService {
                 criteria = getQueryCriteria(key);
                 break;
             case "title":
-                criteria = Criteria.where("title").regex(key);
+                criteria = Criteria.where("title").regex(key,"i");
                 break;
             case "conferences":
-                criteria = Criteria.where("conference").regex(key);
+                criteria = Criteria.where("conference").regex(key,"i");
                 break;
             case "terms":
-                criteria = Criteria.where("terms").regex(key);
+                criteria = Criteria.where("terms").regex(key,"i");
                 break;
             case "keywords":
-                criteria = Criteria.where("keywords").regex(key);
+                criteria = Criteria.where("keywords").regex(key,"i");
                 break;
             case "authors":
-                criteria = Criteria.where("authors").regex(key);
+                criteria = Criteria.where("authors").regex(key,"i");
                 break;
             case "affiliations":
-                criteria = Criteria.where("affiliations").regex(key);
+                criteria = Criteria.where("affiliations").regex(key,"i");
                 break;
             default:
                 throw new BadReqException();
@@ -226,7 +235,7 @@ public class PaperServiceImpl implements PaperService {
         List<String> fields = Arrays.asList("title", "conference", "terms",
                 "keywords", "authors", "affiliations");
         List<Criteria> criterias = fields.stream()
-                .map((String name) -> Criteria.where(name).regex(key))
+                .map((String name) -> Criteria.where(name).regex(key,"i"))
                 .collect(Collectors.toList());
         Criteria ans = new Criteria();
         ans.orOperator(criterias.get(0), criterias.get(1), criterias.get(2),

@@ -28,6 +28,6 @@ public class AuthorController {
 	@DeleteMapping("/paper")
 	public void paperRemoveAll() {
 
-//		PermissionService.deleteAll();
+		PermissionService.deleteAll();
 	}
 }
