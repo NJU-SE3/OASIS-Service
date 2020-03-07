@@ -96,8 +96,12 @@ public class ReportServiceImpl implements ReportService {
 
         for (String name : authorNames) {
             List<Paper> papers = getPapersViaAuthor(name);
+            int sum = papers.stream()
+                    .map(Paper::getCitationCount)
+                    .reduce(Integer::sum)
+                    .get();
             mapAuthorPapers.put(name, papers);
-            pairs.add(new Pair<>(name, papers.size()));
+            pairs.add(new Pair<>(name, sum));
         }
         pairs.sort((o1, o2) -> o2.getSecond() - o1.getSecond());
         List<Pair<String, List<Paper>>> res =
