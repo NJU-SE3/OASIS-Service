@@ -108,3 +108,32 @@
   - [x] RabbitMQ消息队列
 - [x] 测试
 
+
+
+### 4. 架构设计与技术选型
+
+##### 前端
+
+- Vue-cli
+- echarts
+- axois
+- Web优化
+  - 懒加载
+
+##### 服务端
+
+- Spring cloud微服务架构
+- Dev , Test , Prod 多环境配置
+- 数据源：MongoDB , Mysql
+- 数据库连接池：druid
+- 优化：
+  - 中间件缓存 redis
+  - Mongodb , redis 连接池并发数调优
+
+##### 其他
+
+- 全Docker化
+- Docker-compose 容器编排
+
+![image-20200307120717961](/Users/mac/Library/Application Support/typora-user-images/image-20200307120717961.png)
+
