@@ -3,29 +3,32 @@
 <mapper namespace="com.example.oasispaper.mapper.QueryMapper">
     <select id="queryAll"
             resultMap="paperVO">
-        select distinct
-        p.* , con.conference_name , pub.start_page , pub.end_page , pub.pdf_link , pub.year
-        from
-        publication pub join author au on pub.author_id = au.id
-        join conference con on pub.conference_id = con.id
-        join paper p on pub.paper_id = p.id
-        where
-        CONCAT_WS('',
-        au.author_name,
-        p.title,
-        p.terms,
-        p.abstract ,
-        p.keywords,
-        con.conference_name
-        )
-        REGEXP #{key}
+        select distinct p.*,
+                        con.conference_name,
+                        pub.start_page,
+                        pub.end_page,
+                        pub.pdf_link,
+                        pub.year
+        from publication pub
+                 join author au on pub.author_id = au.id
+                 join conference con on pub.conference_id = con.id
+                 join paper p on pub.paper_id = p.id
+        where CONCAT_WS('',
+                        au.author_name,
+                        p.title,
+                        p.terms,
+                        p.abstract,
+                        p.keywords,
+                        con.conference_name
+                  )
+                  REGEXP #{key}
     </select>
     <resultMap id="paperVO" type="com.example.oasispaper.model.VO.PaperVO">
         <id property="id" column="p.id"/>
         <result property="title" column="title"/>
-<!--        <result property="abstra" column="abstract"/>-->
-<!--        <result property="terms" column="terms"/>-->
-<!--        <result property="keywords" column="keywords"/>-->
+        <!--        <result property="abstra" column="abstract"/>-->
+        <!--        <result property="terms" column="terms"/>-->
+        <!--        <result property="keywords" column="keywords"/>-->
         <result property="citationCount" column="citation_count"/>
         <result property="referenceCount" column="reference_count"/>
         <result property="conference" column="conference_name"/>
@@ -36,9 +39,10 @@
 
     <select id="queryByPaperId"
             resultMap="authorInner">
-        select au.id , au.author_name , aff.affiliation_name
-        from author au join affiliation aff on au.affiliation_id = aff.id
-        join publication pub on au.id = pub.author_id
+        select au.id, au.author_name, aff.affiliation_name
+        from author au
+                 join affiliation aff on au.affiliation_id = aff.id
+                 join publication pub on au.id = pub.author_id
     </select>
     <resultMap id="authorInner" type="com.example.oasispaper.model.VO.AuthorVO">
         <id property="id" column="id"/>

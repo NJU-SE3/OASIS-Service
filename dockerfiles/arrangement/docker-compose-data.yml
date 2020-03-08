@@ -18,18 +18,18 @@ services:
       - "5672:5672"
     networks:
       - oasis
-#  oasis-mysql:
-#    image: caribouf/oasis-mysql:latest
-#    container_name: oasis-mysql
-#    restart: always
-#    environment:
-#      - MYSQL_ROOT_PASSWORD=mysql
-#      - MYSQL_DATABASE=se
-#    command: ['mysqld', '--character-set-server=utf8mb4', '--collation-server=utf8mb4_unicode_ci']
-#    ports:
-#      - "3306:3306"
-#    networks:
-#      - oasis
+  #  oasis-mysql:
+  #    image: caribouf/oasis-mysql:latest
+  #    container_name: oasis-mysql
+  #    restart: always
+  #    environment:
+  #      - MYSQL_ROOT_PASSWORD=mysql
+  #      - MYSQL_DATABASE=se
+  #    command: ['mysqld', '--character-set-server=utf8mb4', '--collation-server=utf8mb4_unicode_ci']
+  #    ports:
+  #      - "3306:3306"
+  #    networks:
+  #      - oasis
   mongodb:
     image: bitnami/mongodb:4.0
     container_name: oasis-mongo

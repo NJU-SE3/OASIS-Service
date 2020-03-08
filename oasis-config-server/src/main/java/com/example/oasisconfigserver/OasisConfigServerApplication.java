@@ -10,8 +10,8 @@ import org.springframework.cloud.config.server.EnableConfigServer;
 @EnableDiscoveryClient
 public class OasisConfigServerApplication {
 
-    public static void main(String[] args) {
-        SpringApplication.run(OasisConfigServerApplication.class, args);
-    }
+	public static void main(String[] args) {
+		SpringApplication.run(OasisConfigServerApplication.class, args);
+	}
 
 }

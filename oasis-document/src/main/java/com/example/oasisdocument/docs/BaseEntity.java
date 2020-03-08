@@ -9,15 +9,15 @@ import java.math.BigInteger;
 
 @ExcludeSuperclassListeners
 public class BaseEntity implements Serializable {
-    @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
-    private BigInteger id;
+	@Id
+	@GeneratedValue(strategy = GenerationType.SEQUENCE)
+	private BigInteger id;
 
-    public BigInteger getId() {
-        return id;
-    }
+	public BigInteger getId() {
+		return id;
+	}
 
-    public void setId(BigInteger id) {
-        this.id = id;
-    }
+	public void setId(BigInteger id) {
+		this.id = id;
+	}
 }

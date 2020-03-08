@@ -39,11 +39,11 @@ services:
     image: 'registry.cn-shanghai.aliyuncs.com/caribou/oasis-paper'
     container_name: oasis-paper
     restart: always
-    ports: 
+    ports:
       - "8000:8080"
     networks:
       - oasis
-      
+
   oasis-zuul:
     image: 'registry.cn-shanghai.aliyuncs.com/caribou/oasis-zuul'
     container_name: oasis-zuul

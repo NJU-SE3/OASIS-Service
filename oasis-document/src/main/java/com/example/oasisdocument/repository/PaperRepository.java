@@ -10,7 +10,7 @@ import java.util.List;
 
 @Repository
 public interface PaperRepository extends MongoRepository<Paper, BigInteger> {
-    List<Paper> findAllById(BigInteger id);
+	List<Paper> findAllById(BigInteger id);
 
-    List<Paper> findAllByYear(int year);
+	List<Paper> findAllByYear(int year);
 }

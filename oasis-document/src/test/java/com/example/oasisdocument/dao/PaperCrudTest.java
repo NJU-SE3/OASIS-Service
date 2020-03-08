@@ -18,32 +18,32 @@ import static org.junit.Assert.*;
 @SpringBootTest
 @ActiveProfiles("test")
 public class PaperCrudTest {
-    @Autowired
-    private PaperRepository paperRepository;
+	@Autowired
+	private PaperRepository paperRepository;
 
-    @Test
-    public void findTest() {
-        List<Paper> papers = paperRepository.findAll();
-        assertNotEquals(null, papers);
-    }
+	@Test
+	public void findTest() {
+		List<Paper> papers = paperRepository.findAll();
+		assertNotEquals(null, papers);
+	}
 
-    @Test
-    public void findByIdTest() {
-        List<Paper> papers = paperRepository.findAllById(BigInteger.valueOf(312));
-        assertNotEquals(null, papers);
-    }
+	@Test
+	public void findByIdTest() {
+		List<Paper> papers = paperRepository.findAllById(BigInteger.valueOf(312));
+		assertNotEquals(null, papers);
+	}
 
-    @Test
-    public void findByYearTest1() {
-        List<Paper> papers = paperRepository.findAllByYear(2017);
-        assertNotNull(papers);
-        assertNotEquals(0, papers.size());
-    }
+	@Test
+	public void findByYearTest1() {
+		List<Paper> papers = paperRepository.findAllByYear(2017);
+		assertNotNull(papers);
+		assertNotEquals(0, papers.size());
+	}
 
-    @Test
-    public void findByYearTest2() {
-        List<Paper> papers = paperRepository.findAllByYear(4032);
-        assertNotNull(papers);
-        assertEquals(0, papers.size());
-    }
+	@Test
+	public void findByYearTest2() {
+		List<Paper> papers = paperRepository.findAllByYear(4032);
+		assertNotNull(papers);
+		assertEquals(0, papers.size());
+	}
 }

@@ -31,73 +31,73 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @ActiveProfiles("test")
 public class QueryControllerTest {
 
-    private MockMvc mockMvc;
-    @Autowired
-    private WebApplicationContext wac;
+	private MockMvc mockMvc;
+	@Autowired
+	private WebApplicationContext wac;
 
 
-    private Cookie cookies[];
+	private Cookie cookies[];
 
-    @Before
-    public void prepare() {
-        mockMvc = MockMvcBuilders.webAppContextSetup(wac).build();
-    }
+	@Before
+	public void prepare() {
+		mockMvc = MockMvcBuilders.webAppContextSetup(wac).build();
+	}
 
-    /**
-     * URI : /api/query/paper/list
-     * 初次数据查询
-     */
-    @Test
-    public void queryCtlTest1() throws Exception {
-        sampleQuery();
-    }
+	/**
+	 * URI : /api/query/paper/list
+	 * 初次数据查询
+	 */
+	@Test
+	public void queryCtlTest1() throws Exception {
+		sampleQuery();
+	}
 
-    /**
-     * URI : /api/query/paper/summary
-     * 获取指定的查询id下的论文summary
-     */
-    @Test
-    public void queryCtlTest2() throws Exception {
-        summary();
-    }
-
-
-    private void sampleQuery() throws Exception {
-        final String uri = "/query/paper/list";
-        final int defaultPageSize = 10;
-        MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
-        params.put("query", Collections.singletonList("java"));
-        params.put("returnFacets", Collections.singletonList("all"));
-        MvcResult result = mockMvc.perform(get(uri)
-                .params(params)
-                .contentType("application/json"))
-                .andExpect(status().isOk())
-                .andReturn();
-        assertThat(result.getResponse()).isNotNull();
-        String body = result.getResponse().getContentAsString();
-        JSONObject object = JSONObject.parseObject(body);
-        //判定返回包合法结构
-        assertThat(object.containsKey("papers")).isTrue();
-        List<Paper> paperList = (List<Paper>) object.get("papers");
-        //判定分页结果
-        assertThat(paperList).isNotNull();
-        assertThat(paperList.size()).isBetween(0, defaultPageSize);
-        cookies = result.getResponse().getCookies();
-    }
+	/**
+	 * URI : /api/query/paper/summary
+	 * 获取指定的查询id下的论文summary
+	 */
+	@Test
+	public void queryCtlTest2() throws Exception {
+		summary();
+	}
 
 
-    private JSONObject summary() throws Exception {
-        sampleQuery();
-        String summaryUri = "/query/paper/summary";
-        MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
-        params.put("refinements", Collections.singletonList(""));
-        MvcResult result = mockMvc.perform(get(summaryUri)
-                .cookie(cookies)
-                .params(params))
-                .andExpect(status().isOk())
-                .andReturn();
-        JSONObject response = JSON.parseObject(result.getResponse().getContentAsString());
-        assertThat(response).isNotNull();
-        return response;
-    }
+	private void sampleQuery() throws Exception {
+		final String uri = "/query/paper/list";
+		final int defaultPageSize = 10;
+		MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
+		params.put("query", Collections.singletonList("java"));
+		params.put("returnFacets", Collections.singletonList("all"));
+		MvcResult result = mockMvc.perform(get(uri)
+				.params(params)
+				.contentType("application/json"))
+				.andExpect(status().isOk())
+				.andReturn();
+		assertThat(result.getResponse()).isNotNull();
+		String body = result.getResponse().getContentAsString();
+		JSONObject object = JSONObject.parseObject(body);
+		//判定返回包合法结构
+		assertThat(object.containsKey("papers")).isTrue();
+		List<Paper> paperList = (List<Paper>) object.get("papers");
+		//判定分页结果
+		assertThat(paperList).isNotNull();
+		assertThat(paperList.size()).isBetween(0, defaultPageSize);
+		cookies = result.getResponse().getCookies();
+	}
+
+
+	private JSONObject summary() throws Exception {
+		sampleQuery();
+		String summaryUri = "/query/paper/summary";
+		MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
+		params.put("refinements", Collections.singletonList(""));
+		MvcResult result = mockMvc.perform(get(summaryUri)
+				.cookie(cookies)
+				.params(params))
+				.andExpect(status().isOk())
+				.andReturn();
+		JSONObject response = JSON.parseObject(result.getResponse().getContentAsString());
+		assertThat(response).isNotNull();
+		return response;
+	}
 }
