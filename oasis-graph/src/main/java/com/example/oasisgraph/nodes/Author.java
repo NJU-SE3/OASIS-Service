@@ -5,6 +5,8 @@ import org.neo4j.ogm.annotation.Id;
 import org.neo4j.ogm.annotation.NodeEntity;
 import org.neo4j.ogm.annotation.Relationship;
 
+import java.io.Serializable;
+import java.util.LinkedList;
 import java.util.List;
 
 /**
@@ -12,13 +14,21 @@ import java.util.List;
  */
 
 @NodeEntity
-public class Author {
+public class Author implements Serializable {
 	@Id
 	@GeneratedValue
 	private Long id;
 
-	@Relationship(type = "PUBLISH")
+	@Relationship(type = "author_publish", direction = Relationship.OUTGOING)
 	private List<Paper> papers;
+
+	@Relationship(type = "author_belong_affiliation", direction = Relationship.INCOMING)
+	private Affiliation affiliation;
+
+	public void publish(Paper paper) {
+		if (papers == null) this.papers = new LinkedList<>();
+		this.papers.add(paper);
+	}
 
 	private String name;
 
@@ -44,5 +54,13 @@ public class Author {
 
 	public void setId(Long id) {
 		this.id = id;
+	}
+
+	public Affiliation getAffiliation() {
+		return affiliation;
+	}
+
+	public void setAffiliation(Affiliation affiliation) {
+		this.affiliation = affiliation;
 	}
 }
