@@ -7,69 +7,69 @@ import javax.persistence.Table;
 @Entity
 @Table(name = "paper")
 public class Paper extends BaseEntity {
-	@Column
-	private String title = "";       //论文名
+    @Column
+    private String title = "";       //论文名
 
-	@Column(name = "abstract", columnDefinition = "text")
-	private String abstra = "";      //摘要
+    @Column(name = "abstract", columnDefinition = "text")
+    private String abstra = "";      //摘要
 
-	@Column(name = "keywords", columnDefinition = "text")
-	private String keywords = "";    //关键词及
+    @Column(name = "keywords", columnDefinition = "text")
+    private String keywords = "";    //关键词及
 
-	@Column(name = "terms", columnDefinition = "text")     //术语
-	private String terms = "";
+    @Column(name = "terms", columnDefinition = "text")     //术语
+    private String terms = "";
 
-	@Column(name = "citation_count")
-	private int citationCount = 0;
+    @Column(name = "citation_count")
+    private int citationCount = 0;
 
-	@Column(name = "reference_count")
-	private int referenceCount = 0;
+    @Column(name = "reference_count")
+    private int referenceCount = 0;
 
-	public String getTitle() {
-		return title;
-	}
+    public String getTitle() {
+        return title;
+    }
 
-	public void setTitle(String title) {
-		this.title = title;
-	}
+    public void setTitle(String title) {
+        this.title = title;
+    }
 
-	public String getAbstra() {
-		return abstra;
-	}
+    public String getAbstra() {
+        return abstra;
+    }
 
-	public void setAbstra(String abstra) {
-		this.abstra = abstra;
-	}
+    public void setAbstra(String abstra) {
+        this.abstra = abstra;
+    }
 
-	public String getKeywords() {
-		return keywords;
-	}
+    public String getKeywords() {
+        return keywords;
+    }
 
-	public void setKeywords(String keywords) {
-		this.keywords = keywords;
-	}
+    public void setKeywords(String keywords) {
+        this.keywords = keywords;
+    }
 
-	public String getTerms() {
-		return terms;
-	}
+    public String getTerms() {
+        return terms;
+    }
 
-	public void setTerms(String terms) {
-		this.terms = terms;
-	}
+    public void setTerms(String terms) {
+        this.terms = terms;
+    }
 
-	public int getCitationCount() {
-		return citationCount;
-	}
+    public int getCitationCount() {
+        return citationCount;
+    }
 
-	public void setCitationCount(int citationCount) {
-		this.citationCount = citationCount;
-	}
+    public void setCitationCount(int citationCount) {
+        this.citationCount = citationCount;
+    }
 
-	public int getReferenceCount() {
-		return referenceCount;
-	}
+    public int getReferenceCount() {
+        return referenceCount;
+    }
 
-	public void setReferenceCount(int referenceCount) {
-		this.referenceCount = referenceCount;
-	}
+    public void setReferenceCount(int referenceCount) {
+        this.referenceCount = referenceCount;
+    }
 }

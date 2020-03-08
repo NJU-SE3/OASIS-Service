@@ -98,7 +98,6 @@ def run(path):
         requests.post('http://localhost:8081/api/query/paper', data=json.dumps(data),
                       headers={'Content-Type': 'application/json'})
 
-
 if __name__ == '__main__':
     run('../resources/icse.csv')
     run('../resources/ase.csv')

@@ -6,18 +6,18 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 public class Hello {
-	@GetMapping("/")
-	public String hello() {
-		return "hello world";
-	}
+    @GetMapping("/")
+    public String hello() {
+        return "hello world";
+    }
 
-	@GetMapping("/{name}")
-	public String h(@PathVariable String name) {
-		return name;
-	}
+    @GetMapping("/{name}")
+    public String h(@PathVariable String name) {
+        return name;
+    }
 
-	@GetMapping("/hek")
-	public String h1() {
-		return "name";
-	}
+    @GetMapping("/hek")
+    public String h1() {
+        return "name";
+    }
 }

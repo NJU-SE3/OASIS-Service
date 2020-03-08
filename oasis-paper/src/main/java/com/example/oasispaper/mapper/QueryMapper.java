@@ -9,7 +9,7 @@ import java.util.List;
 
 @Mapper
 public interface QueryMapper {
-	List<PaperVO> queryAll(@Param("key") String key);
+    List<PaperVO> queryAll(@Param("key") String key);
 
-	List<AuthorVO> queryByPaperId(@Param("paper_id") long paperId);
+    List<AuthorVO> queryByPaperId(@Param("paper_id") long paperId);
 }

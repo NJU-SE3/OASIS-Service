@@ -56,7 +56,7 @@ spring:
       ddl-auto: update
   redis:
     host: ${redis-ip}
-    #    port: 6379
+#    port: 6379
     jedis:
       pool:
         max-active: 1000

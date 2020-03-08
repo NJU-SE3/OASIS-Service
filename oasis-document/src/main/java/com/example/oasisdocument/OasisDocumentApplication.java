@@ -22,14 +22,14 @@ public class OasisDocumentApplication {
 	}
 
 	@Bean
-	public TomcatServletWebServerFactory tomcatServletWebServerFactory() {
+	public TomcatServletWebServerFactory tomcatServletWebServerFactory (){
 
 		// 修改内置的 tomcat 容器配置
 		TomcatServletWebServerFactory tomcatServlet = new TomcatServletWebServerFactory();
-		tomcatServlet.addConnectorCustomizers(
+		tomcatServlet .addConnectorCustomizers(
 				(TomcatConnectorCustomizer) connector -> connector.setProperty("relaxedQueryChars", "[]{},")
 		);
 
-		return tomcatServlet;
+		return tomcatServlet ;
 	}
 }
