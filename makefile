@@ -8,6 +8,7 @@ LOCAL_DOCKER = dockerfiles/docker-compose-local.yml
 RUN_PATH = dockerfiles/docker-compose-prod.yml
 COMPOSE = docker-compose
 
+
 local-set:
 	${COMPOSE} -f ${LOCAL_DOCKER} up -d --build
 
