@@ -3,10 +3,11 @@ package com.example.oasisdocument.VO;
 import com.alibaba.fastjson.annotation.JSONField;
 import com.example.oasisdocument.docs.Paper;
 
+import java.io.Serializable;
 import java.math.BigInteger;
 import java.util.List;
 
-public class PaperInsertVO {
+public class PaperInsertVO implements Serializable {
 	private BigInteger id;
 
 	private String title;       //paper名.

@@ -33,7 +33,7 @@ public class ReportServiceImpl implements ReportService {
     @Cacheable(cacheNames = "getWordCloudOfYear", key = "#year", unless = "#result==null")
     public List<Pair<String, Integer>> getWordCloudOfYear(int year) {
         //词云的下阈值
-        final int lowerBound = 5;
+        final int lowerBound = 2;
 
         List<Paper> papers = paperRepository.findAllByYear(year);
         Map<String, Integer> map =
@@ -47,7 +47,7 @@ public class ReportServiceImpl implements ReportService {
             }
         }
         //去除长尾
-//        map.entrySet().removeIf(entry -> entry.getValue() <= lowerBound);
+        map.entrySet().removeIf(entry -> entry.getValue() <= lowerBound);
         List<Pair<String, Integer>> sumUp = new LinkedList<>();
         for (String word : map.keySet()) {
             sumUp.add(new Pair<>(word, map.get(word)));
@@ -57,6 +57,7 @@ public class ReportServiceImpl implements ReportService {
         return sumUp;
     }
 
+    //paper citation排名
     @Override
     @Cacheable(cacheNames = "getPaperRankViaCitation", key = "#rank", unless = "#result==null")
     public List<Paper> getPaperRankViaCitation(int rank) {
@@ -65,6 +66,7 @@ public class ReportServiceImpl implements ReportService {
         return mongoTemplate.find(query.with(PageRequest.of(0, rank)), Paper.class);
     }
 
+    //paper trend via year
     @Override
     @Cacheable(cacheNames = "getPaperTrend", unless = "#result==null")
     public List<Pair<Integer, Integer>> getPaperTrend() {

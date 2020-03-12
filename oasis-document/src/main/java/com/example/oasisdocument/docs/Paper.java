@@ -8,7 +8,6 @@ import org.springframework.data.redis.core.index.Indexed;
 
 @Document(collection = "papers")
 public class Paper extends BaseEntity {
-
     @Indexed
     private String title;       //paper名.
 

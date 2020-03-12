@@ -9,6 +9,8 @@ import java.math.BigInteger;
 
 @ExcludeSuperclassListeners
 public class BaseEntity implements Serializable {
+    private static final long serialVersionUID = 1529685098267757690L;
+
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private BigInteger id;
