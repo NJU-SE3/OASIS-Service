@@ -36,11 +36,15 @@ push_hub:
 # mongo数据导入
 mongo-import:
 	docker cp back/paper.json oasis-mongo:/.
+	docker cp back/author.json oasis-mongo:/.
 	docker exec -it oasis-mongo mongoimport -u root -p mongo -d se -c papers --drop paper.json
+	docker exec -it oasis-mongo mongoimport -u root -p mongo -d se -c authors --drop author.json
 
 mongo-export:
 	docker exec -it oasis-mongo mongoexport -u root -p mongo -d se -c papers -o paper.json
+	docker exec -it oasis-mongo mongoexport -u root -p mongo -d se -c authors -o author.json
 	sudo docker cp oasis-mongo:/paper.json back/paper.json
+	sudo docker cp oasis-mongo:/author.json back/author.json
 
 deploy-app:
 	docker-compose -f docker-compose-app.yml pull

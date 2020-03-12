@@ -1,9 +1,10 @@
 package com.example.oasisdocument.controller;
 
-import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
+import com.example.oasisdocument.docs.Author;
 import com.example.oasisdocument.docs.Paper;
 import com.example.oasisdocument.exceptions.BadReqException;
+import com.example.oasisdocument.service.AuthorService;
 import com.example.oasisdocument.service.PaperService;
 import com.example.oasisdocument.utils.CookieUtil;
 import com.example.oasisdocument.utils.PageHelper;
@@ -15,7 +16,6 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import java.util.Base64;
 import java.util.List;
 import java.util.UUID;
 
@@ -31,6 +31,9 @@ public class PaperController {
 
     @Autowired
     private PageHelper pageHelper;
+
+    @Autowired
+    private AuthorService authorService;
 
     @GetMapping("/")
     public String run() {
@@ -128,7 +131,17 @@ public class PaperController {
             Paper entity = paper.toJavaObject(Paper.class);
 
             paperService.insert(entity);
-        }catch (Exception e){
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    @PostMapping(path = "/author")
+    public void insertAuthor(@RequestBody JSONObject author) {
+        try {
+            Author entity = author.toJavaObject(Author.class);
+            authorService.insert(entity);
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }

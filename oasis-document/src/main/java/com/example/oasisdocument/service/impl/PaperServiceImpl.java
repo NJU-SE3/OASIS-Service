@@ -3,6 +3,7 @@ package com.example.oasisdocument.service.impl;
 import com.alibaba.fastjson.JSONObject;
 import com.example.oasisdocument.docs.Paper;
 import com.example.oasisdocument.exceptions.BadReqException;
+import com.example.oasisdocument.repository.AuthorRepository;
 import com.example.oasisdocument.repository.PaperRepository;
 import com.example.oasisdocument.service.PaperService;
 import com.example.oasisdocument.utils.Pair;
@@ -23,6 +24,9 @@ public class PaperServiceImpl implements PaperService {
 
     @Autowired
     private MongoTemplate mongoTemplate;
+
+    @Autowired
+    private AuthorRepository authorRepository;
 
     /**
      * 内部类, 专门用于实现
@@ -69,8 +73,13 @@ public class PaperServiceImpl implements PaperService {
 
     @Override
     public void insert(Paper entity) {
-        if(paperRepository.findAllById(entity.getId()).isEmpty())
+        if (paperRepository.findAllById(entity.getId()).isEmpty()) {
+            String idsValue = entity.getAuthorIds();
+            String authorIds = idsValue.substring(1, idsValue.length() - 1);
+
             paperRepository.save(entity);
+
+        }
     }
 
     @Override

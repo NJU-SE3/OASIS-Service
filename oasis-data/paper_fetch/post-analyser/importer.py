@@ -50,15 +50,17 @@ def import_authors(df):
             articleCount=row['articleCount'],
             paperTrends=row['trends'],
             bioParagraphs=row['bioParagraphs'].encode('ascii', 'ignore').decode('ascii'),
-            field=row['publicTopic'].encode('ascii', 'ignore').decode('ascii'),     # 作者研究领域 summary
+            field=row['publicTopic'].encode('ascii', 'ignore').decode('ascii'),  # 作者研究领域 summary
             terms=row['terms'],
             photoUrl=row['photoUrl']
         )
+        requests.post('http://localhost:8081/query/author', data=json.dumps(author),
+                      headers={'Content-Type': 'application/json'})
 
 
 if __name__ == '__main__':
     df = pd.read_csv('/Users/mac/Documents/repos/SE3/OASIS-Service/oasis-data/paper_fetch/resources/papers/paper.csv')
     df = df.fillna('')
     import_papers(df)
-    # df = pd.read_csv('')
     # import_authors(df)
+    # df = pd.read_csv('/Users/mac/Documents/repos/SE3/OASIS-Service/oasis-data/paper_fetch/resources/papers/author.csv')
