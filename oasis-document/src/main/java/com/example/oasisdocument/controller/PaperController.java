@@ -124,8 +124,13 @@ public class PaperController {
      */
     @PostMapping(path = "/paper")
     public void insertPaper(@RequestBody JSONObject paper) {
-        Paper entity = paper.toJavaObject(Paper.class);
-        paperService.insert(entity);
+        try {
+            Paper entity = paper.toJavaObject(Paper.class);
+
+            paperService.insert(entity);
+        }catch (Exception e){
+            e.printStackTrace();
+        }
     }
 
     /**

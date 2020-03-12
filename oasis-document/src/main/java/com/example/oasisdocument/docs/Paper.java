@@ -1,6 +1,7 @@
 package com.example.oasisdocument.docs;
 
 import com.alibaba.fastjson.annotation.JSONField;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
 import org.springframework.data.redis.core.index.Indexed;
@@ -39,6 +40,7 @@ public class Paper extends BaseEntity {
     @JSONField(name = "affiliations")
     private String affiliations; //机构
 
+    private String authorIds;
 
     public Paper() {
     }
@@ -130,5 +132,13 @@ public class Paper extends BaseEntity {
 
     public void setAffiliations(String affiliations) {
         this.affiliations = affiliations;
+    }
+
+    public String getAuthorIds() {
+        return authorIds;
+    }
+
+    public void setAuthorIds(String authorIds) {
+        this.authorIds = authorIds;
     }
 }

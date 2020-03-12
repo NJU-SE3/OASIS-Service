@@ -67,7 +67,6 @@ class PaperspiderSpider(scrapy.Spider):
     # 2. 进入到作者列表查询, 随后进行
     # 3. 作者查询之后 , 进入citation的深度遍历
     # 3.1 对于每一个citation , 重复1 2 3
-
     def start_requests(self):
         with open(self.list_path) as input:
             ids = json.loads(input.readline())
@@ -92,7 +91,8 @@ class PaperspiderSpider(scrapy.Spider):
                 publication=content['publicationTitle'] if 'publicationTitle' in content else '',
                 keywords=get_keywords(content['keywords']) if 'keywords' in content else [],
                 doi=content['doi'] if 'doi' in content else '',
-                year=content['publicationYear'] if 'publicationYear' in content else ''
+                year=content['publicationYear'] if 'publicationYear' in content else '',
+                citationCount=content['citationCount'] if 'citationCount' in content else '0'
             )
 
         text = response.text
@@ -111,8 +111,6 @@ class PaperspiderSpider(scrapy.Spider):
         link_num = paper['id']
         # 深度优先使用
         dep_link_num = response.meta['link_num']
-        authors = content['authors'] if 'authors' in content else []
-        paper['authors'] = [author['id'] for author in authors if 'id' in author]
         # 当前填充完成作者 , 接下来进行citation
         yield scrapy.Request(url=self.refer_url.format(link_num), meta={'paper': paper,
                                                                         'link_num': dep_link_num,
@@ -133,7 +131,6 @@ class PaperspiderSpider(scrapy.Spider):
             doc_link = links['documentLink'] if 'documentLink' in links else ''
             if doc_link != '':
                 ans.append(doc_link.split('/')[-1])
-
         paper['references'] = ans
         yield scrapy.Request(url=self.citations_base.format(link_num), meta={'paper': paper,
                                                                              'link_num': dep_link_num,
@@ -216,9 +213,14 @@ class AuthorSpider(scrapy.Spider):
     def start_requests(self):
         df = pd.read_csv(self.paper_resource_path)
         for i, row in df.iterrows():
-            authors = eval(row['authors'])
-            for author_id in authors:
-                yield scrapy.Request(url=self.author_base.format(author_id), meta={'id': author_id})
+            if type(row['authors']) is str:
+                authors = eval(row['authors'])
+                if authors is None:
+                    authors = []
+                for author in authors:
+                    if 'id' in author:
+                        author_id = author['id']
+                        yield scrapy.Request(url=self.author_base.format(author_id), meta={'id': author_id})
 
     def parse(self, response):
         id = response.meta['id']
