@@ -6,9 +6,9 @@ import org.springframework.data.mongodb.core.mapping.Document;
 public class Author extends BaseEntity {
 	private String authorName;
 	private String affiliationName;
-	private String colAuthors;
+	private String coAuthors;
 	private int articleCount;
-	private String tends;
+	private String paperTrends;
 	private String bioParagraphs;
 	private String field;
 	private String terms;
@@ -30,12 +30,12 @@ public class Author extends BaseEntity {
 		this.affiliationName = affiliationName;
 	}
 
-	public String getColAuthors() {
-		return colAuthors;
+	public String getCoAuthors() {
+		return coAuthors;
 	}
 
-	public void setColAuthors(String colAuthors) {
-		this.colAuthors = colAuthors;
+	public void setCoAuthors(String coAuthors) {
+		this.coAuthors = coAuthors;
 	}
 
 	public int getArticleCount() {
@@ -46,12 +46,12 @@ public class Author extends BaseEntity {
 		this.articleCount = articleCount;
 	}
 
-	public String getTends() {
-		return tends;
+	public String getPaperTrends() {
+		return paperTrends;
 	}
 
-	public void setTends(String tends) {
-		this.tends = tends;
+	public void setPaperTrends(String paperTrends) {
+		this.paperTrends = paperTrends;
 	}
 
 	public String getBioParagraphs() {

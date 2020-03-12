@@ -1,6 +1,9 @@
 package com.example.oasisdocument.service.impl;
 
+import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
+import com.example.oasisdocument.VO.PaperInsertVO;
+import com.example.oasisdocument.docs.Author;
 import com.example.oasisdocument.docs.Paper;
 import com.example.oasisdocument.exceptions.BadReqException;
 import com.example.oasisdocument.repository.AuthorRepository;
@@ -14,6 +17,7 @@ import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Service;
 
+import java.math.BigInteger;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -72,13 +76,26 @@ public class PaperServiceImpl implements PaperService {
     }
 
     @Override
-    public void insert(Paper entity) {
+    public void insert(PaperInsertVO entity) {
         if (paperRepository.findAllById(entity.getId()).isEmpty()) {
-            String idsValue = entity.getAuthorIds();
-            String authorIds = idsValue.substring(1, idsValue.length() - 1);
-
-            paperRepository.save(entity);
-
+            List<Long> array = entity.getAuthorIds();
+            if (!array.isEmpty()) {
+                List<String> affList = new LinkedList<>(),
+                        authorNameList = new LinkedList<>();
+                for (Long authorId : array) {
+                    List<Author> authors = authorRepository.findAllById(BigInteger.valueOf(authorId));
+                    if (!authors.isEmpty()) {
+                        Author author = authors.get(0);
+                        String aff = author.getAffiliationName();
+                        String authorName = author.getAuthorName();
+                        affList.add(aff);
+                        authorNameList.add(authorName);
+                    }
+                }
+                entity.setAffiliations(String.join(",", affList));
+                entity.setAuthors(String.join(",", authorNameList));
+            }
+            paperRepository.save(entity.VO2PO());
         }
     }
 

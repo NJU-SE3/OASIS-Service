@@ -40,8 +40,6 @@ public class Paper extends BaseEntity {
     @JSONField(name = "affiliations")
     private String affiliations; //机构
 
-    private String authorIds;
-
     public Paper() {
     }
 
@@ -134,11 +132,4 @@ public class Paper extends BaseEntity {
         this.affiliations = affiliations;
     }
 
-    public String getAuthorIds() {
-        return authorIds;
-    }
-
-    public void setAuthorIds(String authorIds) {
-        this.authorIds = authorIds;
-    }
 }

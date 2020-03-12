@@ -44,8 +44,8 @@ def import_authors(df):
         # ,id,preferredName,firstName,lastName,affiliation,coAuthors,articleCount,trends,bioParagraphs,publicTopic,terms,photoUrl
         author = dict(
             id=row['id'],
-            name=row['preferredName'].encode('ascii', 'ignore').decode('ascii'),
-            affiliation=row['affiliation'].encode('ascii', 'ignore').decode('ascii'),
+            authorName=row['preferredName'].encode('ascii', 'ignore').decode('ascii'),
+            affiliationName=row['affiliation'].encode('ascii', 'ignore').decode('ascii'),
             coAuthors=row['coAuthors'],
             articleCount=row['articleCount'],
             paperTrends=row['trends'],
@@ -60,7 +60,7 @@ def import_authors(df):
 
 if __name__ == '__main__':
     df = pd.read_csv('/Users/mac/Documents/repos/SE3/OASIS-Service/oasis-data/paper_fetch/resources/papers/paper.csv')
+    # df = pd.read_csv('/Users/mac/Documents/repos/SE3/OASIS-Service/oasis-data/paper_fetch/resources/papers/author.csv')
     df = df.fillna('')
     import_papers(df)
     # import_authors(df)
-    # df = pd.read_csv('/Users/mac/Documents/repos/SE3/OASIS-Service/oasis-data/paper_fetch/resources/papers/author.csv')

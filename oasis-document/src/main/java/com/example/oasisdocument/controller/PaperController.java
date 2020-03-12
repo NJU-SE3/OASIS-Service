@@ -1,6 +1,7 @@
 package com.example.oasisdocument.controller;
 
 import com.alibaba.fastjson.JSONObject;
+import com.example.oasisdocument.VO.PaperInsertVO;
 import com.example.oasisdocument.docs.Author;
 import com.example.oasisdocument.docs.Paper;
 import com.example.oasisdocument.exceptions.BadReqException;
@@ -126,10 +127,9 @@ public class PaperController {
      * @param paper : paper实体
      */
     @PostMapping(path = "/paper")
-    public void insertPaper(@RequestBody JSONObject paper) {
+    public void insertPaper(@RequestBody JSONObject paperVO) {
         try {
-            Paper entity = paper.toJavaObject(Paper.class);
-
+            PaperInsertVO entity = paperVO.toJavaObject(PaperInsertVO.class);
             paperService.insert(entity);
         } catch (Exception e) {
             e.printStackTrace();

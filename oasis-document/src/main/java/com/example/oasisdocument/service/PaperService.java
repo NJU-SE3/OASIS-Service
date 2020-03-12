@@ -1,6 +1,7 @@
 package com.example.oasisdocument.service;
 
 import com.alibaba.fastjson.JSONObject;
+import com.example.oasisdocument.VO.PaperInsertVO;
 import com.example.oasisdocument.docs.Paper;
 
 import java.util.List;
@@ -10,7 +11,7 @@ public interface PaperService {
 
     List<Paper> queryPaperRefine(List<Paper> papers, List<String> refinements);
 
-    void insert(Paper entity);
+    void insert(PaperInsertVO entity);
 
     JSONObject papersSummary(List<Paper> papers);
 }
