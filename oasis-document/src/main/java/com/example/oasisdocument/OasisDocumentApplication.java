@@ -29,7 +29,6 @@ public class OasisDocumentApplication {
 		tomcatServlet .addConnectorCustomizers(
 				(TomcatConnectorCustomizer) connector -> connector.setProperty("relaxedQueryChars", "[]{},")
 		);
-
 		return tomcatServlet ;
 	}
 }

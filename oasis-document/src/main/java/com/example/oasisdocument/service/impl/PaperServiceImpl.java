@@ -69,7 +69,8 @@ public class PaperServiceImpl implements PaperService {
 
     @Override
     public void insert(Paper entity) {
-        paperRepository.save(entity);
+        if(paperRepository.findAllById(entity.getId()).isEmpty())
+            paperRepository.save(entity);
     }
 
     @Override

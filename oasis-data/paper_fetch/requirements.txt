@@ -1,4 +1,12 @@
-beautifulsoup4
-scrapy
+pandas
+BeautifulSoup4
+scrapy==1.8.0
+scrapy_redis
+redis
+pymysql
 requests
-sgmllib
+pandas
+sqlalchemy
+html5lib
+selenium
+requests

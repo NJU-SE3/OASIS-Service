@@ -23,10 +23,6 @@ public class Paper extends BaseEntity {
     @Indexed
     private String keywords;    //论文关键字
 
-    private String startPage;      //起始页
-
-    private String endPage;        //结束页
-
     private String pdfLink;     //pdf
 
     private int citationCount;  //citation count
@@ -70,22 +66,6 @@ public class Paper extends BaseEntity {
 
     public void setTerms(String terms) {
         this.terms = terms;
-    }
-
-    public String getStartPage() {
-        return startPage;
-    }
-
-    public void setStartPage(String startPage) {
-        this.startPage = startPage;
-    }
-
-    public String getEndPage() {
-        return endPage;
-    }
-
-    public void setEndPage(String endPage) {
-        this.endPage = endPage;
     }
 
     public int getReferenceCount() {

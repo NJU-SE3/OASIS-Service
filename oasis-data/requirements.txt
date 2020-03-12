@@ -1,5 +1,12 @@
-flask
-flask_restplus
 pandas
+BeautifulSoup4
+scrapy==1.8.0
+scrapy_redis
+redis
+pymysql
 requests
+pandas
 sqlalchemy
+html5lib
+selenium
+requests
