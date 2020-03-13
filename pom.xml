@@ -7,7 +7,6 @@
         <module>oasis-config-server</module>
         <module>oasis-zuul</module>
         <module>oasis-document</module>
-        <module>oasis-graph</module>
     </modules>
     <parent>
         <groupId>org.springframework.boot</groupId>

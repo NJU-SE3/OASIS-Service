@@ -1,4 +1,4 @@
-package com.example.oasisdocument.repository;
+package com.example.oasisdocument.repository.docs;
 
 import com.example.oasisdocument.docs.Paper;
 import org.springframework.data.mongodb.repository.MongoRepository;

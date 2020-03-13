@@ -1,7 +1,7 @@
 package com.example.oasisdocument.dao;
 
 import com.example.oasisdocument.docs.Paper;
-import com.example.oasisdocument.repository.PaperRepository;
+import com.example.oasisdocument.repository.docs.PaperRepository;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;

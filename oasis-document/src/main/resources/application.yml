@@ -10,6 +10,9 @@ spring:
     name: oasis-document
   session:
     store-type: redis
+  data:
+    neo4j:
+      uri: http://localhost:7474
 spring.main.allow-bean-definition-overriding: true
 
 

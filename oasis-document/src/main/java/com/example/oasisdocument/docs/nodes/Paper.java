@@ -1,4 +1,4 @@
-package com.example.oasisgraph.nodes;
+package com.example.oasisdocument.docs.nodes;
 
 import com.alibaba.fastjson.annotation.JSONField;
 import org.neo4j.ogm.annotation.GeneratedValue;

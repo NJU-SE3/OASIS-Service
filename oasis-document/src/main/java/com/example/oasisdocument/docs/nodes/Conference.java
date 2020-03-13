@@ -1,28 +1,31 @@
-package com.example.oasisgraph.nodes;
+package com.example.oasisdocument.docs.nodes;
 
 import org.neo4j.ogm.annotation.GeneratedValue;
 import org.neo4j.ogm.annotation.Id;
 import org.neo4j.ogm.annotation.NodeEntity;
 import org.neo4j.ogm.annotation.Relationship;
 
+import java.io.Serializable;
 import java.util.LinkedList;
 import java.util.List;
 
 @NodeEntity
-public class Journal {
+public class Conference implements Serializable {
 	@Id
 	@GeneratedValue
 	private Long id;
 
-	@Relationship(type = "journal_publish_paper")
+	@Relationship(type = "conference_publish_paper")
 	private List<Paper> paperList;
 
-	public void publish(Paper paper){
+	private int year;            //会议年
+
+	private String conferenceName;
+
+	public void publish(Paper paper) {
 		if (null == this.paperList) this.paperList = new LinkedList<>();
 		this.paperList.add(paper);
 	}
-
-	private String journalName;
 
 	public Long getId() {
 		return id;
@@ -40,11 +43,19 @@ public class Journal {
 		this.paperList = paperList;
 	}
 
-	public String getJournalName() {
-		return journalName;
+	public int getYear() {
+		return year;
 	}
 
-	public void setJournalName(String journalName) {
-		this.journalName = journalName;
+	public void setYear(int year) {
+		this.year = year;
+	}
+
+	public String getConferenceName() {
+		return conferenceName;
+	}
+
+	public void setConferenceName(String conferenceName) {
+		this.conferenceName = conferenceName;
 	}
 }
