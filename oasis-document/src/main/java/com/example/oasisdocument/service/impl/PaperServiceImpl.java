@@ -1,10 +1,9 @@
 package com.example.oasisdocument.service.impl;
 
-import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
-import com.example.oasisdocument.VO.PaperInsertVO;
 import com.example.oasisdocument.docs.Author;
 import com.example.oasisdocument.docs.Paper;
+import com.example.oasisdocument.docs.VO.PaperInsertVO;
 import com.example.oasisdocument.exceptions.BadReqException;
 import com.example.oasisdocument.repository.AuthorRepository;
 import com.example.oasisdocument.repository.PaperRepository;
@@ -38,7 +37,7 @@ public class PaperServiceImpl implements PaperService {
     private static class PaperRanker implements Comparator<Paper> {
         private String key;
         // title , authors , affiliations ,conferences ,  keywords , terms ,
-        private static final int[] rankRules = {Integer.MAX_VALUE, 40, 30, 5, 1, 1};
+        private static final int[] rankRules = {Integer.MAX_VALUE, Integer.MAX_VALUE / 4, 1000, 500, 1, 1};
 
         public PaperRanker(String key) {
             this.key = key;
@@ -46,11 +45,11 @@ public class PaperServiceImpl implements PaperService {
 
         @Override
         public int compare(Paper p1, Paper p2) {
-            int r1 = getRank(p1), r2 = getRank(p2);
-            return r2 - r1;
+            long r1 = getRank(p1), r2 = getRank(p2);
+            return Long.compare(r1, r2);
         }
 
-        private int getRank(Paper paper) {
+        private long getRank(Paper paper) {
             int rank = 0;
             if (paper.getTitle().contains(key)) {
                 rank += rankRules[0];

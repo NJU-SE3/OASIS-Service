@@ -1,15 +1,14 @@
-package com.example.oasisdocument.VO;
+package com.example.oasisdocument.docs.VO;
 
 import com.alibaba.fastjson.annotation.JSONField;
+import com.example.oasisdocument.docs.BaseEntity;
 import com.example.oasisdocument.docs.Paper;
 
 import java.io.Serializable;
 import java.math.BigInteger;
 import java.util.List;
 
-public class PaperInsertVO implements Serializable {
-	private BigInteger id;
-
+public class PaperInsertVO extends BaseEntity {
 	private String title;       //paper名.
 
 	@JSONField(name = "abstract")
@@ -137,17 +136,9 @@ public class PaperInsertVO implements Serializable {
 		this.authorIds = authorIds;
 	}
 
-	public BigInteger getId() {
-		return id;
-	}
-
-	public void setId(BigInteger id) {
-		this.id = id;
-	}
-
 	public Paper VO2PO() {
 		Paper paper = new Paper();
-		paper.setId(this.id);
+		paper.setId(this.getId());
 		paper.setTitle(this.title);
 		paper.setAbstra(this.abstra);
 		paper.setConference(this.conference);
