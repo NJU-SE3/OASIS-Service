@@ -1,10 +1,15 @@
 package com.example.oasisdocument.docs;
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson.JSONObject;
 import com.alibaba.fastjson.annotation.JSONField;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
 import org.springframework.data.redis.core.index.Indexed;
+
+import java.util.LinkedList;
+import java.util.List;
 
 @Document(collection = "papers")
 public class Paper extends BaseEntity {
@@ -42,6 +47,21 @@ public class Paper extends BaseEntity {
     public Paper() {
     }
 
+    public static List<String> getAllTerms(Paper entity) {
+        List<String> ans = new LinkedList<>();
+        JSONObject object = new JSONObject();
+        try {
+            object = (JSONObject) JSON.parse(entity.terms);
+        } catch (Exception e) {
+            entity.terms = "";
+        }
+        for (String key : object.keySet()) {
+            JSONArray array = object.getJSONArray(key);
+            List<String> termList = JSON.parseArray(array.toJSONString(), String.class);
+            ans.addAll(termList);
+        }
+        return ans;
+    }
 
     public String getTitle() {
         return title;
@@ -130,5 +150,6 @@ public class Paper extends BaseEntity {
     public void setAffiliations(String affiliations) {
         this.affiliations = affiliations;
     }
+
 
 }

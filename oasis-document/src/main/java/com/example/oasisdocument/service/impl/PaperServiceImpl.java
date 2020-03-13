@@ -22,6 +22,9 @@ import java.util.stream.Collectors;
 
 @Service
 public class PaperServiceImpl implements PaperService {
+    private static final String authorSplitter = ",";
+    private static final String affiliationSplitter = ",";
+
     @Autowired
     private PaperRepository paperRepository;
 
@@ -36,8 +39,7 @@ public class PaperServiceImpl implements PaperService {
      */
     private static class PaperRanker implements Comparator<Paper> {
         private String key;
-        // title , authors , affiliations ,conferences ,  keywords , terms ,
-        private static final int[] rankRules = {Integer.MAX_VALUE, Integer.MAX_VALUE / 4, 1000, 500, 1, 1};
+        private static final int[] rankRules = {1_000_000_000, 1_000_000, 1_000, 500, 1, 1};
 
         public PaperRanker(String key) {
             this.key = key;
@@ -46,11 +48,11 @@ public class PaperServiceImpl implements PaperService {
         @Override
         public int compare(Paper p1, Paper p2) {
             long r1 = getRank(p1), r2 = getRank(p2);
-            return Long.compare(r1, r2);
+            return Math.toIntExact(r2 - r1);
         }
 
         private long getRank(Paper paper) {
-            int rank = 0;
+            long rank = 0;
             if (paper.getTitle().contains(key)) {
                 rank += rankRules[0];
             }
@@ -91,8 +93,8 @@ public class PaperServiceImpl implements PaperService {
                         authorNameList.add(authorName);
                     }
                 }
-                entity.setAffiliations(String.join(",", affList));
-                entity.setAuthors(String.join(",", authorNameList));
+                entity.setAffiliations(String.join(affiliationSplitter, affList));
+                entity.setAuthors(String.join(authorSplitter, authorNameList));
             }
             paperRepository.save(entity.VO2PO());
         }
@@ -151,7 +153,7 @@ public class PaperServiceImpl implements PaperService {
         if (hash.containsKey("affiliation")) {
             papers = papers.stream().filter((Paper paper) -> {
                 String line = paper.getAffiliations();
-                Set<String> targetSet = Arrays.stream(line.split(";"))
+                Set<String> targetSet = Arrays.stream(line.split(affiliationSplitter))
                         .map(String::trim)
                         .collect(Collectors.toSet());
                 for (String v : hash.get("affiliation")) {
@@ -172,7 +174,7 @@ public class PaperServiceImpl implements PaperService {
         //author
         final Map<String, Integer> authorHash = new HashMap<>();
         papers.forEach((Paper p) -> {
-            Set<String> authorNames = Arrays.stream(p.getAuthors().split(";"))
+            Set<String> authorNames = Arrays.stream(p.getAuthors().split(authorSplitter))
                     .map(String::trim)
                     .collect(Collectors.toSet());
             for (String name : authorNames) {
@@ -200,7 +202,7 @@ public class PaperServiceImpl implements PaperService {
         //affiliation
         final Map<String, Integer> affiliationHash = new HashMap<>();
         papers.forEach((Paper p) -> {
-            Set<String> affiliationNames = Arrays.stream(p.getAffiliations().split(";"))
+            Set<String> affiliationNames = Arrays.stream(p.getAffiliations().split(affiliationSplitter))
                     .map(String::trim)
                     .filter((String s) -> !s.equals(""))
                     .collect(Collectors.toSet());

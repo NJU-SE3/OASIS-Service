@@ -1,4 +1,10 @@
-package com.example.oasisdocument.repository;
+package com.example.oasisdocument.repository.analysis;
 
-public interface AuthorCitationRepo {
+import com.example.oasisdocument.docs.analysis.AuthorCitation;
+import org.springframework.data.mongodb.repository.MongoRepository;
+
+import java.math.BigInteger;
+
+public interface AuthorCitationRepo extends MongoRepository<AuthorCitation, BigInteger> {
+
 }

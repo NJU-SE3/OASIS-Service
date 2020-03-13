@@ -10,8 +10,6 @@ public class BaseDoc implements Serializable {
 	@Id
 	private String id;
 
-	private String body;
-
 	public String getId() {
 		return id;
 	}
@@ -20,11 +18,4 @@ public class BaseDoc implements Serializable {
 		this.id = id;
 	}
 
-	public String getBody() {
-		return body;
-	}
-
-	public void setBody(String body) {
-		this.body = body;
-	}
 }

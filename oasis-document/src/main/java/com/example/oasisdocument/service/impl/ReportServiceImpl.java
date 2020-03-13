@@ -1,7 +1,11 @@
 package com.example.oasisdocument.service.impl;
 
+import com.example.oasisdocument.docs.Author;
 import com.example.oasisdocument.docs.Paper;
+import com.example.oasisdocument.docs.analysis.AuthorCitation;
+import com.example.oasisdocument.repository.AuthorRepository;
 import com.example.oasisdocument.repository.PaperRepository;
+import com.example.oasisdocument.repository.analysis.AuthorCitationRepo;
 import com.example.oasisdocument.service.ReportService;
 import com.example.oasisdocument.utils.PageHelper;
 import com.example.oasisdocument.utils.Pair;
@@ -20,6 +24,8 @@ import java.util.stream.Collectors;
 
 @Service
 public class ReportServiceImpl implements ReportService {
+    private static final String authorSplitter = ",";
+    private static final String affiliationSplitter = ",";
     @Autowired
     private MongoTemplate mongoTemplate;
 
@@ -28,6 +34,12 @@ public class ReportServiceImpl implements ReportService {
 
     @Autowired
     private PageHelper pageHelper;
+
+    @Autowired
+    private AuthorRepository authorRepository;
+
+    @Autowired
+    private AuthorCitationRepo authorCitationRepo;
 
     @Override
     @Cacheable(cacheNames = "getWordCloudOfYear", key = "#year", unless = "#result==null")
@@ -40,7 +52,7 @@ public class ReportServiceImpl implements ReportService {
                 new ConcurrentHashMap<>();
         //construct
         for (Paper paper : papers) {
-            String[] terms = paper.getTerms().split(";");
+            List<String> terms = Paper.getAllTerms(paper);
             for (String s : terms) {
                 s = s.trim();
                 map.put(s, map.getOrDefault(s, 0) + 1);
@@ -82,35 +94,14 @@ public class ReportServiceImpl implements ReportService {
     @Override
     @Cacheable(cacheNames = "getAuthorOfMostPaper", key = "#rank", unless = "#result==null")
     public List<Pair<String, List<Paper>>> getAuthorOfMostPaper(int rank) {
-        //find authors
-        Set<String> authorNames = new HashSet<>();
-        paperRepository.findAll()
-                .forEach((Paper p) -> {
-                    String[] names = p.getAuthors().split(";");
-                    for (String name : names) {
-                        name = name.trim();
-                        if (!name.isEmpty())
-                            authorNames.add(name);
-                    }
-                });
-        Map<String, List<Paper>> mapAuthorPapers = new HashMap<>();
-        List<Pair<String, Integer>> pairs = new LinkedList<>();
-
-        for (String name : authorNames) {
-            List<Paper> papers = getPapersViaAuthor(name);
-            int sum = 0 ;
-            for(Paper paper : papers) sum += paper.getCitationCount();
-            mapAuthorPapers.put(name, papers);
-            pairs.add(new Pair<>(name, sum));
+        Query query = new Query();
+        query.with(new Sort(Sort.Direction.DESC, "citationCount"));
+        List<AuthorCitation> buffers = mongoTemplate.find(query.with(PageRequest.of(0, rank)), AuthorCitation.class);
+        List<Pair<String, List<Paper>>> ans = new LinkedList<>();
+        for (AuthorCitation buf : buffers) {
+            ans.add(new Pair<>(buf.getAuthorName(), buf.getPapers()));
         }
-        pairs.sort((o1, o2) -> o2.getSecond() - o1.getSecond());
-        List<Pair<String, List<Paper>>> res =
-                new LinkedList<>();
-        for (int i = 0; i < Math.min(rank, pairs.size()); ++i) {
-            String name = pairs.get(i).getFirst();
-            res.add(new Pair<>(name, mapAuthorPapers.get(name)));
-        }
-        return res;
+        return ans;
     }
 
     @Override
@@ -124,5 +115,20 @@ public class ReportServiceImpl implements ReportService {
         return new LinkedList<>(ans);
     }
 
-
+    @Override
+    public void constructPaperCitations() {
+        //find authors
+        List<Author> authorList = authorRepository.findAll();
+        for (Author author : authorList) {
+            String name = author.getAuthorName();
+            List<Paper> papers = getPapersViaAuthor(name);
+            int sum = 0;
+            for (Paper paper : papers) sum += paper.getCitationCount();
+            AuthorCitation buf = new AuthorCitation();
+            buf.setAuthorName(name);
+            buf.setPapers(papers);
+            buf.setCitationCount(sum);
+            authorCitationRepo.save(buf);
+        }
+    }
 }

@@ -7,10 +7,7 @@ import com.example.oasisdocument.docs.Paper;
 import com.example.oasisdocument.service.ReportService;
 import com.example.oasisdocument.utils.Pair;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -45,12 +42,17 @@ public class ReportController {
                 .map((Pair<String, List<Paper>> pair) -> {
                     List<Paper> papers = pair.getSecond();
                     JSONObject object = new JSONObject();
-                    object.put("author",pair.getFirst());
-                    object.put("papers",papers.stream()
+                    object.put("author", pair.getFirst());
+                    object.put("papers", papers.stream()
                             .map(this::simplifyPaper)
                             .collect(Collectors.toCollection(JSONArray::new)));
                     return object;
                 }).collect(Collectors.toCollection(JSONArray::new));
+    }
+
+    @PostMapping("/author/rank/paper_cnt")
+    public void constructPaperCitations() {
+        reportService.constructPaperCitations();
     }
 
     //被引用数最多的论文TOP K

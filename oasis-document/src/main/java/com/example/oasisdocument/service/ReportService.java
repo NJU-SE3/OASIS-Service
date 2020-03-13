@@ -26,7 +26,13 @@ public interface ReportService {
      */
     List<Pair<Integer, Integer>> getPaperTrend();
 
+    /**
+     * 获取引用数最多作者排名
+     * */
     List<Pair<String, List<Paper>>> getAuthorOfMostPaper(int rank);
 
+
     List<Paper> getPapersViaAuthor(String authorName);
+
+    void constructPaperCitations();
 }
