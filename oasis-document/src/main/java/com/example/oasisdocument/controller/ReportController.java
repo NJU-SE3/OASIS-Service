@@ -3,7 +3,7 @@ package com.example.oasisdocument.controller;
 
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
-import com.example.oasisdocument.docs.Paper;
+import com.example.oasisdocument.model.docs.Paper;
 import com.example.oasisdocument.service.ReportService;
 import com.example.oasisdocument.utils.Pair;
 import org.springframework.beans.factory.annotation.Autowired;

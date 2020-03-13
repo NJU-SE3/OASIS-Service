@@ -1,6 +1,6 @@
 package com.example.oasisdocument.repository.docs;
 
-import com.example.oasisdocument.docs.Authority;
+import com.example.oasisdocument.model.docs.Authority;
 import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.stereotype.Repository;
 

@@ -1,4 +1,4 @@
-package com.example.oasisdocument.docs.nodes;
+package com.example.oasisdocument.model.graph.nodes;
 
 import org.neo4j.ogm.annotation.GeneratedValue;
 import org.neo4j.ogm.annotation.Id;

@@ -1,6 +1,6 @@
 package com.example.oasisdocument.service.impl;
 
-import com.example.oasisdocument.docs.Author;
+import com.example.oasisdocument.model.docs.Author;
 import com.example.oasisdocument.repository.docs.AuthorRepository;
 import com.example.oasisdocument.service.AuthorService;
 import org.springframework.beans.factory.annotation.Autowired;

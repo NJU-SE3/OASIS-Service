@@ -1,4 +1,4 @@
-package com.example.oasisdocument.docs;
+package com.example.oasisdocument.model.docs;
 
 import javax.persistence.ExcludeSuperclassListeners;
 import javax.persistence.GeneratedValue;

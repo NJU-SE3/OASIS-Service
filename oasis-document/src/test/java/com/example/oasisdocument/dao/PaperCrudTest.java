@@ -1,6 +1,6 @@
 package com.example.oasisdocument.dao;
 
-import com.example.oasisdocument.docs.Paper;
+import com.example.oasisdocument.model.docs.Paper;
 import com.example.oasisdocument.repository.docs.PaperRepository;
 import org.junit.Test;
 import org.junit.runner.RunWith;

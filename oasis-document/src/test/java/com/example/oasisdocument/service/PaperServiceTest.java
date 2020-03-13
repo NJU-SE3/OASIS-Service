@@ -1,7 +1,6 @@
 package com.example.oasisdocument.service;
 
-import com.example.oasisdocument.docs.Paper;
-import com.example.oasisdocument.exceptions.BadReqException;
+import com.example.oasisdocument.model.docs.Paper;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;

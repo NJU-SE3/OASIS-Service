@@ -1,4 +1,4 @@
-package com.example.oasisdocument.docs;
+package com.example.oasisdocument.model.docs;
 
 import org.springframework.data.mongodb.core.mapping.Document;
 

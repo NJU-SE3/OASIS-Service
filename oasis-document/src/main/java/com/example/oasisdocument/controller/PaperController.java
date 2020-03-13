@@ -1,10 +1,10 @@
 package com.example.oasisdocument.controller;
 
 import com.alibaba.fastjson.JSONObject;
-import com.example.oasisdocument.docs.VO.PaperInsertVO;
-import com.example.oasisdocument.docs.Author;
-import com.example.oasisdocument.docs.Paper;
 import com.example.oasisdocument.exceptions.BadReqException;
+import com.example.oasisdocument.model.VO.PaperInsertVO;
+import com.example.oasisdocument.model.docs.Author;
+import com.example.oasisdocument.model.docs.Paper;
 import com.example.oasisdocument.service.AuthorService;
 import com.example.oasisdocument.service.PaperService;
 import com.example.oasisdocument.utils.CookieUtil;
@@ -122,9 +122,22 @@ public class PaperController {
     }
 
     /**
+     * 获取指定的查询id下的论文summary
+     *
+     * @param qid : query id
+     */
+    @GetMapping(path = "/paper/summary")
+    public JSONObject getPaperSummary(@CookieValue(name = "qid") String qid,
+                                      HttpServletRequest request) {
+        //fetch list
+        List<Paper> list = (List<Paper>) request.getSession().getAttribute(qid);
+        return paperService.papersSummary(list);
+    }
+
+    /**
      * 添加新paper接口
      *
-     * @param paper : paper实体
+     * @param paperVO : paper实体
      */
     @PostMapping(path = "/paper")
     public void insertPaper(@RequestBody JSONObject paperVO) {
@@ -136,6 +149,11 @@ public class PaperController {
         }
     }
 
+    /**
+     * 作者添加接口
+     *
+     * @param author : author实体
+     */
     @PostMapping(path = "/author")
     public void insertAuthor(@RequestBody JSONObject author) {
         try {
@@ -144,18 +162,5 @@ public class PaperController {
         } catch (Exception e) {
             e.printStackTrace();
         }
-    }
-
-    /**
-     * 获取指定的查询id下的论文summary
-     *
-     * @param qid : query id
-     */
-    @GetMapping(path = "/paper/summary")
-    public JSONObject getPaperSummary(@CookieValue(name = "qid") String qid,
-                                      HttpServletRequest request) {
-        //fetch list
-        List<Paper> list = (List<Paper>) request.getSession().getAttribute(qid);
-        return paperService.papersSummary(list);
     }
 }

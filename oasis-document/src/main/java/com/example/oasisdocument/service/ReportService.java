@@ -1,7 +1,7 @@
 package com.example.oasisdocument.service;
 
 
-import com.example.oasisdocument.docs.Paper;
+import com.example.oasisdocument.model.docs.Paper;
 import com.example.oasisdocument.utils.Pair;
 
 import java.util.List;

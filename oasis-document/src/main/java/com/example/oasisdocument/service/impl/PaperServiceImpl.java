@@ -1,9 +1,9 @@
 package com.example.oasisdocument.service.impl;
 
 import com.alibaba.fastjson.JSONObject;
-import com.example.oasisdocument.docs.Author;
-import com.example.oasisdocument.docs.Paper;
-import com.example.oasisdocument.docs.VO.PaperInsertVO;
+import com.example.oasisdocument.model.docs.Author;
+import com.example.oasisdocument.model.docs.Paper;
+import com.example.oasisdocument.model.VO.PaperInsertVO;
 import com.example.oasisdocument.exceptions.BadReqException;
 import com.example.oasisdocument.repository.docs.AuthorRepository;
 import com.example.oasisdocument.repository.docs.PaperRepository;

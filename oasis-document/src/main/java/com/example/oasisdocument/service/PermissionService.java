@@ -1,8 +1,7 @@
 package com.example.oasisdocument.service;
 
-import com.example.oasisdocument.docs.Authority;
+import com.example.oasisdocument.model.docs.Authority;
 
-import java.util.Collection;
 import java.util.List;
 
 public interface PermissionService {

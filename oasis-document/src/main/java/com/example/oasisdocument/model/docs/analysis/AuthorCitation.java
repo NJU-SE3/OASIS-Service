@@ -1,7 +1,7 @@
-package com.example.oasisdocument.docs.analysis;
+package com.example.oasisdocument.model.docs.analysis;
 
-import com.example.oasisdocument.docs.BaseEntity;
-import com.example.oasisdocument.docs.Paper;
+import com.example.oasisdocument.model.docs.BaseEntity;
+import com.example.oasisdocument.model.docs.Paper;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.util.List;

@@ -1,11 +1,9 @@
-package com.example.oasisdocument.docs.VO;
+package com.example.oasisdocument.model.VO;
 
 import com.alibaba.fastjson.annotation.JSONField;
-import com.example.oasisdocument.docs.BaseEntity;
-import com.example.oasisdocument.docs.Paper;
+import com.example.oasisdocument.model.docs.BaseEntity;
+import com.example.oasisdocument.model.docs.Paper;
 
-import java.io.Serializable;
-import java.math.BigInteger;
 import java.util.List;
 
 public class PaperInsertVO extends BaseEntity {
