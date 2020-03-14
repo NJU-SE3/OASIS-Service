@@ -1,16 +1,19 @@
 package com.example.oasisdocument.model.docs;
 
 import org.springframework.data.mongodb.core.mapping.Document;
+import org.springframework.data.redis.core.index.Indexed;
 
 @Document(collection = "authors")
 public class Author extends BaseEntity {
+	@Indexed
 	private String authorName;
+	@Indexed
 	private String affiliationName;
-	private String coAuthors;
+	private String coAuthors;           //协同作者 , 为后续分析使用
 	private int articleCount;
-	private String paperTrends;
+	private String paperTrends;        //趋势
 	private String bioParagraphs;
-	private String field;
+	private String field;            //领域summary
 	private String terms;
 	private String photoUrl;
 

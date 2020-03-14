@@ -2,6 +2,7 @@ package com.example.oasisdocument.controller;
 
 import com.alibaba.fastjson.JSONObject;
 import com.example.oasisdocument.exceptions.BadReqException;
+import com.example.oasisdocument.model.VO.PaperBriefVO;
 import com.example.oasisdocument.model.VO.PaperInsertVO;
 import com.example.oasisdocument.model.docs.Author;
 import com.example.oasisdocument.model.docs.Paper;
@@ -19,6 +20,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/query")
@@ -60,7 +62,7 @@ public class PaperController {
             HttpServletResponse response) {
         //set id
         String qid = UUID.randomUUID().toString().replaceAll("-", "");
-        List<Paper> list = paperService.queryPaper(query.toLowerCase(),
+        List<PaperBriefVO> list = paperService.queryPaper(query.toLowerCase(),
                 returnFacets.toLowerCase());
         if (list.isEmpty()) {
             JSONObject ans = new JSONObject();
@@ -69,7 +71,7 @@ public class PaperController {
             return ans;
         }
         //分页
-        List<Paper> pagedList = pageHelper.of(list, pageSize, pageNum);
+        List<PaperBriefVO> pagedList = pageHelper.of(list, pageSize, pageNum);
         if (null == pagedList) throw new BadReqException();
         request.getSession().setAttribute(qid, list);
         cookieUtil.set(response, "qid", qid);
@@ -96,7 +98,7 @@ public class PaperController {
         HttpSession session = request.getSession();
         try {
             //查询全集
-            List<Paper> list = (List<Paper>) session.getAttribute(qid);
+            List<PaperBriefVO> list = (List<PaperBriefVO>) session.getAttribute(qid);
             //添加新限制
             list = paperService.queryPaperRefine(list, refinements);
             if (list.isEmpty()) {
@@ -106,7 +108,7 @@ public class PaperController {
                 return ans;
             }
             //需要用到分页信息
-            List<Paper> ans = pageHelper.of(list, pageSize, pageNum);
+            List<PaperBriefVO> ans = pageHelper.of(list, pageSize, pageNum);
             if (null == ans) throw new BadReqException();
             JSONObject t = new JSONObject();
             t.put("papers", ans);
@@ -130,7 +132,7 @@ public class PaperController {
     public JSONObject getPaperSummary(@CookieValue(name = "qid") String qid,
                                       HttpServletRequest request) {
         //fetch list
-        List<Paper> list = (List<Paper>) request.getSession().getAttribute(qid);
+        List<PaperBriefVO> list = (List<PaperBriefVO>) request.getSession().getAttribute(qid);
         return paperService.papersSummary(list);
     }
 

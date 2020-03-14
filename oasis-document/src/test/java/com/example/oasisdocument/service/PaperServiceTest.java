@@ -1,5 +1,6 @@
 package com.example.oasisdocument.service;
 
+import com.example.oasisdocument.model.VO.PaperBriefVO;
 import com.example.oasisdocument.model.docs.Paper;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -25,7 +26,7 @@ public class PaperServiceTest {
     @Test
     public void queryTest1() {
         String key = "java";
-        List<Paper> papers = paperService.queryPaper(key, "all");
+        List<PaperBriefVO> papers = paperService.queryPaper(key, "all");
         assertNotNull(papers);
         assertNotEquals(0, papers.size());
     }
@@ -33,7 +34,7 @@ public class PaperServiceTest {
     @Test
     public void queryTest2() {
         String key = "domain";
-        List<Paper> papers = paperService.queryPaper(key, "all");
+        List<PaperBriefVO> papers = paperService.queryPaper(key, "all");
         assertNotNull(papers);
         assertNotEquals(0, papers.size());
     }
@@ -41,7 +42,7 @@ public class PaperServiceTest {
     @Test
     public void queryTest3() {
         String key = "java";
-        List<Paper> papers = paperService.queryPaper(key, "all");
+        List<PaperBriefVO> papers = paperService.queryPaper(key, "all");
         assertNotNull(papers);
         assertNotEquals(0, papers.size());
         //限定authors查询
@@ -55,7 +56,7 @@ public class PaperServiceTest {
         List<String> fields = Arrays.asList("title", "conferences", "terms",
                 "keywords", "authors", "affiliations");
         for (String f : fields) {
-            List<Paper> papers = paperService.queryPaper("java",
+            List<PaperBriefVO> papers = paperService.queryPaper("java",
                     f);
             assertNotNull(papers);
         }
@@ -63,7 +64,7 @@ public class PaperServiceTest {
 
     @Test
     public void refineTest1() {
-        List<Paper> papers = new LinkedList<>();
+        List<PaperBriefVO> papers = new LinkedList<>();
         List<String> refinements = Arrays.asList(new String[]{"author:John"});
         papers = paperService.queryPaperRefine(papers, refinements);
         assertNotNull(papers);

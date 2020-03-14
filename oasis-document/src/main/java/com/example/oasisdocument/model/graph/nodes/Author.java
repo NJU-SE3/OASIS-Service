@@ -12,32 +12,38 @@ import java.util.List;
 /**
  * 作者实体
  */
-
+//id,preferredName,firstName,lastName,affiliation,coAuthors,articleCount,trends,bioParagraphs,publicTopic,terms,photoUrl
 @NodeEntity
 public class Author implements Serializable {
 	@Id
 	@GeneratedValue
 	private Long id;
 
+	private String authorName;
+
+	private int articleCount;        //发表论文数量
+
+	private String bioParagraphs;    //简介
+
+	private String publicTopic;        //关键词
+
+	private String photoUrl;        //avatar
+
+	//Relations
 	@Relationship(type = "author_publish", direction = Relationship.OUTGOING)
 	private List<Paper> papers;
-
-	@Relationship(type = "author_belong_affiliation", direction = Relationship.INCOMING)
-	private Affiliation affiliation;
 
 	public void publish(Paper paper) {
 		if (papers == null) this.papers = new LinkedList<>();
 		this.papers.add(paper);
 	}
 
-	private String name;
-
-	public String getName() {
-		return name;
+	public String getAuthorName() {
+		return authorName;
 	}
 
-	public void setName(String name) {
-		this.name = name;
+	public void setAuthorName(String authorName) {
+		this.authorName = authorName;
 	}
 
 	public List<Paper> getPapers() {
@@ -56,11 +62,35 @@ public class Author implements Serializable {
 		this.id = id;
 	}
 
-	public Affiliation getAffiliation() {
-		return affiliation;
+	public int getArticleCount() {
+		return articleCount;
 	}
 
-	public void setAffiliation(Affiliation affiliation) {
-		this.affiliation = affiliation;
+	public void setArticleCount(int articleCount) {
+		this.articleCount = articleCount;
+	}
+
+	public String getBioParagraphs() {
+		return bioParagraphs;
+	}
+
+	public void setBioParagraphs(String bioParagraphs) {
+		this.bioParagraphs = bioParagraphs;
+	}
+
+	public String getPublicTopic() {
+		return publicTopic;
+	}
+
+	public void setPublicTopic(String publicTopic) {
+		this.publicTopic = publicTopic;
+	}
+
+	public String getPhotoUrl() {
+		return photoUrl;
+	}
+
+	public void setPhotoUrl(String photoUrl) {
+		this.photoUrl = photoUrl;
 	}
 }

@@ -1,6 +1,7 @@
 package com.example.oasisdocument.service.impl;
 
 import com.alibaba.fastjson.JSONObject;
+import com.example.oasisdocument.model.VO.PaperBriefVO;
 import com.example.oasisdocument.model.docs.Author;
 import com.example.oasisdocument.model.docs.Paper;
 import com.example.oasisdocument.model.VO.PaperInsertVO;
@@ -67,24 +68,25 @@ public class PaperServiceImpl implements PaperService {
 
     @Override
     @Cacheable(cacheNames = "paper", unless = "#result==null")
-    public List<Paper> queryPaper(final String key, final String returnFacets)
+    public List<PaperBriefVO> queryPaper(final String key, final String returnFacets)
             throws BadReqException {
         Criteria criteria = fetchCriteriaViaKey(key, returnFacets);
         List<Paper> papers = mongoTemplate.find(new Query(criteria), Paper.class);
         if (returnFacets.equals("all"))
             papers.sort(new PaperRanker(key));
-        return papers;
+        return papers.stream().map(PaperBriefVO::PO2VO).collect(Collectors.toList());
     }
 
     @Override
     public void insert(PaperInsertVO entity) {
+        List<Author> authors = new LinkedList<>();
         if (paperRepository.findAllById(entity.getId()).isEmpty()) {
             List<Long> array = entity.getAuthorIds();
             if (!array.isEmpty()) {
                 List<String> affList = new LinkedList<>(),
                         authorNameList = new LinkedList<>();
                 for (Long authorId : array) {
-                    List<Author> authors = authorRepository.findAllById(BigInteger.valueOf(authorId));
+                    authors = authorRepository.findAllById(BigInteger.valueOf(authorId));
                     if (!authors.isEmpty()) {
                         Author author = authors.get(0);
                         String aff = author.getAffiliationName();
@@ -96,18 +98,20 @@ public class PaperServiceImpl implements PaperService {
                 entity.setAffiliations(String.join(affiliationSplitter, affList));
                 entity.setAuthors(String.join(authorSplitter, authorNameList));
             }
-            paperRepository.save(entity.VO2PO());
+            Paper paper = entity.VO2PO();
+            paper.setAuthorList(authors);
+            paperRepository.save(paper);
         }
     }
 
     @Override
-    public List<Paper> queryPaperRefine(List<Paper> papers, List<String> refinements) {
+    public List<PaperBriefVO> queryPaperRefine(List<PaperBriefVO> papers, List<String> refinements) {
         //conference , term , author , affiliation , year
         Map<String, List<String>> hash = refineAnalysis(refinements);
         if (papers == null || papers.isEmpty()) return new LinkedList<>();
         if (hash.containsKey("year")) {
             papers = papers.stream()
-                    .filter((Paper paper) -> {
+                    .filter((PaperBriefVO paper) -> {
                         String val = hash.get("year").get(0);
                         String[] set = val.split("_");
                         if (set.length != 2) throw new BadReqException();
@@ -118,7 +122,7 @@ public class PaperServiceImpl implements PaperService {
             if (papers.isEmpty()) return papers;
         }
         if (hash.containsKey("author")) {
-            papers = papers.stream().filter((Paper paper) -> {
+            papers = papers.stream().filter((PaperBriefVO paper) -> {
                 String line = paper.getAuthors();
                 for (String v : hash.get("author")) {
                     if (line.contains(v)) return true;
@@ -129,7 +133,7 @@ public class PaperServiceImpl implements PaperService {
         }
 
         if (hash.containsKey("term")) {
-            papers = papers.stream().filter((Paper paper) -> {
+            papers = papers.stream().filter((PaperBriefVO paper) -> {
                 String line = paper.getTerms();
                 Set<String> targetSet = Arrays.stream(line.split(";"))
                         .map(String::trim).collect(Collectors.toSet());
@@ -141,7 +145,7 @@ public class PaperServiceImpl implements PaperService {
             if (papers.isEmpty()) return papers;
         }
         if (hash.containsKey("conference")) {
-            papers = papers.stream().filter((Paper paper) -> {
+            papers = papers.stream().filter((PaperBriefVO paper) -> {
                 String line = paper.getConference();
                 for (String v : hash.get("conference")) {
                     if (line.contains(v)) return true;
@@ -151,7 +155,7 @@ public class PaperServiceImpl implements PaperService {
             if (papers.isEmpty()) return papers;
         }
         if (hash.containsKey("affiliation")) {
-            papers = papers.stream().filter((Paper paper) -> {
+            papers = papers.stream().filter((PaperBriefVO paper) -> {
                 String line = paper.getAffiliations();
                 Set<String> targetSet = Arrays.stream(line.split(affiliationSplitter))
                         .map(String::trim)
@@ -166,14 +170,14 @@ public class PaperServiceImpl implements PaperService {
     }
 
     @Override
-    public JSONObject papersSummary(List<Paper> papers) {
+    public JSONObject papersSummary(List<PaperBriefVO> papers) {
         //conference , term , author , affiliation
         JSONObject ans = new JSONObject();
         final int limit = 5;
         if (papers == null || papers.isEmpty()) return ans;
         //author
         final Map<String, Integer> authorHash = new HashMap<>();
-        papers.forEach((Paper p) -> {
+        papers.forEach((PaperBriefVO p) -> {
             Set<String> authorNames = Arrays.stream(p.getAuthors().split(authorSplitter))
                     .map(String::trim)
                     .collect(Collectors.toSet());
@@ -184,14 +188,14 @@ public class PaperServiceImpl implements PaperService {
         ans.put("author", transformHash(authorHash, 5));
         //conference
         final Map<String, Integer> conferHash = new HashMap<>();
-        papers.forEach((Paper p) -> {
+        papers.forEach((PaperBriefVO p) -> {
             String name = p.getConference();
             conferHash.put(name, conferHash.getOrDefault(name, 0) + 1);
         });
         ans.put("conference", transformHash(conferHash, 5));
         //term
         final Map<String, Integer> termHash = new HashMap<>();
-        papers.forEach((Paper p) -> {
+        papers.forEach((PaperBriefVO p) -> {
             Set<String> termNames = Arrays.stream(p.getTerms().split(";"))
                     .map(String::trim).collect(Collectors.toSet());
             for (String name : termNames) {
@@ -201,7 +205,7 @@ public class PaperServiceImpl implements PaperService {
         ans.put("term", transformHash(termHash, 10));
         //affiliation
         final Map<String, Integer> affiliationHash = new HashMap<>();
-        papers.forEach((Paper p) -> {
+        papers.forEach((PaperBriefVO p) -> {
             Set<String> affiliationNames = Arrays.stream(p.getAffiliations().split(affiliationSplitter))
                     .map(String::trim)
                     .filter((String s) -> !s.equals(""))

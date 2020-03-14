@@ -2,6 +2,8 @@ spring:
   data:
       mongodb:
         uri: mongodb://root:mongo@localhost:27017/se
+      neo4j:
+            uri: http://localhost:7474
   profiles:
     active: dev
   h2:

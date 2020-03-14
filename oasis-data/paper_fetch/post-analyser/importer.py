@@ -1,4 +1,5 @@
 import json
+
 import pandas as pd
 import requests
 
@@ -18,7 +19,6 @@ def import_papers(df):
                     author_ids.append(author['id'])
 
             ref_cnt, cit_cnt = len(eval(row['references'])), len(eval(row['citations']))
-            # TODO: 去除startPage , endPage , terms
             paper = dict(
                 id=row['id'],
                 title=str(row['title']).encode('ascii', 'ignore').decode('ascii'),
@@ -27,8 +27,8 @@ def import_papers(df):
                 terms=row['keywords'],
                 keywords='',
                 year=row['year'],
-                references=row['references'],
-                citations=row['citations'],
+                references=eval(row['references']),
+                citations=eval(row['citations']),
                 pdfLink='https://ieeexplore.ieee.org/document/' + str(row['id']),
                 authorIds=author_ids,
                 authors=author_names,
@@ -56,7 +56,6 @@ def import_authors(df):
         )
         requests.post('http://localhost:8081/query/author', data=json.dumps(author),
                       headers={'Content-Type': 'application/json'})
-
 
 if __name__ == '__main__':
     df = pd.read_csv('/Users/mac/Documents/repos/SE3/OASIS-Service/oasis-data/paper_fetch/resources/papers/paper.csv')

@@ -1,9 +1,12 @@
 package com.example.oasisdocument.controller;
 
+import com.alibaba.fastjson.JSONObject;
+import com.example.oasisdocument.model.VO.AuthorNodeVO;
 import com.example.oasisdocument.service.GraphService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -16,10 +19,14 @@ public class PaperGraphController {
 	@Autowired
 	private GraphService graphService;
 
-	//构建图数据库
-	@PostMapping("/")
-	public void constructGraph() {
-		//根据已有的mongodb数据库进行数据的更新
-		graphService.constructGraph();
+	//import author.csv
+	@PostMapping("/authors")
+	public void importAuthors() {
+		try {
+			//反序列化
+			graphService.importAuthorBasic();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 }

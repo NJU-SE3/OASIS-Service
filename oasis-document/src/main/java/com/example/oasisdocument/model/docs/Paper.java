@@ -4,6 +4,7 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.alibaba.fastjson.annotation.JSONField;
+import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
 import org.springframework.data.redis.core.index.Indexed;
@@ -43,6 +44,12 @@ public class Paper extends BaseEntity {
     @Indexed
     @JSONField(name = "affiliations")
     private String affiliations; //机构
+
+    @DBRef(lazy = true)
+    private List<Author> authorList;
+
+    private List<Long> citations;
+    private List<Long> references;
 
     public Paper() {
     }
@@ -152,4 +159,27 @@ public class Paper extends BaseEntity {
     }
 
 
+    public List<Author> getAuthorList() {
+        return authorList;
+    }
+
+    public void setAuthorList(List<Author> authorList) {
+        this.authorList = authorList;
+    }
+
+    public List<Long> getCitations() {
+        return citations;
+    }
+
+    public void setCitations(List<Long> citations) {
+        this.citations = citations;
+    }
+
+    public List<Long> getReferences() {
+        return references;
+    }
+
+    public void setReferences(List<Long> references) {
+        this.references = references;
+    }
 }

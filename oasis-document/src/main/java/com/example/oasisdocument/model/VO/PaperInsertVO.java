@@ -34,6 +34,9 @@ public class PaperInsertVO extends BaseEntity {
 
 	private List<Long> authorIds;
 
+	private List<Long> citations;
+	private List<Long> references;
+
 	public PaperInsertVO() {
 	}
 
@@ -148,6 +151,24 @@ public class PaperInsertVO extends BaseEntity {
 		paper.setYear(this.year);
 		paper.setAuthors(this.authors);
 		paper.setAffiliations(this.affiliations);
+		paper.setReferences(this.references);
+		paper.setCitations(this.citations);
 		return paper;
+	}
+
+	public List<Long> getCitations() {
+		return citations;
+	}
+
+	public void setCitations(List<Long> citations) {
+		this.citations = citations;
+	}
+
+	public List<Long> getReferences() {
+		return references;
+	}
+
+	public void setReferences(List<Long> references) {
+		this.references = references;
 	}
 }

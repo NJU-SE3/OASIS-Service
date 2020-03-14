@@ -15,7 +15,9 @@ public class Affiliation implements Serializable {
 	@GeneratedValue
 	private Long id;
 
-	@Relationship(type = "affiliation_own", direction = Relationship.OUTGOING)
+	private String affiliationName;
+
+	@Relationship(type = "affiliation_author")
 	private List<Author> authorList;
 
 	public void addAuthor(Author author) {
@@ -38,4 +40,13 @@ public class Affiliation implements Serializable {
 	public void setAuthorList(List<Author> authorList) {
 		this.authorList = authorList;
 	}
+
+	public String getAffiliationName() {
+		return affiliationName;
+	}
+
+	public void setAffiliationName(String affiliationName) {
+		this.affiliationName = affiliationName;
+	}
+
 }
