@@ -5,7 +5,6 @@ import com.example.oasisdocument.exceptions.BadReqException;
 import com.example.oasisdocument.model.VO.PaperBriefVO;
 import com.example.oasisdocument.model.VO.PaperInsertVO;
 import com.example.oasisdocument.model.docs.Author;
-import com.example.oasisdocument.model.docs.Paper;
 import com.example.oasisdocument.service.AuthorService;
 import com.example.oasisdocument.service.PaperService;
 import com.example.oasisdocument.utils.CookieUtil;
@@ -20,7 +19,6 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.util.List;
 import java.util.UUID;
-import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/query")
@@ -145,7 +143,7 @@ public class PaperController {
     public void insertPaper(@RequestBody JSONObject paperVO) {
         try {
             PaperInsertVO entity = paperVO.toJavaObject(PaperInsertVO.class);
-            paperService.insert(entity);
+            paperService.insertPaperVOEntity(entity);
         } catch (Exception e) {
             e.printStackTrace();
         }

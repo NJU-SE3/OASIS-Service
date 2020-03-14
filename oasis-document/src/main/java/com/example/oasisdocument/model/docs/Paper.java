@@ -9,8 +9,10 @@ import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
 import org.springframework.data.redis.core.index.Indexed;
 
+import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Set;
 
 @Document(collection = "papers")
 public class Paper extends BaseEntity {
@@ -54,8 +56,8 @@ public class Paper extends BaseEntity {
     public Paper() {
     }
 
-    public static List<String> getAllTerms(Paper entity) {
-        List<String> ans = new LinkedList<>();
+    public static Set<String> getAllTerms(Paper entity) {
+        Set<String> ans = new HashSet<>();
         JSONObject object = new JSONObject();
         try {
             object = (JSONObject) JSON.parse(entity.terms);

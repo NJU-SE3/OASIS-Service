@@ -52,7 +52,7 @@ public class ReportServiceImpl implements ReportService {
                 new ConcurrentHashMap<>();
         //construct
         for (Paper paper : papers) {
-            List<String> terms = Paper.getAllTerms(paper);
+            Set<String> terms = Paper.getAllTerms(paper);
             for (String s : terms) {
                 s = s.trim();
                 map.put(s, map.getOrDefault(s, 0) + 1);

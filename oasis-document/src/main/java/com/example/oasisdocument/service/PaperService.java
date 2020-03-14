@@ -12,7 +12,7 @@ public interface PaperService {
 
     List<PaperBriefVO> queryPaperRefine(List<PaperBriefVO> papers, List<String> refinements);
 
-    void insert(PaperInsertVO entity);
+    void insertPaperVOEntity(PaperInsertVO entity);
 
     JSONObject papersSummary(List<PaperBriefVO> papers);
 }

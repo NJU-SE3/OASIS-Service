@@ -55,7 +55,7 @@ public class GraphServiceImpl implements GraphService {
 	public void importAuthorBasic() {
 		for (com.example.oasisdocument.model.docs.Author vo : authorRepository.findAll()) {
 			String affName = vo.getAffiliationName();
-			//insert into aff
+			//insertPaperVOEntity into aff
 			Author author = AuthorNodeVO.VO2PO(vo);
 
 			//save to affiliation

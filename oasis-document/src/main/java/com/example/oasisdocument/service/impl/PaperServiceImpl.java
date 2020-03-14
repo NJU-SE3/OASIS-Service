@@ -1,11 +1,11 @@
 package com.example.oasisdocument.service.impl;
 
 import com.alibaba.fastjson.JSONObject;
+import com.example.oasisdocument.exceptions.BadReqException;
 import com.example.oasisdocument.model.VO.PaperBriefVO;
+import com.example.oasisdocument.model.VO.PaperInsertVO;
 import com.example.oasisdocument.model.docs.Author;
 import com.example.oasisdocument.model.docs.Paper;
-import com.example.oasisdocument.model.VO.PaperInsertVO;
-import com.example.oasisdocument.exceptions.BadReqException;
 import com.example.oasisdocument.repository.docs.AuthorRepository;
 import com.example.oasisdocument.repository.docs.PaperRepository;
 import com.example.oasisdocument.service.PaperService;
@@ -23,8 +23,9 @@ import java.util.stream.Collectors;
 
 @Service
 public class PaperServiceImpl implements PaperService {
-    private static final String authorSplitter = ",";
-    private static final String affiliationSplitter = ",";
+    private static final String authorSplitter = ";";
+    private static final String affiliationSplitter = ";";
+    private static final String termSplitter = ",";
 
     @Autowired
     private PaperRepository paperRepository;
@@ -78,7 +79,7 @@ public class PaperServiceImpl implements PaperService {
     }
 
     @Override
-    public void insert(PaperInsertVO entity) {
+    public void insertPaperVOEntity(PaperInsertVO entity) {
         List<Author> authors = new LinkedList<>();
         if (paperRepository.findAllById(entity.getId()).isEmpty()) {
             List<Long> array = entity.getAuthorIds();
@@ -134,8 +135,7 @@ public class PaperServiceImpl implements PaperService {
 
         if (hash.containsKey("term")) {
             papers = papers.stream().filter((PaperBriefVO paper) -> {
-                String line = paper.getTerms();
-                Set<String> targetSet = Arrays.stream(line.split(";"))
+                Set<String> targetSet = Arrays.stream(paper.getTerms().split(termSplitter))
                         .map(String::trim).collect(Collectors.toSet());
                 for (String v : hash.get("term")) {
                     if (targetSet.contains(v)) return true;
@@ -195,8 +195,8 @@ public class PaperServiceImpl implements PaperService {
         ans.put("conference", transformHash(conferHash, 5));
         //term
         final Map<String, Integer> termHash = new HashMap<>();
-        papers.forEach((PaperBriefVO p) -> {
-            Set<String> termNames = Arrays.stream(p.getTerms().split(";"))
+        papers.forEach((PaperBriefVO paper) -> {
+            Set<String> termNames = Arrays.stream(paper.getTerms().split(termSplitter))
                     .map(String::trim).collect(Collectors.toSet());
             for (String name : termNames) {
                 termHash.put(name, termHash.getOrDefault(name, 0) + 1);
