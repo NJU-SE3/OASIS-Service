@@ -44,6 +44,9 @@ public class AuthorNodeVO implements Serializable {
 		return ans;
 	}
 
+	public AuthorNodeVO() {
+	}
+
 	public static Author VO2PO(com.example.oasisdocument.model.docs.Author vo) {
 		Author ans = new Author();
 		ans.setId(vo.getId().longValue());

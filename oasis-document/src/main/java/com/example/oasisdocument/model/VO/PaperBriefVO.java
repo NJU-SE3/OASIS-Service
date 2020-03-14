@@ -1,14 +1,9 @@
 package com.example.oasisdocument.model.VO;
 
-import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.JSONArray;
-import com.alibaba.fastjson.JSONObject;
 import com.example.oasisdocument.model.docs.Paper;
 
 import java.io.Serializable;
 import java.math.BigInteger;
-import java.util.LinkedList;
-import java.util.List;
 
 public class PaperBriefVO implements Serializable {
 	private BigInteger id;
@@ -38,6 +33,9 @@ public class PaperBriefVO implements Serializable {
 		vo.authors = paper.getAuthors();
 		vo.affiliations = paper.getAffiliations();
 		return vo;
+	}
+
+	public PaperBriefVO() {
 	}
 
 	public BigInteger getId() {

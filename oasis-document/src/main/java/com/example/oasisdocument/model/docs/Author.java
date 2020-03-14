@@ -17,6 +17,8 @@ public class Author extends BaseEntity {
 	private String terms;
 	private String photoUrl;
 
+	public Author(){}
+
 	public String getAuthorName() {
 		return authorName;
 	}

@@ -6,6 +6,8 @@ import org.springframework.data.mongodb.core.mapping.Document;
 public class Authority extends BaseEntity {
     private String authorityName;       //权限
 
+    public Authority(){}
+
     public String getAuthorityName() {
         return authorityName;
     }

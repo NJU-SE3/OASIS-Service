@@ -42,7 +42,7 @@ public class ReportServiceImpl implements ReportService {
     private AuthorCitationRepo authorCitationRepo;
 
     @Override
-    @Cacheable(cacheNames = "getWordCloudOfYear", key = "#year", unless = "#result==null")
+    @Cacheable(cacheNames = "getWordCloudOfYear", unless = "#result==null")
     public List<Pair<String, Integer>> getWordCloudOfYear(int year) {
         //词云的下阈值
         final int lowerBound = 2;
@@ -71,7 +71,6 @@ public class ReportServiceImpl implements ReportService {
 
     //paper citation排名
     @Override
-    @Cacheable(cacheNames = "getPaperRankViaCitation", key = "#rank", unless = "#result==null")
     public List<Paper> getPaperRankViaCitation(int rank) {
         Query query = new Query();
         query.with(new Sort(Sort.Direction.DESC, "citationCount"));
@@ -92,7 +91,7 @@ public class ReportServiceImpl implements ReportService {
     }
 
     @Override
-    @Cacheable(cacheNames = "getAuthorOfMostPaper", key = "#rank", unless = "#result==null")
+    @Cacheable(cacheNames = "getAuthorOfMostPaper", unless = "#result==null")
     public List<Pair<String, List<Paper>>> getAuthorOfMostPaper(int rank) {
         Query query = new Query();
         query.with(new Sort(Sort.Direction.DESC, "citationCount"));
@@ -105,7 +104,6 @@ public class ReportServiceImpl implements ReportService {
     }
 
     @Override
-    @Cacheable(cacheNames = "getPapersViaAuthor", key = "#authorName", unless = "#result==null")
     public List<Paper> getPapersViaAuthor(String authorName) {
         final int limit = 5;
         Query query = new Query(Criteria.where("authors").regex(authorName));

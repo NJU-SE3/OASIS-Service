@@ -13,6 +13,9 @@ public class AuthorCitation extends BaseEntity {
 	private int citationCount;
 	private List<Paper> papers;
 
+	public AuthorCitation() {
+	}
+
 	public String getAuthorName() {
 		return authorName;
 	}

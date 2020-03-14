@@ -7,6 +7,8 @@ public class NormalBuffer extends BaseDoc {
 	private String type;
 	private String content;
 
+	public NormalBuffer(){}
+
 	public String getType() {
 		return type;
 	}

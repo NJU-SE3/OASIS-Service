@@ -68,7 +68,7 @@ public class PaperServiceImpl implements PaperService {
     }
 
     @Override
-    @Cacheable(cacheNames = "paper", unless = "#result==null")
+    @Cacheable(cacheNames = "queryPaper", unless = "#result==null")
     public List<PaperBriefVO> queryPaper(final String key, final String returnFacets)
             throws BadReqException {
         Criteria criteria = fetchCriteriaViaKey(key, returnFacets);
@@ -215,7 +215,16 @@ public class PaperServiceImpl implements PaperService {
             }
         });
         ans.put("affiliation", transformHash(affiliationHash, 5));
-
+        //year
+        final Map<String, Integer> yearHash = new HashMap<>();
+        int min = Integer.MAX_VALUE, max = Integer.MIN_VALUE;
+        for (PaperBriefVO vo : papers) {
+            min = Math.min(vo.getYear(), min);
+            max = Math.max(vo.getYear(), max);
+        }
+        yearHash.put("beginYear", min);
+        yearHash.put("endYear", max);
+        ans.put("yearRange", yearHash);
         return ans;
     }
 
