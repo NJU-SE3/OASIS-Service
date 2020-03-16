@@ -3,9 +3,9 @@ package com.example.oasisdocument.service.impl;
 import com.example.oasisdocument.model.docs.Author;
 import com.example.oasisdocument.model.docs.Paper;
 import com.example.oasisdocument.model.docs.analysis.AuthorCitation;
+import com.example.oasisdocument.repository.analysis.AuthorCitationRepo;
 import com.example.oasisdocument.repository.docs.AuthorRepository;
 import com.example.oasisdocument.repository.docs.PaperRepository;
-import com.example.oasisdocument.repository.analysis.AuthorCitationRepo;
 import com.example.oasisdocument.service.ReportService;
 import com.example.oasisdocument.utils.PageHelper;
 import com.example.oasisdocument.utils.Pair;
@@ -95,7 +95,8 @@ public class ReportServiceImpl implements ReportService {
     public List<Pair<String, List<Paper>>> getAuthorOfMostPaper(int rank) {
         Query query = new Query();
         query.with(new Sort(Sort.Direction.DESC, "citationCount"));
-        List<AuthorCitation> buffers = mongoTemplate.find(query.with(PageRequest.of(0, rank)), AuthorCitation.class);
+        List<AuthorCitation> buffers =
+                mongoTemplate.find(query.with(PageRequest.of(0, rank)), AuthorCitation.class);
         List<Pair<String, List<Paper>>> ans = new LinkedList<>();
         for (AuthorCitation buf : buffers) {
             ans.add(new Pair<>(buf.getAuthorName(), buf.getPapers()));

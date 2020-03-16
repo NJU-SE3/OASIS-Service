@@ -34,7 +34,6 @@ public class ReportController {
     }
 
     //被引用论文数最多作者TOP10的堆叠柱状图
-    //TODO: 修改为持久化, 并且删减paper内容
     @GetMapping("/author/rank/paper_cnt")
     public JSONArray getAuthorOfMostPaper(@RequestParam(name = "rank", defaultValue = "10") int rank) {
         List<Pair<String, List<Paper>>> list = reportService.getAuthorOfMostPaper(rank);
