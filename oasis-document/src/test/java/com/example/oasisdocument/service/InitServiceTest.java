@@ -8,6 +8,8 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.mongodb.core.MongoTemplate;
@@ -22,6 +24,7 @@ import static org.junit.Assert.assertEquals;
 @SpringBootTest
 @ActiveProfiles("dev")
 public class InitServiceTest {
+	private static final Logger logger = LoggerFactory.getLogger(InitServiceTest.class);
 	@Autowired
 	private InitializationService initializationService;
 	@Autowired
@@ -71,6 +74,15 @@ public class InitServiceTest {
 		int size = list.size();
 		initializationService.initCounterPOJO();
 		assertEquals(size, mongoTemplate.findAll(CounterBaseEntity.class).size());
+	}
+
+	@Test
+	public void initAsyncTest() {
+		logger.info("start test");
+		initializationService.initFieldBasic();
+		initializationService.initConferenceBasic();
+		initializationService.initAffiliationBase();
+		logger.info("end test");
 	}
 
 	@After

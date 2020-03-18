@@ -6,7 +6,7 @@ import java.io.Serializable;
 import java.math.BigInteger;
 
 public class PaperBriefVO implements Serializable {
-	private BigInteger id;
+	private String id;
 	private String title;
 	private String conference;  //会议名
 	private String terms;       //术语
@@ -38,11 +38,11 @@ public class PaperBriefVO implements Serializable {
 	public PaperBriefVO() {
 	}
 
-	public BigInteger getId() {
+	public String getId() {
 		return id;
 	}
 
-	public void setId(BigInteger id) {
+	public void setId(String id) {
 		this.id = id;
 	}
 

@@ -31,7 +31,7 @@ public class PaperCrudTest {
 
     @Test
     public void findByIdTest() {
-        List<Paper> papers = paperRepository.findAllById(BigInteger.valueOf(312));
+        List<Paper> papers = paperRepository.findAllById("312");
         assertNotEquals(null, papers);
     }
 

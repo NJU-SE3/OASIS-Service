@@ -29,14 +29,7 @@ public class GraphServiceImpl implements GraphService {
 	private AuthorNeoRepo authorNeoRepo;
 
 	@Autowired
-	private PaperRepository paperRepository;
-	@Autowired
-	private PaperNeoRepo paperNeoRepo;
-
-	@Autowired
 	private NormalBufferRepo normalBufferRepo;
-
-
 	@Autowired
 	private AffiliationNeoRepo affiliationNeoRepo;
 
@@ -68,9 +61,9 @@ public class GraphServiceImpl implements GraphService {
 			//save to author
 			authorNeoRepo.save(author);
 			//save to buffer
-			long id = vo.getId().longValue();
+			String id = vo.getId();
 			NormalBuffer buffer = new NormalBuffer();
-			buffer.setId(String.valueOf(id));
+			buffer.setId(id);
 			buffer.setType(authorBufName);
 			JSONObject parser = new JSONObject();
 			parser.put("coAuthors", vo.getCoAuthors());

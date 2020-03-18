@@ -7,7 +7,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
 import java.util.List;
 
 //作者 - citation
-@Document("authorCitation")
+@Document("authorCitations")
 public class AuthorCitation extends BaseEntity {
 	private String authorName;
 	private int citationCount;

@@ -49,7 +49,7 @@ public class AuthorNodeVO implements Serializable {
 
 	public static Author VO2PO(com.example.oasisdocument.model.docs.Author vo) {
 		Author ans = new Author();
-		ans.setId(vo.getId().longValue());
+		ans.setId(Long.valueOf(vo.getId()));
 		ans.setAuthorName(vo.getAuthorName());
 		ans.setArticleCount(vo.getArticleCount());
 		ans.setBioParagraphs(vo.getBioParagraphs());

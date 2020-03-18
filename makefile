@@ -11,6 +11,8 @@ COMPOSE = docker-compose
 APP_DOCKER_COMPOSE = docker-compose-app.yml
 DATA_DOCKER_COMPOSE = docker-compose-data.yml
 MONGO_FLAGS = -u root -p mongo -d se
+BACK_FILES = author paper authorCitation
+EXTEND_DOCS = affiliation field conference field
 
 local-set:
 	${COMPOSE} -f ${LOCAL_DOCKER} up -d --build
@@ -38,20 +40,20 @@ push_hub:
 	mvn clean package -Dmaven.test.skip=true -Pprod
 # mongo数据导入
 mongo-import:
-	docker cp back/paper.json oasis-mongo:/.
-	docker cp back/author.json oasis-mongo:/.
-	docker cp back/authorCitation.json oasis-mongo:/.
-	docker exec -it ${MONGO} mongoimport ${MONGO_FLAGS} -c papers --drop paper.json
-	docker exec -it ${MONGO} mongoimport ${MONGO_FLAGS} -c authors --drop author.json
-	docker exec -it ${MONGO} mongoimport ${MONGO_FLAGS} -c authorCitation --drop authorCitation.json
+	$(foreach var,$(BACK_FILES),docker cp back/${var}.json oasis-mongo:/.;)
+	$(foreach var,$(BACK_FILES),docker exec -it ${MONGO} mongoimport ${MONGO_FLAGS} -c ${var}s --drop ${var}.json;)
 
 mongo-export:
-	docker exec -it ${MONGO} mongoexport ${MONGO_FLAGS} -c papers -o paper.json
-	docker exec -it ${MONGO} mongoexport ${MONGO_FLAGS} -c authors -o author.json
-	docker exec -it ${MONGO} mongoexport ${MONGO_FLAGS} -c authorCitation -o authorCitation.json
-	sudo docker cp ${MONGO}:/paper.json back/paper.json
-	sudo docker cp ${MONGO}:/author.json back/author.json
-	sudo docker cp ${MONGO}:/authorCitation.json back/authorCitation.json
+	$(foreach var,$(BACK_FILES),docker exec -it ${MONGO} mongoexport ${MONGO_FLAGS} -c ${var}s -o ${var}.json;)
+	$(foreach var,$(BACK_FILES),sudo docker cp ${MONGO}:/${var}.json back/${var}.json;)
+
+extend-export:
+	$(foreach var,$(EXTEND_DOCS),docker exec -it ${MONGO} mongoexport ${MONGO_FLAGS} -c ${var}s -o ${var}.json;)
+	$(foreach var,$(EXTEND_DOCS),sudo docker cp ${MONGO}:/${var}.json back/${var}.json;)
+
+extend-import:
+	$(foreach var,$(EXTEND_DOCS),docker cp back/${var}.json oasis-mongo:/.;)
+	$(foreach var,$(EXTEND_DOCS),docker exec -it ${MONGO} mongoimport ${MONGO_FLAGS} -c ${var}s --drop ${var}.json;)
 
 deploy-app:
 	${COMPOSE} -f ${APP_DOCKER_COMPOSE} pull

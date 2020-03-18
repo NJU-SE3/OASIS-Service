@@ -20,24 +20,10 @@ public class DataAnalysisInitController {
 	/**
 	 * 机构初始化
 	 */
-	@PostMapping("/affiliation/base")
+	@PostMapping("/detail")
 	public void initAffiliationBasic() {
 		initializationService.initAffiliationBase();
-	}
-
-	/**
-	 * 会议conference初始化
-	 */
-	@PostMapping("/conference/base")
-	public void initConferenceBasic() {
 		initializationService.initConferenceBasic();
-	}
-
-	/**
-	 * 领域初始化
-	 */
-	@PostMapping("/field/base")
-	public void initFieldBasic() {
 		initializationService.initFieldBasic();
 	}
 

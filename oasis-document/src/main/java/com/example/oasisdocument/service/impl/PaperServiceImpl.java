@@ -87,7 +87,7 @@ public class PaperServiceImpl implements PaperService {
                 List<String> affList = new LinkedList<>(),
                         authorNameList = new LinkedList<>();
                 for (Long authorId : array) {
-                    authors = authorRepository.findAllById(BigInteger.valueOf(authorId));
+                    authors = authorRepository.findAllById(String.valueOf(authorId));
                     if (!authors.isEmpty()) {
                         Author author = authors.get(0);
                         String aff = author.getAffiliationName();
