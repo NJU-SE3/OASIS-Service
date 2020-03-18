@@ -10,7 +10,6 @@ import org.springframework.data.mongodb.core.mapping.Field;
 import org.springframework.data.redis.core.index.Indexed;
 
 import java.util.HashSet;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
 
@@ -23,26 +22,35 @@ public class Paper extends BaseEntity {
     @JSONField(name = "abstract")
     private String abstra;      //摘要
 
+    @Field("conference")
     @Indexed
     private String conference;  //会议名
 
+    @Field("terms")
     private String terms;       //术语
 
+    @Field("keywords")
     @Indexed
     private String keywords;    //论文关键字
 
+    @Field("pdfLink")
     private String pdfLink;     //pdf
 
+    @Field("citationCount")
     private int citationCount;  //citation count
 
+    @Field("referenceCount")
     private int referenceCount;
 
+    @Field("year")
     private int year;           //发布年
 
+    @Field("authors")
     @Indexed
     @JSONField(name = "authors")
     private String authors;     //作者名
 
+    @Field("affiliations")
     @Indexed
     @JSONField(name = "affiliations")
     private String affiliations; //机构
@@ -50,7 +58,9 @@ public class Paper extends BaseEntity {
     @DBRef(lazy = true)
     private List<Author> authorList;
 
+    @Field("citations")
     private List<Long> citations;
+    @Field("references")
     private List<Long> references;
 
     public Paper() {

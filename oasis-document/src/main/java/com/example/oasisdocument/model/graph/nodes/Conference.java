@@ -19,6 +19,7 @@ public class Conference implements Serializable {
 	private List<Paper> paperList;
 
 	private int year;            //会议年
+	private String ranker;        //届
 
 	private String conferenceName;
 
@@ -57,5 +58,13 @@ public class Conference implements Serializable {
 
 	public void setConferenceName(String conferenceName) {
 		this.conferenceName = conferenceName;
+	}
+
+	public String getRanker() {
+		return ranker;
+	}
+
+	public void setRanker(String ranker) {
+		this.ranker = ranker;
 	}
 }

@@ -1,0 +1,44 @@
+package com.example.oasisdocument.model.docs.extendDoc;
+
+import com.example.oasisdocument.model.docs.BaseEntity;
+import org.springframework.data.mongodb.core.mapping.Document;
+
+@Document(collection = "conferences")
+public class Conference extends BaseEntity {
+	private String conferenceName;                //会议名称
+	private int year;                            //年份
+	private String ranker;        //届
+
+	public Conference() {
+	}
+
+	public String getConferenceName() {
+		return conferenceName;
+	}
+
+	public void setConferenceName(String conferenceName) {
+		this.conferenceName = conferenceName;
+	}
+
+	public int getYear() {
+		return year;
+	}
+
+	public void setYear(int year) {
+		this.year = year;
+	}
+
+	public String getRanker() {
+		return ranker;
+	}
+
+	public void setRanker(String ranker) {
+		this.ranker = ranker;
+	}
+
+	@Override
+	public String toString() {
+		return "Name = " + conferenceName +
+				",year = " + year + ",ranker = " + ranker;
+	}
+}

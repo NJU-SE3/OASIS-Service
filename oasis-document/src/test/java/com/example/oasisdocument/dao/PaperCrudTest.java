@@ -11,6 +11,8 @@ import org.springframework.test.context.junit4.SpringRunner;
 
 import java.math.BigInteger;
 import java.util.List;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.locks.ReentrantLock;
 
 import static org.junit.Assert.*;
 
@@ -45,5 +47,10 @@ public class PaperCrudTest {
         List<Paper> papers = paperRepository.findAllByYear(4032);
         assertNotNull(papers);
         assertEquals(0, papers.size());
+    }
+
+    private void run() {
+        ReentrantLock lock = new ReentrantLock();
+
     }
 }

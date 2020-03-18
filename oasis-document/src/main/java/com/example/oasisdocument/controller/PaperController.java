@@ -48,7 +48,7 @@ public class PaperController {
      * @param returnFacets : 返回具体类型
      * @param pageNum      : 页号
      * @param pageSize     : 页大小
-     * @return
+     * @return json
      */
     @GetMapping("/paper/list")
     public JSONObject queryPaper(

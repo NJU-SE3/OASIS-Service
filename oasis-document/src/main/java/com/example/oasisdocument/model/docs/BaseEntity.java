@@ -13,7 +13,7 @@ public class BaseEntity implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
-    private BigInteger id;
+    protected BigInteger id;
 
     public BigInteger getId() {
         return id;
