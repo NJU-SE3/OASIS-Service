@@ -1,8 +1,7 @@
 package com.example.oasisdocument.service;
 
-import org.aspectj.apache.bcel.classfile.Field;
+import com.example.oasisdocument.model.docs.extendDoc.Field;
 
-import java.math.BigInteger;
 
 public interface FieldService {
 	Field fetchEnById(String id);

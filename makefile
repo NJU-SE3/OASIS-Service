@@ -13,6 +13,7 @@ DATA_DOCKER_COMPOSE = docker-compose-data.yml
 MONGO_FLAGS = -u root -p mongo -d se
 BACK_FILES = author paper authorCitation
 EXTEND_DOCS = affiliation field conference field
+COUNTER_DOCS = counterBase
 
 local-set:
 	${COMPOSE} -f ${LOCAL_DOCKER} up -d --build
@@ -54,6 +55,10 @@ extend-export:
 extend-import:
 	$(foreach var,$(EXTEND_DOCS),docker cp back/${var}.json oasis-mongo:/.;)
 	$(foreach var,$(EXTEND_DOCS),docker exec -it ${MONGO} mongoimport ${MONGO_FLAGS} -c ${var}s --drop ${var}.json;)
+
+counter-export:
+	$(foreach var,$(COUNTER_DOCS),docker exec -it ${MONGO} mongoexport ${MONGO_FLAGS} -c ${var}s -o ${var}.json;)
+	$(foreach var,$(COUNTER_DOCS),sudo docker cp ${MONGO}:/${var}.json back/${var}.json;)
 
 deploy-app:
 	${COMPOSE} -f ${APP_DOCKER_COMPOSE} pull

@@ -2,10 +2,12 @@ package com.example.oasisdocument.service.impl;
 
 import com.example.oasisdocument.model.docs.Author;
 import com.example.oasisdocument.model.docs.Paper;
+import com.example.oasisdocument.model.docs.counter.CounterBaseEntity;
 import com.example.oasisdocument.model.docs.extendDoc.Affiliation;
 import com.example.oasisdocument.model.docs.extendDoc.Conference;
 import com.example.oasisdocument.model.docs.extendDoc.Field;
 import com.example.oasisdocument.service.InitializationService;
+import com.example.oasisdocument.utils.ComputeUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,6 +31,8 @@ public class InitializationServiceImpl implements InitializationService {
 	private static final char FIELD_SPLITTER = ',';
 	@Autowired
 	private MongoTemplate mongoTemplate;
+	@Autowired
+	private ComputeUtil computeUtil;
 
 	//机构初始化
 	@Override
@@ -119,80 +123,87 @@ public class InitializationServiceImpl implements InitializationService {
 	//基本计数信息
 	@Override
 	public void initCounterPOJO() {
-//		final String authorCol = "authors";
-//		final String conferenceCol = "conference";
-//		final String termCol = "terms";
-//		final String affiliationCol = "affiliations";
-//		//作者
-//		for (Author entity : mongoTemplate.findAll(Author.class)) {
-//			List<Paper> papers = mongoTemplate.find(
-//					Query.query(Criteria.where(authorCol).is(entity.getAuthorName())),
-//					Paper.class);
-//			BigInteger id = entity.getId();
-//			computeRound(id, papers);
-//		}
-//
-//		//机构
-//		for (Affiliation entity : mongoTemplate.findAll(Affiliation.class)) {
-//			List<Paper> papers = mongoTemplate.find(
-//					Query.query(Criteria.where(affiliationCol).is(entity.getAffiliationName())),
-//					Paper.class);
-//			BigInteger id = entity.getId();
-//			computeRound(id, papers);
-//		}
-//		//会议
-//		for (Conference entity : mongoTemplate.findAll(Conference.class)) {
-//			List<Paper> papers = mongoTemplate.find(
-//					Query.query(Criteria.where(conferenceCol).is(entity.getConferenceName())),
-//					Paper.class);
-//			BigInteger id = entity.getId();
-//			computeRound(id, papers);
-//		}
-//		//领域
-//		for (Field entity : mongoTemplate.findAll(Field.class)) {
-//			List<Paper> papers = mongoTemplate.find(
-//					Query.query(Criteria.where(termCol).is(entity.getFieldName())),
-//					Paper.class);
-//			BigInteger id = entity.getId();
-//			computeRound(id, papers);
-//		}
+		int counter = 0;
+		final String authorCol = "authors";
+		final String conferenceCol = "conference";
+		final String termCol = "terms";
+		final String affiliationCol = "affiliations";
+		//作者
+		for (Author entity : mongoTemplate.findAll(Author.class)) {
+			List<Paper> papers = mongoTemplate.find(
+					Query.query(Criteria.where(authorCol).is(entity.getAuthorName())),
+					Paper.class);
+			String id = entity.getId();
+			cacheToPersist(id, papers);
+			logger.info(String.valueOf(++counter));
+		}
+
+		//机构
+		for (Affiliation entity : mongoTemplate.findAll(Affiliation.class)) {
+			List<Paper> papers = mongoTemplate.find(
+					Query.query(Criteria.where(affiliationCol).is(entity.getAffiliationName())),
+					Paper.class);
+			String id = entity.getId();
+			cacheToPersist(id, papers);
+			logger.info(String.valueOf(++counter));
+
+		}
+		//会议
+		for (Conference entity : mongoTemplate.findAll(Conference.class)) {
+			List<Paper> papers = mongoTemplate.find(
+					Query.query(Criteria.where(conferenceCol).is(entity.getConferenceName())),
+					Paper.class);
+			String id = entity.getId();
+			cacheToPersist(id, papers);
+			logger.info(String.valueOf(++counter));
+
+		}
+		//领域
+		for (Field entity : mongoTemplate.findAll(Field.class)) {
+			List<Paper> papers = mongoTemplate.find(
+					Query.query(Criteria.where(termCol).is(entity.getFieldName())),
+					Paper.class);
+			String id = entity.getId();
+			cacheToPersist(id, papers);
+			logger.info(String.valueOf(++counter));
+
+		}
 	}
 
-//	private void computeRound(BigInteger id, List<Paper> papers) {
-//		papers.sort(Comparator.comparingInt(Paper::getYear));
-//		CounterBaseEntity totalPOJO = new CounterBaseEntity();
-//		totalPOJO.setCheckId(id);
-//		totalPOJO.setYear(-1);        // year < 0 denotes the total
-//		totalPOJO.setActiveness(computeUtil.getActiveness(papers));
-//		totalPOJO.setPaperList(papers.stream().map(Paper::getId).collect(Collectors.toList()));
-//		totalPOJO.setPaperCount(computeUtil.getPaperCount(papers));
-//		totalPOJO.setCitationCount(computeUtil.getCitationCount(papers));
-//		totalPOJO.setH_index(computeUtil.getH_index(papers));
-//		totalPOJO.setHeat(computeUtil.getHeat(papers));
-//		//save
-//		mongoTemplate.save(totalPOJO);
-//
-//		//根属pojo , 主要计算h-index
-//		Set<Integer> yearList = papers.stream()
-//				.map(Paper::getYear)
-//				.collect(Collectors.toSet());
-//		//for every year
-//		for (Integer y : yearList) {
-//			CounterBaseEntity pojo = new CounterBaseEntity();
-//			List<Paper> curList = papers.stream()
-//					.filter((Paper p) -> p.getYear() == y)
-//					.collect(Collectors.toList());
-//			pojo.setCheckId(id);
-//			pojo.setYear(y);
-//			pojo.setPaperList(curList.stream().map(Paper::getId).collect(Collectors.toList()));
-//			pojo.setPaperCount(computeUtil.getPaperCount(curList));
-//			pojo.setCitationCount(computeUtil.getCitationCount(curList));
-//			pojo.setH_index(computeUtil.getH_index(curList));
-//			pojo.setHeat(computeUtil.getHeat(curList));
-//			//save
-//			mongoTemplate.save(pojo);
-//		}
-//	}
+	/**
+	 * 持久化单个实体
+	 * 1. 首先进行实体的summary搭建 , 每一个记录的生命为 1h
+	 * 如果实体已经存在(year = -1) , 并且没有cache超时 , 那么不进行第一步的统计
+	 * <p>
+	 * 2. 进行每一年的单个年查询 , 每一个记录的生命为 1h
+	 * 如果当前年的记录已经存在 , 并且没有超时 , 那么不进行更新
+	 */
+	@Override
+	public void cacheToPersist(String id, List<Paper> papers) {
+		//save to basic summary count data
+		countSingleEntity(id, -1, papers);
+		//for every year
+		for (Integer y : papers.stream()
+				.map(Paper::getYear)
+				.collect(Collectors.toSet())) {
+			countSingleEntity(id, y, papers);
+		}
+	}
+
+	public void countSingleEntity(String id, int year, List<Paper> papers) {
+		CounterBaseEntity totalPOJO = new CounterBaseEntity();
+		totalPOJO.setCheckId(id);
+		totalPOJO.setYear(year);        // year < 0 denotes the total
+		totalPOJO.setActiveness(computeUtil.getActiveness(papers));
+		//设置所有的论文id
+		totalPOJO.setPaperList(papers.stream().map(Paper::getId).collect(Collectors.toList()));
+		totalPOJO.setPaperCount(computeUtil.getPaperCount(papers));
+		totalPOJO.setCitationCount(computeUtil.getCitationCount(papers));
+		totalPOJO.setH_index(computeUtil.getH_index(papers));
+		totalPOJO.setHeat(computeUtil.getHeat(papers));
+		//save
+		mongoTemplate.save(totalPOJO);
+	}
 
 	private static boolean isNumeric(String str) {
 		String bigStr;

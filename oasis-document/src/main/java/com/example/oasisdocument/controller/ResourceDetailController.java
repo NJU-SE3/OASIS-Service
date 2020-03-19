@@ -3,18 +3,16 @@ package com.example.oasisdocument.controller;
 import com.example.oasisdocument.model.docs.Author;
 import com.example.oasisdocument.model.docs.extendDoc.Affiliation;
 import com.example.oasisdocument.model.docs.extendDoc.Conference;
+import com.example.oasisdocument.model.docs.extendDoc.Field;
 import com.example.oasisdocument.service.AffiliationService;
 import com.example.oasisdocument.service.AuthorService;
 import com.example.oasisdocument.service.ConferenceService;
 import com.example.oasisdocument.service.FieldService;
 import com.example.oasisdocument.utils.JsonUtil;
-import org.aspectj.apache.bcel.classfile.Field;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-
-import java.math.BigInteger;
 
 @RestController
 public class ResourceDetailController {
@@ -26,6 +24,7 @@ public class ResourceDetailController {
 	private ConferenceService conferenceService;
 	@Autowired
 	private FieldService fieldService;
+
 	@Autowired
 	private JsonUtil jsonUtil;
 
@@ -52,4 +51,5 @@ public class ResourceDetailController {
 		Conference en = conferenceService.fetchEnById(id);
 		return jsonUtil.objToJsonStr(en);
 	}
+
 }

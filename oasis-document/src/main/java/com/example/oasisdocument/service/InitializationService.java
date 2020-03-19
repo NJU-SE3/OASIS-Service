@@ -1,5 +1,9 @@
 package com.example.oasisdocument.service;
 
+import com.example.oasisdocument.model.docs.Paper;
+
+import java.util.List;
+
 public interface InitializationService {
 	void initAffiliationBase();
 
@@ -8,4 +12,6 @@ public interface InitializationService {
 	void initFieldBasic();
 
 	void initCounterPOJO();
+
+	void cacheToPersist(String id, List<Paper> papers);
 }

@@ -6,16 +6,16 @@ import org.springframework.data.mongodb.core.mapping.Document;
 import java.math.BigInteger;
 import java.util.List;
 
-@Document(collection = "counter_base")
+@Document(collection = "counterBases")
 public class CounterBaseEntity extends BaseEntity {
-	protected BigInteger checkId;
+	protected String checkId;
 	protected int paperCount;
 	protected int citationCount;
 	protected int activeness;
 	protected int H_index;
 	protected int year;
 	protected int heat;
-	protected List<BigInteger> paperList;
+	protected List<String> paperList;
 
 	public int getPaperCount() {
 		return paperCount;
@@ -57,11 +57,11 @@ public class CounterBaseEntity extends BaseEntity {
 		this.year = year;
 	}
 
-	public List<BigInteger> getPaperList() {
+	public List<String> getPaperList() {
 		return paperList;
 	}
 
-	public void setPaperList(List<BigInteger> paperList) {
+	public void setPaperList(List<String> paperList) {
 		this.paperList = paperList;
 	}
 
@@ -73,11 +73,11 @@ public class CounterBaseEntity extends BaseEntity {
 		this.heat = heat;
 	}
 
-	public BigInteger getCheckId() {
+	public String getCheckId() {
 		return checkId;
 	}
 
-	public void setCheckId(BigInteger checkId) {
+	public void setCheckId(String checkId) {
 		this.checkId = checkId;
 	}
 }
