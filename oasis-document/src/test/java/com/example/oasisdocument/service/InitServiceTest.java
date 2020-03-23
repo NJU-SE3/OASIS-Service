@@ -19,7 +19,7 @@ import static org.junit.Assert.assertEquals;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
-@ActiveProfiles("dev")
+@ActiveProfiles("test")
 public class InitServiceTest {
 	private static final Logger logger = LoggerFactory.getLogger(InitServiceTest.class);
 	@Autowired
@@ -29,15 +29,10 @@ public class InitServiceTest {
 
 	@Before
 	public void init() {
-		mongoTemplate.dropCollection(CounterBaseEntity.class);
 	}
 	@Test
 	public void initCounterTest() {
-		initializationService.initCounterPOJOSummary();
-		List<CounterBaseEntity> list = mongoTemplate.findAll(CounterBaseEntity.class);
-		int size = list.size();
-		initializationService.initCounterPOJOSummary();
-		assertEquals(size, mongoTemplate.findAll(CounterBaseEntity.class).size());
+
 	}
 
 

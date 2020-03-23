@@ -28,11 +28,18 @@ public interface ReportService {
 
     /**
      * 获取引用数最多作者排名
-     * */
+     */
     List<Pair<String, List<Paper>>> getAuthorOfMostPaper(int rank);
 
 
     List<Paper> getPapersViaAuthor(String authorName);
 
     void constructPaperCitations();
+
+    /**
+     * 获取趋势
+     *
+     * @param type : 指标类型. 可以取值 count , heat , citation , activeness , H_index
+     */
+    List<Pair<Integer, Double>> getPaperTrend(String type, String id);
 }

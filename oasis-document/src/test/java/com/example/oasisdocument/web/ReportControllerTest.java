@@ -5,6 +5,8 @@ import com.example.oasisdocument.model.docs.extendDoc.Field;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.mongodb.core.MongoTemplate;
@@ -28,7 +30,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @RunWith(SpringRunner.class)
 @SpringBootTest
 @ActiveProfiles("test")
-public class FieldControllerTest {
+public class ReportControllerTest {
+	private static final Logger logger = LoggerFactory.getLogger(ReportControllerTest.class);
 	private MockMvc mockMvc;
 	@Autowired
 	private WebApplicationContext wac;
@@ -44,29 +47,54 @@ public class FieldControllerTest {
 	}
 
 	@Test
-	public void fieldDetailTest1() throws Exception {
-		final Field en = mongoTemplate.findOne(new Query(), Field.class);
-		assertThat(en).isNotNull();
-		final String uri = "/field/detail";
-		detailTemplate(uri, en.getId());
-	}
-
-	@Test
-	public void authorDetailTest1() throws Exception {
-		final String uri = "/author/detail";
-		final Author en = mongoTemplate.findOne(new Query(), Author.class);
-		assertThat(en).isNotNull();
-		detailTemplate(uri, en.getId());
-	}
-
-	private void detailTemplate(final String uri, final String id) throws Exception {
+	public void getTrendWebTest1() throws Exception {
+		final String uri = "/report/paper/trend/year";
+		//空参数测试
 		MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
-		params.put("id", Collections.singletonList(id));
 		MvcResult result = mockMvc.perform(get(uri)
 				.params(params)
 				.contentType("application/json"))
 				.andExpect(status().isOk())
 				.andReturn();
 		assertThat(result.getResponse()).isNotNull();
+	}
+
+	/**
+	 * count 趋势查询
+	 */
+	@Test
+	public void getTrendWebTest2() throws Exception {
+		final String uri = "/report/paper/trend/year";
+		final Field en = mongoTemplate.findOne(new Query(), Field.class);
+		assertThat(en).isNotNull();
+		MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
+		params.put("baseline", Collections.singletonList("count"));
+		params.put("refinement", Collections.singletonList(en.getId()));
+		MvcResult result = mockMvc.perform(get(uri)
+				.params(params)
+				.contentType("application/json"))
+				.andExpect(status().isOk())
+				.andReturn();
+		assertThat(result.getResponse()).isNotNull();
+	}
+
+	/**
+	 * heat 趋势查询
+	 */
+	@Test
+	public void getTrendWebTest3() throws Exception {
+		final String uri = "/report/paper/trend/year";
+		final Author en = mongoTemplate.findOne(new Query(), Author.class);
+		assertThat(en).isNotNull();
+		MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
+		params.put("baseline", Collections.singletonList("heat"));
+		params.put("refinement", Collections.singletonList(en.getId()));
+		MvcResult result = mockMvc.perform(get(uri)
+				.params(params)
+				.contentType("application/json"))
+				.andExpect(status().isOk())
+				.andReturn();
+		assertThat(result.getResponse()).isNotNull();
+		logger.info(result.getResponse().getContentAsString());
 	}
 }

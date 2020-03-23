@@ -1,11 +1,14 @@
 package com.example.oasisdocument.service.impl;
 
+import com.example.oasisdocument.exceptions.BadReqException;
 import com.example.oasisdocument.model.docs.Author;
 import com.example.oasisdocument.model.docs.Paper;
 import com.example.oasisdocument.model.docs.analysis.AuthorCitation;
+import com.example.oasisdocument.model.docs.counter.CounterBaseEntity;
 import com.example.oasisdocument.repository.analysis.AuthorCitationRepo;
 import com.example.oasisdocument.repository.docs.AuthorRepository;
 import com.example.oasisdocument.repository.docs.PaperRepository;
+import com.example.oasisdocument.service.InitializationService;
 import com.example.oasisdocument.service.ReportService;
 import com.example.oasisdocument.utils.PageHelper;
 import com.example.oasisdocument.utils.Pair;
@@ -40,6 +43,9 @@ public class ReportServiceImpl implements ReportService {
 
     @Autowired
     private AuthorCitationRepo authorCitationRepo;
+
+    @Autowired
+    private InitializationService initializationService;
 
     @Override
     @Cacheable(cacheNames = "getWordCloudOfYear", unless = "#result==null")
@@ -128,6 +134,49 @@ public class ReportServiceImpl implements ReportService {
             buf.setPapers(papers);
             buf.setCitationCount(sum);
             authorCitationRepo.save(buf);
+        }
+    }
+
+    @Override
+    public List<Pair<Integer, Double>> getPaperTrend(String type, String id) {
+        //指标类型. 可以取值 count , heat , citation , activeness , H_index
+
+        //把所有年份相关的查询
+        List<CounterBaseEntity> baseEntities =
+                mongoTemplate.find(Query.query(new Criteria("checkId").is(id).and("year").ne(-1)),
+                        CounterBaseEntity.class);
+        //如果还未初始化每年的数据
+        if (baseEntities.isEmpty()) {
+            initializationService.initCounterPOJO(id);
+            baseEntities =
+                    mongoTemplate.find(Query.query(new Criteria("checkId").is(id).and("year").ne(-1)),
+                            CounterBaseEntity.class);
+        }
+        //按照年份排序
+        baseEntities.sort(Comparator.comparingInt(CounterBaseEntity::getYear));
+        switch (type) {
+            case "count":
+                return baseEntities.stream()
+                        .map((CounterBaseEntity en) -> new Pair<>(en.getYear(), (double) en.getPaperCount()))
+                        .collect(Collectors.toList());
+            case "heat":
+                return baseEntities.stream()
+                        .map((CounterBaseEntity en) -> new Pair<>(en.getYear(), en.getHeat()))
+                        .collect(Collectors.toList());
+            case "citation":
+                return baseEntities.stream()
+                        .map((CounterBaseEntity en) -> new Pair<>(en.getYear(), (double) en.getCitationCount()))
+                        .collect(Collectors.toList());
+            case "activeness":
+                return baseEntities.stream()
+                        .map((CounterBaseEntity en) -> new Pair<>(en.getYear(), en.getActiveness()))
+                        .collect(Collectors.toList());
+            case "H_index":
+                return baseEntities.stream()
+                        .map((CounterBaseEntity en) -> new Pair<>(en.getYear(), (double) en.getH_index()))
+                        .collect(Collectors.toList());
+            default:
+                throw new BadReqException();
         }
     }
 }

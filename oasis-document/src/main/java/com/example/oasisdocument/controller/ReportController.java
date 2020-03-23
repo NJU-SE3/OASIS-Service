@@ -21,16 +21,28 @@ public class ReportController {
     @Autowired
     private ReportService reportService;
 
-    //论文总数折线图 , 按照年份排
+    /**
+     * 论文总数折线图 , 按照年份排
+     */
     @GetMapping("/paper/trend/year")
-    public JSONArray getPaperTrend() {
-        return reportService.getPaperTrend().stream()
-                .map((Pair<Integer, Integer> pair) -> {
-                    JSONObject object = new JSONObject();
-                    object.put("year", String.valueOf(pair.getFirst()));
-                    object.put("count", String.valueOf(pair.getSecond()));
-                    return object;
-                }).collect(Collectors.toCollection(JSONArray::new));
+    public JSONArray getPaperTrend(@RequestParam(name = "baseline", defaultValue = "count") String baseLine,
+                                   @RequestParam(name = "refinement", defaultValue = "") String refineId) {
+        if (refineId.isEmpty())
+            return reportService.getPaperTrend().stream()
+                    .map((Pair<Integer, Integer> pair) -> {
+                        JSONObject object = new JSONObject();
+                        object.put("year", String.valueOf(pair.getFirst()));
+                        object.put("count", String.valueOf(pair.getSecond()));
+                        return object;
+                    }).collect(Collectors.toCollection(JSONArray::new));
+        else
+            return reportService.getPaperTrend(baseLine, refineId).stream()
+                    .map((Pair<Integer, Double> pair) -> {
+                        JSONObject object = new JSONObject();
+                        object.put("year", String.valueOf(pair.getFirst()));
+                        object.put("count", String.valueOf(pair.getSecond()));
+                        return object;
+                    }).collect(Collectors.toCollection(JSONArray::new));
     }
 
     //被引用论文数最多作者TOP10的堆叠柱状图

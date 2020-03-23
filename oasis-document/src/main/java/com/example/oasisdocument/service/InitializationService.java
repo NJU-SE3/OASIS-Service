@@ -16,4 +16,5 @@ public interface InitializationService {
 
 	void initCounterPOJOSummary();
 
+	void initCounterPOJO(String id);
 }

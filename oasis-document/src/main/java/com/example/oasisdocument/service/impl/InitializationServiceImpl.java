@@ -1,5 +1,6 @@
 package com.example.oasisdocument.service.impl;
 
+import com.example.oasisdocument.exceptions.BadReqException;
 import com.example.oasisdocument.exceptions.EntityNotFoundException;
 import com.example.oasisdocument.model.docs.Author;
 import com.example.oasisdocument.model.docs.Paper;
@@ -7,6 +8,7 @@ import com.example.oasisdocument.model.docs.counter.CounterBaseEntity;
 import com.example.oasisdocument.model.docs.extendDoc.Affiliation;
 import com.example.oasisdocument.model.docs.extendDoc.Conference;
 import com.example.oasisdocument.model.docs.extendDoc.Field;
+import com.example.oasisdocument.repository.docs.PaperRepository;
 import com.example.oasisdocument.service.InitializationService;
 import com.example.oasisdocument.utils.ComputeUtil;
 import org.slf4j.Logger;
@@ -19,10 +21,7 @@ import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -34,6 +33,8 @@ public class InitializationServiceImpl implements InitializationService {
 	private MongoTemplate mongoTemplate;
 	@Autowired
 	private ComputeUtil computeUtil;
+	@Autowired
+	private PaperRepository paperRepository;
 
 	@Override
 	public CounterBaseEntity getSummaryInfo(String id) {
@@ -195,6 +196,21 @@ public class InitializationServiceImpl implements InitializationService {
 	private void persistCounterSummary(String id, List<Paper> papers) {
 		//save to basic summary count data
 		countSingleEntity(id, -1, papers);
+	}
+
+	@Override
+	public void initCounterPOJO(String id) {
+		List<CounterBaseEntity> entities = mongoTemplate.find(
+				new Query(new Criteria("checkId").is(id).and("year").is(-1)), CounterBaseEntity.class);
+		if (entities.isEmpty()) throw new BadReqException();
+		CounterBaseEntity en = entities.get(0);
+		List<String> paperIds = en.getPaperList();
+		List<Paper> papers = new LinkedList<>();
+		paperIds.forEach((String pId) -> {
+			List<Paper> ps = paperRepository.findAllById(pId);
+			papers.addAll(ps);
+		});
+		persistCounterYear(id, papers);
 	}
 
 	/**
