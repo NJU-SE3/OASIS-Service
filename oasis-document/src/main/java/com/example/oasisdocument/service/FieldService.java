@@ -1,5 +1,6 @@
 package com.example.oasisdocument.service;
 
+import com.example.oasisdocument.model.docs.counter.CounterBaseEntity;
 import com.example.oasisdocument.model.docs.extendDoc.Field;
 
 

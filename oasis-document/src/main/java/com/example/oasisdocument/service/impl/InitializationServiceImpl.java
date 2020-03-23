@@ -1,5 +1,6 @@
 package com.example.oasisdocument.service.impl;
 
+import com.example.oasisdocument.exceptions.EntityNotFoundException;
 import com.example.oasisdocument.model.docs.Author;
 import com.example.oasisdocument.model.docs.Paper;
 import com.example.oasisdocument.model.docs.counter.CounterBaseEntity;
@@ -33,6 +34,14 @@ public class InitializationServiceImpl implements InitializationService {
 	private MongoTemplate mongoTemplate;
 	@Autowired
 	private ComputeUtil computeUtil;
+
+	@Override
+	public CounterBaseEntity getSummaryInfo(String id) {
+		List<CounterBaseEntity> en = mongoTemplate.find(Query.query(new Criteria("checkId").is(id)
+				.and("year").is(-1)), CounterBaseEntity.class);
+		if (en.isEmpty()) throw new EntityNotFoundException();
+		return en.get(0);
+	}
 
 	//机构初始化
 	//会议初始化

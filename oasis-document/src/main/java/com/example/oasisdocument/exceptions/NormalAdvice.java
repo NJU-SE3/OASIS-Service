@@ -6,6 +6,8 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
+import static org.springframework.http.HttpStatus.*;
+
 @ControllerAdvice
 public class NormalAdvice {
     /**
@@ -15,7 +17,7 @@ public class NormalAdvice {
      */
     @ResponseBody
     @ExceptionHandler(EntityNotFoundException.class)
-    @ResponseStatus(HttpStatus.NOT_FOUND)
+    @ResponseStatus(code = NOT_FOUND)
     private String entityNotFoundHandler(EntityNotFoundException e) {
         return e.getMessage();
     }
@@ -26,7 +28,7 @@ public class NormalAdvice {
      */
     @ResponseBody
     @ExceptionHandler(BadReqException.class)
-    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ResponseStatus(code = BAD_REQUEST)
     private String badRequest(BadReqException e) {
         return "bad request";
     }
@@ -37,7 +39,7 @@ public class NormalAdvice {
      */
     @ResponseBody
     @ExceptionHandler(Exception.class)
-    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+    @ResponseStatus(code = INTERNAL_SERVER_ERROR)
     private String exceptionHandler(Exception e) {
         e.printStackTrace();
         return e.getMessage();
