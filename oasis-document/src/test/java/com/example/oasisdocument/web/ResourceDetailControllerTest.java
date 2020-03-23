@@ -5,6 +5,8 @@ import com.example.oasisdocument.model.docs.extendDoc.Field;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.mongodb.core.MongoTemplate;
@@ -28,7 +30,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @RunWith(SpringRunner.class)
 @SpringBootTest
 @ActiveProfiles("test")
-public class FieldControllerTest {
+public class ResourceDetailControllerTest {
+	private static final Logger logger = LoggerFactory.getLogger(ReportControllerTest.class);
 	private MockMvc mockMvc;
 	@Autowired
 	private WebApplicationContext wac;
@@ -68,5 +71,49 @@ public class FieldControllerTest {
 				.andExpect(status().isOk())
 				.andReturn();
 		assertThat(result.getResponse()).isNotNull();
+	}
+
+	@Test
+	public void fetchPaperListTest1() throws Exception {
+		final String uri = "/paper/list";
+		final Author en = mongoTemplate.findOne(new Query(), Author.class);
+		assertThat(en).isNotNull();
+		MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
+		params.put("id", Collections.singletonList(en.getId()));
+		MvcResult result = mockMvc.perform(get(uri)
+				.params(params)
+				.contentType("application/json"))
+				.andExpect(status().isOk())
+				.andReturn();
+		assertThat(result.getResponse()).isNotNull();
+		logger.info(result.getResponse().getContentAsString());
+	}
+
+	@Test
+	public void fetchPaperListTest2() throws Exception {
+		final String uri = "/paper/list";
+		MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
+		params.put("id", Collections.singletonList(""));
+		MvcResult result = mockMvc.perform(get(uri)
+				.params(params)
+				.contentType("application/json"))
+				.andExpect(status().isNotFound())
+				.andReturn();
+	}
+
+	@Test
+	public void fetchAuthorListTest1() throws Exception {
+		final String uri = "/author/list";
+		final Field en = mongoTemplate.findOne(new Query(), Field.class);
+		assertThat(en).isNotNull();
+		MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
+		params.put("id", Collections.singletonList(en.getId()));
+		MvcResult result = mockMvc.perform(get(uri)
+				.params(params)
+				.contentType("application/json"))
+				.andExpect(status().isOk())
+				.andReturn();
+		assertThat(result.getResponse()).isNotNull();
+		logger.info(result.getResponse().getContentAsString());
 	}
 }

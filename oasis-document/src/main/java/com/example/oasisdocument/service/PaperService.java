@@ -15,4 +15,6 @@ public interface PaperService {
     void insertPaperVOEntity(PaperInsertVO entity);
 
     JSONObject papersSummary(List<PaperBriefVO> papers);
+
+	List<Paper> fetchPaperList(String id);
 }

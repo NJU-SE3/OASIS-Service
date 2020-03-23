@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/permission")
-public class AuthorController {
+public class AuthorityController {
 	@Autowired
 	private PermissionService PermissionService;
 

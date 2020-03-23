@@ -1,10 +1,15 @@
 package com.example.oasisdocument.service;
 
+import com.example.oasisdocument.exceptions.EntityNotFoundException;
 import com.example.oasisdocument.model.VO.PaperBriefVO;
+import com.example.oasisdocument.model.docs.Author;
+import com.example.oasisdocument.model.docs.Paper;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.mongodb.core.MongoTemplate;
+import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringRunner;
 
@@ -21,6 +26,8 @@ import static org.junit.Assert.*;
 public class PaperServiceTest {
     @Autowired
     private PaperService paperService;
+    @Autowired
+    private MongoTemplate mongoTemplate;
 
     //模糊搜索测试
     @Test
@@ -69,6 +76,21 @@ public class PaperServiceTest {
         papers = paperService.queryPaperRefine(papers, refinements);
         assertNotNull(papers);
         assertEquals(0, papers.size());
+    }
+
+    @Test
+    public void fetchPaperListTest1() {
+        final Author en = mongoTemplate.findOne(new Query(), Author.class);
+        assertThat(en).isNotNull();
+        List<Paper> papers = paperService.fetchPaperList(en.getId());
+        assertNotNull(papers);
+        assertThat(papers.size()).isGreaterThanOrEqualTo(0);
+    }
+
+    @Test(expected = EntityNotFoundException.class)
+    public void fetchPaperListTest2() {
+        final String id = "";
+        paperService.fetchPaperList(id);
     }
 }
 

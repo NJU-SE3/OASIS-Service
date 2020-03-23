@@ -1,6 +1,10 @@
 package com.example.oasisdocument.controller;
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
+import com.example.oasisdocument.model.VO.PaperBriefVO;
+import com.example.oasisdocument.model.VO.extendVO.GeneralJsonVO;
 import com.example.oasisdocument.model.docs.Author;
 import com.example.oasisdocument.model.docs.counter.CounterBaseEntity;
 import com.example.oasisdocument.model.docs.extendDoc.Affiliation;
@@ -12,6 +16,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 public class ResourceDetailController {
@@ -25,71 +32,59 @@ public class ResourceDetailController {
 	private FieldService fieldService;
 	@Autowired
 	private InitializationService initializationService;
+	@Autowired
+	private PaperService paperService;
+	@Autowired
+	private GeneralJsonVO generalJsonVO;
 
 	@Autowired
 	private JsonUtil jsonUtil;
 
 	@GetMapping("/field/detail")
-	public JSONObject fetchFieldDetail(@RequestParam(name = "id") String id) throws Exception {
+	public JSONObject fetchFieldDetail(@RequestParam(name = "id") String id) {
 		Field en = fieldService.fetchEnById(id);
 		CounterBaseEntity baseEntity = initializationService.getSummaryInfo(id);
-		JSONObject res = new JSONObject();
-
-		//组装
-		res.put("id", en.getId());
-		res.put("fieldName", en.getFieldName());
-		res.put("paperCount", baseEntity.getPaperCount());
-		res.put("citationCount", baseEntity.getCitationCount());
-		res.put("activeness", baseEntity.getActiveness());
-		return res;
+		return generalJsonVO.field2VO(en, baseEntity);
 	}
 
 	@GetMapping("/author/detail")
 	public JSONObject fetchAuthorDetail(@RequestParam(name = "id") String id) {
 		Author en = authorService.fetchEnById(id);
 		CounterBaseEntity baseEntity = initializationService.getSummaryInfo(id);
-		JSONObject res = new JSONObject();
-		res.put("id", en.getId());
-		res.put("authorName", en.getAuthorName());
-		res.put("affiliationName", en.getAffiliationName());
-		res.put("bioParagraphs", en.getBioParagraphs());
-		res.put("field", en.getField());
-		res.put("photoUrl", en.getPhotoUrl());
-		res.put("paperCount", baseEntity.getPaperCount());
-		res.put("citationCount", baseEntity.getCitationCount());
-		res.put("activeness", baseEntity.getActiveness());
-		res.put("H_index", baseEntity.getH_index());
-		return res;
+		return generalJsonVO.author2VO(en, baseEntity);
 	}
 
 	@GetMapping("/affiliation/detail")
 	public JSONObject fetchAffiliationDetail(@RequestParam(name = "id") String id) {
 		Affiliation en = affiliationService.fetchEnById(id);
 		CounterBaseEntity baseEntity = initializationService.getSummaryInfo(id);
-		JSONObject res = new JSONObject();
-		res.put("id", en.getId());
-		res.put("affiliationName", en.getAffiliationName());
-		res.put("authorCount", affiliationService.fetchAuthorsByAffiliationName(en.getAffiliationName()).size());
-		res.put("citationCount", baseEntity.getCitationCount());
-		res.put("paperCount", baseEntity.getPaperCount());
-		res.put("activeness", baseEntity.getActiveness());
-		res.put("H_index", baseEntity.getH_index());
-		return res;
+		return generalJsonVO.affiliation2VO(en, baseEntity);
 	}
 
 	@GetMapping("/conference/detail")
 	public JSONObject fetchConferenceDetail(@RequestParam(name = "id") String id) {
 		Conference en = conferenceService.fetchEnById(id);
 		CounterBaseEntity baseEntity = initializationService.getSummaryInfo(id);
-		JSONObject res = new JSONObject();
-		res.put("id", en.getId());
-		res.put("conferenceName", en.getConferenceName());
-		res.put("citationCount", baseEntity.getCitationCount());
-		res.put("paperCount", baseEntity.getPaperCount());
-		res.put("activeness", baseEntity.getActiveness());
-		res.put("H_index", baseEntity.getH_index());
-		return res;
-
+		return generalJsonVO.conference2VO(en, baseEntity);
 	}
 
+	@GetMapping("/paper/list")
+	public JSONArray fetchPaperList(@RequestParam(name = "id") String id) {
+		List<PaperBriefVO> paperList = paperService.fetchPaperList(id).stream()
+				.map(PaperBriefVO::PO2VO)
+				.collect(Collectors.toList());
+		return JSONArray.parseArray(JSON.toJSONString(paperList));
+	}
+
+	@GetMapping("/author/list")
+	public JSONArray fetchAuthorList(@RequestParam(name = "id", defaultValue = "") String id) {
+		List<Author> authorList = id.isEmpty() ? authorService.fetchAuthorList() :
+				authorService.fetchAuthorList(id);
+		JSONArray array = new JSONArray();
+		for (Author author : authorList) {
+			CounterBaseEntity baseEntity = initializationService.getSummaryInfo(author.getId());
+			array.add(generalJsonVO.author2VO(author, baseEntity));
+		}
+		return array;
+	}
 }

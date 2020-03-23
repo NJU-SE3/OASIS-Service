@@ -6,8 +6,10 @@ import com.example.oasisdocument.model.VO.PaperBriefVO;
 import com.example.oasisdocument.model.VO.PaperInsertVO;
 import com.example.oasisdocument.model.docs.Author;
 import com.example.oasisdocument.model.docs.Paper;
+import com.example.oasisdocument.model.docs.counter.CounterBaseEntity;
 import com.example.oasisdocument.repository.docs.AuthorRepository;
 import com.example.oasisdocument.repository.docs.PaperRepository;
+import com.example.oasisdocument.service.InitializationService;
 import com.example.oasisdocument.service.PaperService;
 import com.example.oasisdocument.utils.Pair;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,7 +19,6 @@ import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Service;
 
-import java.math.BigInteger;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -35,6 +36,9 @@ public class PaperServiceImpl implements PaperService {
 
     @Autowired
     private AuthorRepository authorRepository;
+
+    @Autowired
+    private InitializationService initializationService;
 
     /**
      * 内部类, 专门用于实现
@@ -226,6 +230,15 @@ public class PaperServiceImpl implements PaperService {
         yearHash.put("endYear", max);
         ans.put("yearRange", yearHash);
         return ans;
+    }
+
+    @Override
+    public List<Paper> fetchPaperList(String id) {
+        //获取分析数据
+        CounterBaseEntity en = initializationService.getSummaryInfo(id);
+        List<Paper> papers = new LinkedList<>();
+        en.getPaperList().forEach((String pid) -> papers.addAll(paperRepository.findAllById(pid)));
+        return papers;
     }
 
     private Map<String, List<String>> refineAnalysis(final List<String> refinements) {
