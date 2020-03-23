@@ -26,7 +26,6 @@ public class AuthorityController {
 
 	@DeleteMapping("/paper")
 	public void paperRemoveAll() {
-
 		PermissionService.deleteAll();
 	}
 }

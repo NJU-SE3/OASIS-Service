@@ -4,6 +4,7 @@ import com.example.oasisdocument.exceptions.EntityNotFoundException;
 import com.example.oasisdocument.model.docs.Author;
 import com.example.oasisdocument.model.docs.Paper;
 import com.example.oasisdocument.model.docs.analysis.GraphEdge;
+import com.example.oasisdocument.model.docs.counter.CounterBaseEntity;
 import com.example.oasisdocument.model.docs.extendDoc.Field;
 import com.example.oasisdocument.repository.docs.AuthorRepository;
 import com.example.oasisdocument.repository.docs.PaperRepository;
@@ -15,10 +16,7 @@ import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Service;
 
-import java.util.HashSet;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 
 @Service
@@ -75,23 +73,47 @@ public class GraphServiceImpl implements GraphService {
 	@Override
 	public List<GraphEdge> fieldMapViaId(String id) {
 		//首先查找图中是否已经存在这个顶点
-		List<GraphEdge> edges = mongoTemplate.find(Query.query(new Criteria("begin").is(id)), GraphEdge.class);
+		List<GraphEdge> edges = mongoTemplate.find(Query.query(new Criteria("begin").is(id)),
+				GraphEdge.class);
+		//如果已经存在了 , 那么直接返回
 		if (!edges.isEmpty()) return edges;
 		//如果不存在 , 那么进行持久化
-		List<Field> fields = mongoTemplate.find(Query.query(new Criteria("id").is(id)), Field.class);
-		if (fields.isEmpty()) throw new EntityNotFoundException();
-		Field field = fields.get(0);
-		assert null != field;
-		String beginId = field.getId();
-		List<Paper> papers = mongoTemplate
-				.find(Query.query(new Criteria("keywords").regex(field.getFieldName())), Paper.class);
-		for (Paper paper : papers) {
-			for (String coName : paper.getKeywords().split(";")) {
-				
+		//首先找到中心点 Field
+		Field beginNode = mongoTemplate.findById(id, Field.class);
+		if (null == beginNode) throw new EntityNotFoundException();
+		CounterBaseEntity baseEntity =
+				mongoTemplate.findOne(Query.query(new Criteria("checkId").is(beginNode.getId())),
+						CounterBaseEntity.class);
+		if (null == baseEntity) throw new EntityNotFoundException();
+		List<String> paperIds = baseEntity.getPaperList();
+		//得到邻接点集合
+		// map from field id to related terms counter
+		Map<String, Integer> neighbors = new HashMap<>();
+		for (String paperId : paperIds) {
+			Paper paper = mongoTemplate.findById(paperId, Paper.class);
+			assert null != paper;
+			for (Author author : paper.getAuthorList()) {
+				for (String fieldName : author.getField().split(",")) {
+					Field en = mongoTemplate.findOne(Query.query(new Criteria("fieldName").is(fieldName)),
+							Field.class);
+					if (en != null && author.getTerms().contains(beginNode.getFieldName())) {
+						neighbors.put(en.getId(), neighbors.getOrDefault(en.getId(), 0) + 1);
+					}
+				}
 			}
-
 		}
-		return null;
+		List<GraphEdge> ans = new LinkedList<>();
+		//对于每一个邻接点 , 进行weight计算
+		for (String nodeId : neighbors.keySet()) {
+			GraphEdge edge = new GraphEdge();
+			edge.setBegin(beginNode.getId());
+			edge.setEnd(nodeId);
+			edge.setWeight(neighbors.get(nodeId));
+			ans.add(edge);
+			//执行持久化
+			mongoTemplate.save(edge);
+		}
+		return ans;
 	}
 
 	@Override

@@ -1,6 +1,7 @@
 package com.example.oasisdocument.controller;
 
 import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson.JSONObject;
 import com.example.oasisdocument.model.VO.extendVO.GeneralJsonVO;
 import com.example.oasisdocument.model.docs.analysis.GraphEdge;
 import com.example.oasisdocument.service.GraphService;
@@ -32,7 +33,12 @@ public class GraphController {
 	public JSONArray fieldMapViaId(@RequestParam(name = "id") String id) {
 		List<GraphEdge> edges = graphService.fieldMapViaId(id);
 		JSONArray array = new JSONArray();
-		edges.forEach((GraphEdge edge) -> array.add(generalJsonVO.fieldEdge2VO(edge)));
+		edges.forEach((GraphEdge edge) -> {
+			JSONObject obj = generalJsonVO.fieldEdge2VO(edge);
+			//除去begin节点
+			obj.remove("begin");
+			array.add(obj);
+		});
 		return array;
 	}
 
