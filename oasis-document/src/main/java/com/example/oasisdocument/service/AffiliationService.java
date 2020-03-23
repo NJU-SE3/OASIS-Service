@@ -10,4 +10,6 @@ public interface AffiliationService {
 	Affiliation fetchEnById(String id);
 
 	List<Author> fetchAuthorsByAffiliationName(String affName);
+
+	List<Affiliation> fetchAffiliationList(int pageNum, int pageSize);
 }

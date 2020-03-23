@@ -5,6 +5,7 @@ import com.example.oasisdocument.model.docs.Author;
 import com.example.oasisdocument.model.docs.extendDoc.Affiliation;
 import com.example.oasisdocument.service.AffiliationService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
@@ -28,5 +29,11 @@ public class AffiliationServiceImpl implements AffiliationService {
 	public List<Author> fetchAuthorsByAffiliationName(String affName) {
 		return mongoTemplate.find(new Query(new Criteria("affiliationName").is(affName)),
 				Author.class);
+	}
+
+	@Override
+	public List<Affiliation> fetchAffiliationList(int pageNum, int pageSize) {
+		return mongoTemplate.find(new Query().with(PageRequest.of(pageNum, pageSize)),
+				Affiliation.class);
 	}
 }

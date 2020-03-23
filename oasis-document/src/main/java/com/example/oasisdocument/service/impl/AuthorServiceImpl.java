@@ -41,9 +41,8 @@ public class AuthorServiceImpl implements AuthorService {
 	}
 
 	@Override
-	public List<Author> fetchAuthorList() {
-		final int limit = 10;
-		return mongoTemplate.find(new Query().with(PageRequest.of(0, limit)),
+	public List<Author> fetchAuthorList(int pageNum, int pageSize) {
+		return mongoTemplate.find(new Query().with(PageRequest.of(pageNum, pageSize)),
 				Author.class);
 	}
 

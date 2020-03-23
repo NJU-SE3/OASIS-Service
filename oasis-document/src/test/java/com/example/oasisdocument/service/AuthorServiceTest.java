@@ -31,7 +31,7 @@ public class AuthorServiceTest {
 
 	@Test
 	public void fetchAuthorListTest1() {
-		List<Author> authorList = authorService.fetchAuthorList();
+		List<Author> authorList = authorService.fetchAuthorList(0, 10);
 		assertThat(authorList.size()).isGreaterThanOrEqualTo(0);
 	}
 

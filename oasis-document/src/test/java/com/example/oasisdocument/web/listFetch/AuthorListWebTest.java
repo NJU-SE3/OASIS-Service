@@ -1,4 +1,4 @@
-package com.example.oasisdocument.web;
+package com.example.oasisdocument.web.listFetch;
 
 import com.example.oasisdocument.model.docs.Author;
 import com.example.oasisdocument.model.docs.extendDoc.Affiliation;

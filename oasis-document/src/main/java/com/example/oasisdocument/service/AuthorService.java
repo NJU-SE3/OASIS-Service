@@ -9,7 +9,7 @@ public interface AuthorService {
 
 	Author fetchEnById(String id);
 
-	List<Author> fetchAuthorList();
+	List<Author> fetchAuthorList(int pageNum, int pageSize);
 
 	List<Author> fetchAuthorList(String refinement);
 

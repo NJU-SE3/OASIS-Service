@@ -92,6 +92,7 @@ public class ResourceDetailController {
 				.collect(Collectors.toList());
 		return JSONArray.parseArray(JSON.toJSONString(paperList));
 	}
+//======================================================================================================================================================
 
 	/**
 	 * 获取作者列表
@@ -100,12 +101,57 @@ public class ResourceDetailController {
 	@GetMapping("/author/list")
 	public JSONArray fetchAuthorList(@RequestParam(name = "refinement", defaultValue = "") String refinement) {
 		//需要考察是否需要筛选
-		List<Author> authorList = refinement.isEmpty() ? authorService.fetchAuthorList() :
+		List<Author> authorList = refinement.isEmpty() ? authorService.fetchAuthorList(0, 10) :
 				authorService.fetchAuthorList(refinement);
 		JSONArray array = new JSONArray();
 		for (Author author : authorList) {
 			CounterBaseEntity baseEntity = initializationService.getSummaryInfo(author.getId());
 			array.add(generalJsonVO.author2VO(author, baseEntity));
+		}
+		return array;
+	}
+
+	/**
+	 * 机构列表获取
+	 * 分页 , 按照最多的引用数划分
+	 */
+	@GetMapping("/affiliation/list")
+	public JSONArray fetchAffiliationList() {
+		List<Affiliation> affiliationList = affiliationService.fetchAffiliationList(0, 10);
+
+		JSONArray array = new JSONArray();
+		for (Affiliation affiliation : affiliationList) {
+			CounterBaseEntity baseEntity = initializationService.getSummaryInfo(affiliation.getId());
+			array.add(generalJsonVO.affiliation2VO(affiliation, baseEntity));
+		}
+		return array;
+	}
+
+	/**
+	 * 领域列表获取
+	 * 可以按照会议 id 获取
+	 */
+	@GetMapping("/field/list")
+	public JSONArray fetchFieldList(@RequestParam(name = "refinement", defaultValue = "") String refinement) {
+		List<Field> fieldList = refinement.isEmpty() ? fieldService.fetchFieldList(0, 10) :
+				fieldService.fetchFieldList(refinement);
+		JSONArray array = new JSONArray();
+		for (Field field : fieldList) {
+			CounterBaseEntity baseEntity = initializationService.getSummaryInfo(field.getId());
+			array.add(generalJsonVO.field2VO(field, baseEntity));
+		}
+		return array;
+	}
+
+	@GetMapping("/conference/list")
+	public JSONArray fetchConferenceList(@RequestParam(name = "refinement", defaultValue = "") String refinement) {
+		List<Conference> conferenceList =
+				refinement.isEmpty() ? conferenceService.fetchConferenceList(0, 10) :
+						conferenceService.fetchConferenceList(refinement);
+		JSONArray array = new JSONArray();
+		for (Conference conference : conferenceList) {
+			CounterBaseEntity baseEntity = initializationService.getSummaryInfo(conference.getId());
+			array.add(generalJsonVO.conference2VO(conference, baseEntity));
 		}
 		return array;
 	}
