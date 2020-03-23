@@ -1,9 +1,6 @@
 package com.example.oasisdocument.service;
 
 import com.example.oasisdocument.model.docs.counter.CounterBaseEntity;
-import com.example.oasisdocument.model.docs.extendDoc.Affiliation;
-import com.example.oasisdocument.model.docs.extendDoc.Conference;
-import com.example.oasisdocument.model.docs.extendDoc.Field;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -36,10 +33,10 @@ public class InitServiceTest {
 	}
 	@Test
 	public void initCounterTest() {
-		initializationService.initCounterPOJO();
+		initializationService.initCounterPOJOSummary();
 		List<CounterBaseEntity> list = mongoTemplate.findAll(CounterBaseEntity.class);
 		int size = list.size();
-		initializationService.initCounterPOJO();
+		initializationService.initCounterPOJOSummary();
 		assertEquals(size, mongoTemplate.findAll(CounterBaseEntity.class).size());
 	}
 

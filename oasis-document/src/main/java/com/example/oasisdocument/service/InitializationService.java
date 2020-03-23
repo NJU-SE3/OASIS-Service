@@ -11,7 +11,6 @@ public interface InitializationService {
 
 	void initFieldBasic();
 
-	void initCounterPOJO();
+	void initCounterPOJOSummary();
 
-	void cacheToPersist(String id, List<Paper> papers);
 }

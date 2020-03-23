@@ -29,9 +29,10 @@ public class DataAnalysisInitController {
 
 	/**
 	 * 计数分析初始化
+	 * 由于时间耗费较大,这一步进行每一个实体的summary初始化, 而不精确到年份
 	 */
 	@PostMapping("/counter/base")
 	public void initCounterPOJO() {
-		initializationService.initCounterPOJO();
+		initializationService.initCounterPOJOSummary();
 	}
 }

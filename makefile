@@ -40,6 +40,8 @@ test:
 push_hub:
 	mvn clean package -Dmaven.test.skip=true -Pprod
 # mongo数据导入
+data-init: mongo-import extend-import
+
 mongo-import:
 	$(foreach var,$(BACK_FILES),docker cp back/${var}.json oasis-mongo:/.;)
 	$(foreach var,$(BACK_FILES),docker exec -it ${MONGO} mongoimport ${MONGO_FLAGS} -c ${var}s --drop ${var}.json;)
@@ -59,6 +61,10 @@ extend-import:
 counter-export:
 	$(foreach var,$(COUNTER_DOCS),docker exec -it ${MONGO} mongoexport ${MONGO_FLAGS} -c ${var}s -o ${var}.json;)
 	$(foreach var,$(COUNTER_DOCS),sudo docker cp ${MONGO}:/${var}.json back/${var}.json;)
+
+counter-import:
+	$(foreach var,$(COUNTER_DOCS),docker cp back/${var}.json oasis-mongo:/.;)
+	$(foreach var,$(COUNTER_DOCS),docker exec -it ${MONGO} mongoimport ${MONGO_FLAGS} -c ${var}s --drop ${var}.json;)
 
 deploy-app:
 	${COMPOSE} -f ${APP_DOCKER_COMPOSE} pull

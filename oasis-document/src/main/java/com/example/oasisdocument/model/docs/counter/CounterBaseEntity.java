@@ -3,7 +3,6 @@ package com.example.oasisdocument.model.docs.counter;
 import com.example.oasisdocument.model.docs.BaseEntity;
 import org.springframework.data.mongodb.core.mapping.Document;
 
-import java.math.BigInteger;
 import java.util.List;
 
 @Document(collection = "counterBases")
@@ -11,10 +10,10 @@ public class CounterBaseEntity extends BaseEntity {
 	protected String checkId;
 	protected int paperCount;
 	protected int citationCount;
-	protected int activeness;
+	protected double activeness;
 	protected int H_index;
 	protected int year;
-	protected int heat;
+	protected double heat;
 	protected List<String> paperList;
 
 	public int getPaperCount() {
@@ -33,11 +32,11 @@ public class CounterBaseEntity extends BaseEntity {
 		this.citationCount = citationCount;
 	}
 
-	public int getActiveness() {
+	public double getActiveness() {
 		return activeness;
 	}
 
-	public void setActiveness(int activeness) {
+	public void setActiveness(double activeness) {
 		this.activeness = activeness;
 	}
 
@@ -65,11 +64,11 @@ public class CounterBaseEntity extends BaseEntity {
 		this.paperList = paperList;
 	}
 
-	public int getHeat() {
+	public double getHeat() {
 		return heat;
 	}
 
-	public void setHeat(int heat) {
+	public void setHeat(double heat) {
 		this.heat = heat;
 	}
 

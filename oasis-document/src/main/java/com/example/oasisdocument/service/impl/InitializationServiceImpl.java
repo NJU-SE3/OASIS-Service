@@ -35,8 +35,9 @@ public class InitializationServiceImpl implements InitializationService {
 	private ComputeUtil computeUtil;
 
 	//机构初始化
-	@Override
+	//会议初始化
 	@Async
+	@Override
 	public void initAffiliationBase() {
 		final String checkColumn = "affiliationName";
 		Set<String> affiliationNameFullSet = mongoTemplate.findAll(Author.class)
@@ -57,7 +58,6 @@ public class InitializationServiceImpl implements InitializationService {
 		}
 	}
 
-	//会议初始化
 	//领域信息添加
 	@Async
 	@Override
@@ -120,54 +120,59 @@ public class InitializationServiceImpl implements InitializationService {
 				});
 	}
 
-	//基本计数信息
+	/**
+	 * 基本计数信息初始化,不包含年份的分析
+	 */
 	@Override
-	public void initCounterPOJO() {
-		int counter = 0;
+	public void initCounterPOJOSummary() {
 		final String authorCol = "authors";
 		final String conferenceCol = "conference";
 		final String termCol = "terms";
 		final String affiliationCol = "affiliations";
-		//作者
-		for (Author entity : mongoTemplate.findAll(Author.class)) {
-			List<Paper> papers = mongoTemplate.find(
-					Query.query(Criteria.where(authorCol).is(entity.getAuthorName())),
-					Paper.class);
-			String id = entity.getId();
-			cacheToPersist(id, papers);
-			logger.info(String.valueOf(++counter));
-		}
+		new Thread(() -> {
+			//作者
+			for (Author entity : mongoTemplate.findAll(Author.class)) {
+				List<Paper> papers = mongoTemplate.find(
+						Query.query(Criteria.where(authorCol).regex(entity.getAuthorName())),
+						Paper.class);
+				String id = entity.getId();
+				persistCounterSummary(id, papers);
+			}
+		}).start();
 
-		//机构
-		for (Affiliation entity : mongoTemplate.findAll(Affiliation.class)) {
-			List<Paper> papers = mongoTemplate.find(
-					Query.query(Criteria.where(affiliationCol).is(entity.getAffiliationName())),
-					Paper.class);
-			String id = entity.getId();
-			cacheToPersist(id, papers);
-			logger.info(String.valueOf(++counter));
+//		new Thread(() -> {
+//			//机构
+//			for (Affiliation entity : mongoTemplate.findAll(Affiliation.class)) {
+//				List<Paper> papers = mongoTemplate.find(
+//						Query.query(Criteria.where(affiliationCol).regex(entity.getAffiliationName())),
+//						Paper.class);
+//				String id = entity.getId();
+//				persistCounterSummary(id, papers);
+//
+//			}
+//		}).start();
+//		new Thread(() -> {
+//			//会议
+//			for (Conference entity : mongoTemplate.findAll(Conference.class)) {
+//				List<Paper> papers = mongoTemplate.find(
+//						Query.query(Criteria.where(conferenceCol).is(entity.getConferenceName())),
+//						Paper.class);
+//				String id = entity.getId();
+//				persistCounterSummary(id, papers);
+//			}
+//		}).start();
 
-		}
-		//会议
-		for (Conference entity : mongoTemplate.findAll(Conference.class)) {
-			List<Paper> papers = mongoTemplate.find(
-					Query.query(Criteria.where(conferenceCol).is(entity.getConferenceName())),
-					Paper.class);
-			String id = entity.getId();
-			cacheToPersist(id, papers);
-			logger.info(String.valueOf(++counter));
+		new Thread(() -> {
+//			//领域
+			for (Field entity : mongoTemplate.findAll(Field.class)) {
+				List<Paper> papers = mongoTemplate.find(
+						Query.query(Criteria.where(termCol).regex(entity.getFieldName())),
+						Paper.class);
+				String id = entity.getId();
+				persistCounterSummary(id, papers);
+			}
+		}).start();
 
-		}
-		//领域
-		for (Field entity : mongoTemplate.findAll(Field.class)) {
-			List<Paper> papers = mongoTemplate.find(
-					Query.query(Criteria.where(termCol).is(entity.getFieldName())),
-					Paper.class);
-			String id = entity.getId();
-			cacheToPersist(id, papers);
-			logger.info(String.valueOf(++counter));
-
-		}
 	}
 
 	/**
@@ -178,19 +183,33 @@ public class InitializationServiceImpl implements InitializationService {
 	 * 2. 进行每一年的单个年查询 , 每一个记录的生命为 1h
 	 * 如果当前年的记录已经存在 , 并且没有超时 , 那么不进行更新
 	 */
-	@Override
-	public void cacheToPersist(String id, List<Paper> papers) {
+	private void persistCounterSummary(String id, List<Paper> papers) {
 		//save to basic summary count data
 		countSingleEntity(id, -1, papers);
-		//for every year
-		for (Integer y : papers.stream()
-				.map(Paper::getYear)
-				.collect(Collectors.toSet())) {
-			countSingleEntity(id, y, papers);
-		}
 	}
 
+	/**
+	 * 补充年份数据
+	 */
+	private void persistCounterYear(String id, List<Paper> papers) {
+		for (Integer y : papers.stream().map(Paper::getYear).collect(Collectors.toSet()))
+			countSingleEntity(id, y, papers);
+	}
+
+	/**
+	 * 对单个年份进行持久化
+	 *
+	 * @param id:     最终的checkId
+	 * @param year:   年份,如果是-1那么就是对全部年份的统计
+	 * @param papers: 当年相关paper
+	 */
 	public void countSingleEntity(String id, int year, List<Paper> papers) {
+		if (mongoTemplate.exists(Query.query(new Criteria("checkId").is(id)
+						.and("year").is(year)),
+				CounterBaseEntity.class)) {
+			return;
+		}
+
 		CounterBaseEntity totalPOJO = new CounterBaseEntity();
 		totalPOJO.setCheckId(id);
 		totalPOJO.setYear(year);        // year < 0 denotes the total
