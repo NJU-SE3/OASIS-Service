@@ -40,6 +40,9 @@ public class ResourceDetailController {
 	@Autowired
 	private JsonUtil jsonUtil;
 
+	/**
+	 * 获取单个领域具体信息
+	 */
 	@GetMapping("/field/detail")
 	public JSONObject fetchFieldDetail(@RequestParam(name = "id") String id) {
 		Field en = fieldService.fetchEnById(id);
@@ -47,6 +50,9 @@ public class ResourceDetailController {
 		return generalJsonVO.field2VO(en, baseEntity);
 	}
 
+	/**
+	 * 获取单个作者具体信息
+	 */
 	@GetMapping("/author/detail")
 	public JSONObject fetchAuthorDetail(@RequestParam(name = "id") String id) {
 		Author en = authorService.fetchEnById(id);
@@ -54,6 +60,9 @@ public class ResourceDetailController {
 		return generalJsonVO.author2VO(en, baseEntity);
 	}
 
+	/**
+	 * 获取单个机构具体信息
+	 */
 	@GetMapping("/affiliation/detail")
 	public JSONObject fetchAffiliationDetail(@RequestParam(name = "id") String id) {
 		Affiliation en = affiliationService.fetchEnById(id);
@@ -61,6 +70,9 @@ public class ResourceDetailController {
 		return generalJsonVO.affiliation2VO(en, baseEntity);
 	}
 
+	/**
+	 * 获取单个会议具体信息
+	 */
 	@GetMapping("/conference/detail")
 	public JSONObject fetchConferenceDetail(@RequestParam(name = "id") String id) {
 		Conference en = conferenceService.fetchEnById(id);
@@ -68,6 +80,11 @@ public class ResourceDetailController {
 		return generalJsonVO.conference2VO(en, baseEntity);
 	}
 
+	/**
+	 * 获取论文列表
+	 *
+	 * @param id: 限制实体的 id
+	 */
 	@GetMapping("/paper/list")
 	public JSONArray fetchPaperList(@RequestParam(name = "id") String id) {
 		List<PaperBriefVO> paperList = paperService.fetchPaperList(id).stream()
@@ -76,10 +93,15 @@ public class ResourceDetailController {
 		return JSONArray.parseArray(JSON.toJSONString(paperList));
 	}
 
+	/**
+	 * 获取作者列表
+	 * 可以按照领域、机构进行额外的筛选
+	 */
 	@GetMapping("/author/list")
-	public JSONArray fetchAuthorList(@RequestParam(name = "id", defaultValue = "") String id) {
-		List<Author> authorList = id.isEmpty() ? authorService.fetchAuthorList() :
-				authorService.fetchAuthorList(id);
+	public JSONArray fetchAuthorList(@RequestParam(name = "refinement", defaultValue = "") String refinement) {
+		//需要考察是否需要筛选
+		List<Author> authorList = refinement.isEmpty() ? authorService.fetchAuthorList() :
+				authorService.fetchAuthorList(refinement);
 		JSONArray array = new JSONArray();
 		for (Author author : authorList) {
 			CounterBaseEntity baseEntity = initializationService.getSummaryInfo(author.getId());

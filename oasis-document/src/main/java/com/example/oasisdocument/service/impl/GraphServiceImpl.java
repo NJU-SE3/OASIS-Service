@@ -1,78 +1,101 @@
 package com.example.oasisdocument.service.impl;
 
-import com.alibaba.fastjson.JSONObject;
-import com.example.oasisdocument.model.VO.AuthorNodeVO;
-import com.example.oasisdocument.model.docs.analysis.NormalBuffer;
-import com.example.oasisdocument.model.graph.nodes.Affiliation;
-import com.example.oasisdocument.model.graph.nodes.Author;
-import com.example.oasisdocument.repository.analysis.NormalBufferRepo;
+import com.example.oasisdocument.exceptions.EntityNotFoundException;
+import com.example.oasisdocument.model.docs.Author;
+import com.example.oasisdocument.model.docs.Paper;
+import com.example.oasisdocument.model.docs.analysis.GraphEdge;
+import com.example.oasisdocument.model.docs.extendDoc.Field;
 import com.example.oasisdocument.repository.docs.AuthorRepository;
 import com.example.oasisdocument.repository.docs.PaperRepository;
-import com.example.oasisdocument.repository.graph.AffiliationNeoRepo;
-import com.example.oasisdocument.repository.graph.AuthorNeoRepo;
-import com.example.oasisdocument.repository.graph.PaperNeoRepo;
 import com.example.oasisdocument.service.GraphService;
+import com.example.oasisdocument.service.InitializationService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.scheduling.annotation.Async;
+import org.springframework.data.mongodb.core.MongoTemplate;
+import org.springframework.data.mongodb.core.query.Criteria;
+import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Service;
 
+import java.util.HashSet;
+import java.util.LinkedList;
 import java.util.List;
+import java.util.Set;
 
 
 @Service
 public class GraphServiceImpl implements GraphService {
-	private static final String authorBufName = "author_ana";
-
+	@Autowired
+	private MongoTemplate mongoTemplate;
 	@Autowired
 	private AuthorRepository authorRepository;
 	@Autowired
-	private AuthorNeoRepo authorNeoRepo;
+	private InitializationService initializationService;
+	@Autowired
+	private PaperRepository paperRepository;
 
-	@Autowired
-	private NormalBufferRepo normalBufferRepo;
-	@Autowired
-	private AffiliationNeoRepo affiliationNeoRepo;
+	@Override
+	public List<Set<GraphEdge>> authorMapViaId(String id) {
+		//首先查找图中是否已经存在这个顶点
+		List<GraphEdge> edges = mongoTemplate.find(Query.query(new Criteria("begin").is(id)), GraphEdge.class);
+		if (!edges.isEmpty()) return new LinkedList<>();
+		//如果不存在 , 那么进行持久化
+		List<Author> authors = authorRepository.findAllById(id);
+		if (authors.isEmpty()) throw new EntityNotFoundException();
+		Author author = authors.get(0);
+		assert null != author;
+		String beginId = author.getId();
+		//获取协同作者列表
+		List<Paper> papers = new LinkedList<>();
+		initializationService.getSummaryInfo(id)
+				.getPaperList().forEach((String pid) -> papers.addAll(paperRepository.findAllById(pid)));
+		//对于每一篇paper
+		List<Set<GraphEdge>> graph = new LinkedList<>();
+		for (Paper paper : papers) {
+			graph.add(authorMap(author, paper));
+		}
+		return graph;
+	}
 
 	/**
-	 * TODO:
-	 * 1. author.csv 中的数据进行导入. terms , trends , coAuthor 除外.
-	 * affiliation 字段的数据, 需要额外存储
-	 * 2. paper.csv 数据导入. references,citations 除外
+	 * 针对一个paper记录 , 添加多个边
+	 *
+	 * @param begin : 起始作者顶点
+	 * @param paper : paper信息
 	 */
-	@Override
-	public void constructGraph() {
+	private Set<GraphEdge> authorMap(Author begin, Paper paper) {
+		Set<GraphEdge> curSet = new HashSet<>();
+		for (Author end : paper.getAuthorList()) {
+			GraphEdge edge = new GraphEdge();
+			edge.setBegin(begin.getId());
+			edge.setEnd(end.getId());
 
+		}
+		return curSet;
 	}
 
 	@Override
-	public void importAuthorBasic() {
-		for (com.example.oasisdocument.model.docs.Author vo : authorRepository.findAll()) {
-			String affName = vo.getAffiliationName();
-			//insertPaperVOEntity into aff
-			Author author = AuthorNodeVO.VO2PO(vo);
-
-			//save to affiliation
-			if (!affName.isEmpty()) {
-				List<Affiliation> affList = affiliationNeoRepo.findAllByAffiliationName(affName);
-				Affiliation affEntity = affList.isEmpty() ? new Affiliation() : affList.get(0);
-				affEntity.addAuthor(author);
-				affiliationNeoRepo.save(affEntity);
+	public List<GraphEdge> fieldMapViaId(String id) {
+		//首先查找图中是否已经存在这个顶点
+		List<GraphEdge> edges = mongoTemplate.find(Query.query(new Criteria("begin").is(id)), GraphEdge.class);
+		if (!edges.isEmpty()) return edges;
+		//如果不存在 , 那么进行持久化
+		List<Field> fields = mongoTemplate.find(Query.query(new Criteria("id").is(id)), Field.class);
+		if (fields.isEmpty()) throw new EntityNotFoundException();
+		Field field = fields.get(0);
+		assert null != field;
+		String beginId = field.getId();
+		List<Paper> papers = mongoTemplate
+				.find(Query.query(new Criteria("keywords").regex(field.getFieldName())), Paper.class);
+		for (Paper paper : papers) {
+			for (String coName : paper.getKeywords().split(";")) {
+				
 			}
-			//save to author
-			authorNeoRepo.save(author);
-			//save to buffer
-			String id = vo.getId();
-			NormalBuffer buffer = new NormalBuffer();
-			buffer.setId(id);
-			buffer.setType(authorBufName);
-			JSONObject parser = new JSONObject();
-			parser.put("coAuthors", vo.getCoAuthors());
-			parser.put("trends", vo.getField());
-			parser.put("terms", vo.getTerms());
-			//序列化
-			buffer.setContent(parser.toJSONString());
-			//save to buf
-			normalBufferRepo.save(buffer);
+
 		}
+		return null;
+	}
+
+	@Override
+	public List<GraphEdge> affMapViaId(String id) {
+		return null;
 	}
 }

@@ -11,6 +11,6 @@ public interface AuthorService {
 
 	List<Author> fetchAuthorList();
 
-	List<Author> fetchAuthorList(String id);
+	List<Author> fetchAuthorList(String refinement);
 
 }

@@ -1,10 +1,14 @@
 package com.example.oasisdocument.service;
 
-import org.springframework.scheduling.annotation.Async;
+import com.example.oasisdocument.model.docs.analysis.GraphEdge;
+
+import java.util.List;
+import java.util.Set;
 
 public interface GraphService {
-	void constructGraph();
+	List<Set<GraphEdge>> authorMapViaId(String id);
 
-	@Async
-	void importAuthorBasic();
+	List<GraphEdge> fieldMapViaId(String id);
+
+	List<GraphEdge> affMapViaId(String id);
 }
