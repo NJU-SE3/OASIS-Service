@@ -48,7 +48,7 @@ public class ReportController {
     //被引用论文数最多作者TOP10的堆叠柱状图
     @GetMapping("/author/rank/paper_cnt")
     public JSONArray getAuthorOfMostPaper(@RequestParam(name = "rank", defaultValue = "10") int rank) {
-        List<Pair<String, List<Paper>>> list = reportService.getAuthorOfMostPaper(rank);
+        List<Pair<String, List<Paper>>> list = reportService.getAuthorOfMostCitation(rank);
         return list.stream()
                 .map((Pair<String, List<Paper>> pair) -> {
                     List<Paper> papers = pair.getSecond();

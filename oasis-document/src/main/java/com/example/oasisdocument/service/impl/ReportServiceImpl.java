@@ -98,7 +98,7 @@ public class ReportServiceImpl implements ReportService {
 
     @Override
     @Cacheable(cacheNames = "getAuthorOfMostPaper", unless = "#result==null")
-    public List<Pair<String, List<Paper>>> getAuthorOfMostPaper(int rank) {
+    public List<Pair<String, List<Paper>>> getAuthorOfMostCitation(int rank) {
         Query query = new Query();
         query.with(new Sort(Sort.Direction.DESC, "citationCount"));
         List<AuthorCitation> buffers =

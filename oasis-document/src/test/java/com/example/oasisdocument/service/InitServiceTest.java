@@ -21,13 +21,15 @@ public class InitServiceTest {
 	private InitializationService initializationService;
 	@Autowired
 	private MongoTemplate mongoTemplate;
+	@Autowired
+	private ReportService reportService;
 
 	@Before
 	public void init() {
 	}
+
 	@Test
 	public void initCounterTest() {
-		initializationService.initAffiliationBase();
 	}
 
 
