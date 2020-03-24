@@ -7,6 +7,7 @@ import com.example.oasisdocument.model.VO.PaperInsertVO;
 import com.example.oasisdocument.model.docs.Author;
 import com.example.oasisdocument.model.docs.Paper;
 import com.example.oasisdocument.model.docs.counter.CounterBaseEntity;
+import com.example.oasisdocument.model.docs.extendDoc.Conference;
 import com.example.oasisdocument.repository.docs.AuthorRepository;
 import com.example.oasisdocument.repository.docs.PaperRepository;
 import com.example.oasisdocument.service.InitializationService;
@@ -17,6 +18,7 @@ import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
@@ -82,29 +84,44 @@ public class PaperServiceImpl implements PaperService {
         return papers.stream().map(PaperBriefVO::PO2VO).collect(Collectors.toList());
     }
 
+    //paper 导入
     @Override
+    @Async
     public void insertPaperVOEntity(PaperInsertVO entity) {
-        List<Author> authors = new LinkedList<>();
-        if (paperRepository.findAllById(entity.getId()).isEmpty()) {
+        if (null == mongoTemplate.findById(entity.getId(), Paper.class)) {
             List<Long> array = entity.getAuthorIds();
+            List<Author> authors = new LinkedList<>();
+            //author 设置
             if (!array.isEmpty()) {
-                List<String> affList = new LinkedList<>(),
+                List<String> affNameList = new LinkedList<>(),
                         authorNameList = new LinkedList<>();
                 for (Long authorId : array) {
-                    authors = authorRepository.findAllById(String.valueOf(authorId));
-                    if (!authors.isEmpty()) {
-                        Author author = authors.get(0);
+                    Author author = mongoTemplate.findById(authorId, Author.class);
+                    if (null != author) {
                         String aff = author.getAffiliationName();
                         String authorName = author.getAuthorName();
-                        affList.add(aff);
+                        affNameList.add(aff);
                         authorNameList.add(authorName);
                     }
                 }
-                entity.setAffiliations(String.join(affiliationSplitter, affList));
+                entity.setAffiliations(String.join(affiliationSplitter, affNameList));
                 entity.setAuthors(String.join(authorSplitter, authorNameList));
             }
             Paper paper = entity.VO2PO();
             paper.setAuthorList(authors);
+            //conference 设置
+            Conference conEn = mongoTemplate.findOne(Query.query(new Criteria("conferenceName")
+                            .is(paper.getConference()).and("year").is(entity.getYear())),
+                    Conference.class);
+            if (null == conEn) {
+                if (!paper.getConference().isEmpty()) {
+                    conEn = new Conference();
+                    conEn.setConferenceName(paper.getConference());
+                    conEn.setYear(entity.getYear());
+                    conEn = mongoTemplate.save(conEn);
+                }
+            }
+            paper.setConferenceEntity(conEn);
             paperRepository.save(paper);
         }
     }

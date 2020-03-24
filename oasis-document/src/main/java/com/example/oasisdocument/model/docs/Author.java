@@ -1,8 +1,12 @@
 package com.example.oasisdocument.model.docs;
 
+import com.example.oasisdocument.model.docs.extendDoc.Affiliation;
+import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
 import org.springframework.data.redis.core.index.Indexed;
+
+import java.util.List;
 
 @Document(collection = "authors")
 public class Author extends BaseEntity {
@@ -19,7 +23,15 @@ public class Author extends BaseEntity {
 	private String terms;
 	private String photoUrl;
 
-	public Author(){}
+	@DBRef(lazy = true)
+	private List<com.example.oasisdocument.model.docs.extendDoc.Field> fieldList;
+	@DBRef(lazy = true)
+	private Affiliation affiliationEntity;
+	@DBRef(lazy = true)
+	private List<Paper> paperList;
+
+	public Author() {
+	}
 
 	public String getAuthorName() {
 		return authorName;
@@ -91,5 +103,29 @@ public class Author extends BaseEntity {
 
 	public void setPhotoUrl(String photoUrl) {
 		this.photoUrl = photoUrl;
+	}
+
+	public List<com.example.oasisdocument.model.docs.extendDoc.Field> getFieldList() {
+		return fieldList;
+	}
+
+	public void setFieldList(List<com.example.oasisdocument.model.docs.extendDoc.Field> fieldList) {
+		this.fieldList = fieldList;
+	}
+
+	public Affiliation getAffiliationEntity() {
+		return affiliationEntity;
+	}
+
+	public void setAffiliationEntity(Affiliation affiliationEntity) {
+		this.affiliationEntity = affiliationEntity;
+	}
+
+	public List<Paper> getPaperList() {
+		return paperList;
+	}
+
+	public void setPaperList(List<Paper> paperList) {
+		this.paperList = paperList;
 	}
 }

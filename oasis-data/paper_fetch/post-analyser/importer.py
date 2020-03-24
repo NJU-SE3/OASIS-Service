@@ -2,6 +2,7 @@ import json
 
 import pandas as pd
 import requests
+import re
 
 
 def import_papers(df):
@@ -19,11 +20,14 @@ def import_papers(df):
                     author_ids.append(author['id'])
 
             ref_cnt, cit_cnt = len(eval(row['references'])), len(eval(row['citations']))
+            conference_name = str(row['publication']).encode('ascii', 'ignore').decode('ascii')
+            from conference_analyser import conference_filter
+            conference_name = conference_filter(conference_name).strip()
             paper = dict(
                 id=row['id'],
                 title=str(row['title']).encode('ascii', 'ignore').decode('ascii'),
                 abstract=str(row['abstract']).encode('ascii', 'ignore').decode('ascii'),
-                conference=str(row['publication']).encode('ascii', 'ignore').decode('ascii'),
+                conference=conference_name,
                 terms=row['keywords'],
                 keywords='',
                 year=row['year'],
@@ -42,10 +46,12 @@ def import_papers(df):
 def import_authors(df):
     for i , row in df.iterrows():
         # ,id,preferredName,firstName,lastName,affiliation,coAuthors,articleCount,trends,bioParagraphs,publicTopic,terms,photoUrl
+        affiliationName = row['affiliation'].encode('ascii', 'ignore').decode('ascii')
+        affiliationName = re.sub(r'[().*]', "", re.sub(r'\(.*\)', "", affiliationName.strip()).strip())
         author = dict(
             id=row['id'],
             authorName=row['preferredName'].encode('ascii', 'ignore').decode('ascii'),
-            affiliationName=row['affiliation'].encode('ascii', 'ignore').decode('ascii'),
+            affiliationName=affiliationName,
             coAuthors=row['coAuthors'],
             articleCount=row['articleCount'],
             paperTrends=row['trends'],
@@ -58,8 +64,9 @@ def import_authors(df):
                       headers={'Content-Type': 'application/json'})
 
 if __name__ == '__main__':
-    df = pd.read_csv('/Users/mac/Documents/repos/SE3/OASIS-Service/oasis-data/paper_fetch/resources/papers/paper.csv')
     # df = pd.read_csv('/Users/mac/Documents/repos/SE3/OASIS-Service/oasis-data/paper_fetch/resources/papers/author.csv')
+    # df = df.fillna('')
+    # import_authors(df)
+    df = pd.read_csv('/Users/mac/Documents/repos/SE3/OASIS-Service/oasis-data/paper_fetch/resources/papers/paper.csv')
     df = df.fillna('')
     import_papers(df)
-    # import_authors(df)

@@ -13,8 +13,10 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
+import java.util.LinkedList;
 import java.util.List;
 
 @Service
@@ -27,10 +29,41 @@ public class AuthorServiceImpl implements AuthorService {
 	private InitializationService initializationService;
 	private static final String refineSplitter = ":";
 
+	//author 导入
+	//涉及到 affiliation 和 field 的导入
 	@Override
+	@Async
 	public void insert(Author entity) {
-		if (authorRepository.findAllById(entity.getId()).isEmpty())
+		if (null == mongoTemplate.findById(entity.getId(), Author.class)) {
+			String affName = entity.getAffiliationName();
+			String[] filedNameList = entity.getField().split(",");
+			//导入机构
+			Affiliation affEn = mongoTemplate.findOne(Query.query(new Criteria("affiliationName").is(affName)),
+					Affiliation.class);
+			if (null == affEn) {
+				if (!affName.isEmpty()) {
+					affEn = new Affiliation();
+					affEn.setAffiliationName(affName);
+					affEn = mongoTemplate.save(affEn);
+				}
+			}
+			//导入field
+			List<Field> fields = new LinkedList<>();
+			for (String fieldName : filedNameList) {
+				Field fieldEn = mongoTemplate.findOne(Query.query(new Criteria("fieldName").is(fieldName)),
+						Field.class);
+				if (null == fieldEn) {
+					if (affName.isEmpty()) continue;
+					fieldEn = new Field();
+					fieldEn.setFieldName(fieldName);
+					fieldEn = mongoTemplate.save(fieldEn);
+				}
+				fields.add(fieldEn);
+			}
+			entity.setAffiliationEntity(affEn);
+			entity.setFieldList(fields);
 			authorRepository.save(entity);
+		}
 	}
 
 	@Override

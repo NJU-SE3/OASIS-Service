@@ -4,6 +4,7 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.alibaba.fastjson.annotation.JSONField;
+import com.example.oasisdocument.model.docs.extendDoc.Conference;
 import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
@@ -57,6 +58,8 @@ public class Paper extends BaseEntity {
 
     @DBRef(lazy = true)
     private List<Author> authorList;
+    @DBRef(lazy=true)
+    private Conference conferenceEntity;
 
     @Field("citations")
     private List<Long> citations;
@@ -193,5 +196,13 @@ public class Paper extends BaseEntity {
 
     public void setReferences(List<Long> references) {
         this.references = references;
+    }
+
+    public Conference getConferenceEntity() {
+        return conferenceEntity;
+    }
+
+    public void setConferenceEntity(Conference conferenceEntity) {
+        this.conferenceEntity = conferenceEntity;
     }
 }
