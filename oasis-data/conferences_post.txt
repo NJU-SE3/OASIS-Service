@@ -1,0 +1,1492 @@
+International Conference on Research Challenges in Information Science
+IEEE/ACM International Conference on Software Engineering: Software Engineering Education and Training Track
+Annual Hawaii International Conference on System Sciences
+IEEE International Conference on Software Maintenance
+Youth Academic Annual Conference of Chinese Association of Automation
+IEEE International Conference On Trust, Security And Privacy In Computing And Communications/ IEEE International Conference On Big Data Science And Engineering
+International Workshop on Software Engineering Education Based on Real-World Experiences
+IEEE International Conference on Software Security and Reliability Companion
+IEEE/ACM International Workshop on Emotion Awareness in Software Engineering
+IEEE Working Conference on Software Visualization
+IEEE International Requirements Engineering Conference
+IEEE/ACIS International Conference on Software Engineering, Artificial Intelligence, Networking and Parallel/Distributed Computing
+International Conference on Parallel Architecture and Compilation Techniques
+INDIN IEEE International Conference on Industrial Informatics
+Evolutionary Computation
+European Dependable Computing Conference
+IEEE Conference on Open Systems
+SoutheastCon
+Agile Conference
+IET Information Security
+ACM/IEEE International Conference on Formal Methods and Models for Codesign
+IEEE International Conference on Computer and Information Technology
+IEEE/ACIS International Conference on Software Engineering, Artificial Intelligence, Networking and Parallel/Distributed Computing
+International Conference on Software Maintenance
+Euromicro Conference EUROMICRO Informatics: Inventing the Future
+International Conference on Software Engineering
+Formal Methods in Computer Aided Design
+Brazilian Symposium on Computer Games and Digital Entertainment
+International Conference on Availability, Reliability and Security
+IFIP International Conference on New Technologies, Mobility and Security
+Working IEEE/IFIP Conference on Software Architecture
+International Conference on Secure Software Integration and Reliability Improvement
+IEEE Symposium on Security and Privacy
+IEEE International Conference on E-Science
+Brazilian Symposium on Software Engineering
+IEEE International Conference on Computer Design
+IEEE International Symposium on High Assurance Systems Engineering
+ICC - IEEE International Conference on Communications
+IEEE International Symposium on High-Assurance Systems Engineering
+International Conference on Virtual Reality and Visualization
+International Conference on Advanced Cloud and Big Data
+IEEE International Conference on Robotics and Automation
+International Workshop on Parallel and Distributed Methods in Verification, and International Workshop on High Performance Computational Systems Biology
+International Workshop on Software Mining
+IEEE International Conference on Pervasive Computing and Communications
+International Conference on Artificial Intelligence and Advanced Manufacturing
+Technology of Object-Oriented Languages and Systems TOOLS
+International Conference on Cloud Computing and Big Data
+IEEE Conference on Dependable and Secure Computing
+IEEE Spectrum
+International Conference on Web Engineering
+IEEE International Conference on Electronics Technology
+IEEE International Enterprise Distributed Object Computing Conference
+IEEE Annual Computer Software and Applications Conference
+IEEE Cybersecurity Development
+IEEE International Conference on Distributed Computing Systems
+IEEE International Symposium for Design and Technology in Electronic Packaging
+International Conference on Software Analysis, Testing and Evolution
+IEEE International Workshop on Software Clones
+International Symposium on Symbolic and Numeric Algorithms for Scientific Computing
+Annual International Conference on Automated Software Engineering
+International Conference on Application of Concurrency to System Design
+IEEE Information Technology, Networking, Electronic and Automation Control Conference
+International Software Product Line Conference
+IEEE Intelligent Systems and their Applications
+IEEE International Requirements Engineering Conference
+IEEE International Conference on Parallel and Distributed Systems
+IEEE/WIC/ACM International Conference on Web Intelligence
+IEEE Workshop on Validation, Analysis and Evolution of Software Tests
+IEEE/ACM International Workshop on CrowdSourcing in Software Engineering
+IEEE Wireless Communications
+IEEE International Symposium on Electromagnetic Compatibility
+IEEE Workshop on Machine Learning Techniques for Software Quality Evaluation
+IEEE International Conference on Communications
+Brazilian Symposium on Software Engineering
+International Symposium on Symbolic and Numeric Algorithms for Scientific Computing
+International Multidisciplinary Information Technology and Engineering Conference
+The Congress on Evolutionary Computation
+IEEE Expert
+IEEE International Conference on Software Maintenance
+IEEE International Conference on Data Mining Workshop
+IEEE International Conference on Program Comprehension
+IEEE International Conference on Data Engineering
+IEEE/ACM/IFIP Workshop on Embedded Systems for Real-Time Multimedia
+International Computer Symposium
+International Conference on System Reliability and Safety
+IEEE Symposium on Computers and Communication
+Annual ACM/IEEE Symposium on Logic in Computer Science
+IEEE International Conference on Cloud Computing
+IEEE Latin American Conference on Computational Intelligence
+IEEE International Requirements Engineering Conference
+European Conference on Software Maintenance and Reengineering
+IEEE International Symposium on Software Reliability Engineering
+Annual Conference on System of Systems Engineering
+International Conference on Dependable Systems and Networks
+International Workshop on Software Clones
+International Conference on Software Engineering Advances
+IEEE Computational Intelligence Magazine
+IEEE International Symposium on Software Reliability Engineering
+International Symposium on Software Metrics
+IEEE/ACM International Conference on Software Engineering: Software Engineering in Practice Track
+IEEE International Conference on Software Architecture
+EUROMICRO Conference on Software Engineering and Advanced Applications
+International Conference on Information Technology: New Generations
+Working Conference on Reverse Engineering
+IEEE International Conference on Cloud Computing
+IEEE International Requirements Engineering Conference
+Testing: Academic & Industrial Conference - Practice and Research Techniques
+International Conference on Software Maintenance
+International Conference on Computing, Communication and Automation
+Asia-Pacific Software Engineering Conference
+International Workshop on Emerging Trends in Software Metrics
+IEEE International Symposium on High Assurance Systems Engineering
+International Conference on Big Data Computing and Communications
+International Conference on Communication Systems and Network Technologies
+International Symposium on Code Generation and Optimization
+IEEE/WIC/ACM International Conference on Web Intelligence and Intelligent Agent Technology
+International Symposium on Software Reliability Engineering
+Workshops on Enabling Technologies: Infrastructure for Collaborative Enterprises
+European Dependable Computing Conference
+IEEE Symposium on Service-Oriented System Engineering
+International Conference on Advanced Science and Engineering
+International Conference on Document Analysis and Recognition
+IEEE International Conference on Software Maintenance
+IEEE International Requirements Engineering Conference
+IEEE International Conference on Software Testing Verification and Validation Workshop
+IEEE/ACM International Conference on Software Engineering: New Ideas and Emerging Results
+IEEE Annual Foundations of Computer Science
+IEEE Embedded Systems Letters
+Working Conference on Reverse Engineering
+International Symposium on Software Reliability Engineering
+International Workshop on Automation of Software Test
+IEEE Transactions on Control Systems Technology
+IEEE/ACM International Conference on Software Engineering: New Ideas and Emerging Technologies Results
+IEEE International Requirements Engineering Conference
+IEEE Conference on Decision and Control and European Control Conference
+IEEE Transactions on Automatic Control
+IEEE
+International Workshop on Predictor Models in Software Engineering ICSE Workshops
+International Symposium on Programming and Systems
+IEEE/ACM International FME Workshop on Formal Methods in Software Engineering
+International Conference on Software, Telecommunications and Computer Networks
+IEEE/IFIP International Conference on Dependable Systems and Networks Workshops
+IEEE/ACM International Conference on Mining Software Repositories
+ACM/IEEE Design Automation Conference
+IEEE International Conference on Services Computing
+International Conference on Machine Intelligence and Research Advancement
+IEEE International Conference on Engineering Complex Computer Systems
+International Symposium on Temporal Representation and Reasoning
+IEEE International Conference on Communications
+IEEE International Working Conference on Source Code Analysis and Manipulation
+International Conference on Software Maintenance
+Australian Software Engineering Conference
+Conference on Software Engineering Education & Training
+IEEE International Conference on Software Engineering and Formal Methods
+International Conference on Software Engineering
+IEEE/ACM International Conference on Software Engineering
+IEEE International Conference on Fuzzy Systems
+Working Conference on Reverse Engineering
+Twenty-Third Annual Computer Security Applications Conference
+IEEE/ACM Joint International Workshop on Rapid Continuous Software Engineering and International Workshop on Data-Driven Decisions, Experimentation and Evolution
+Joint Working IEEE/IFIP Conference on Software Architecture & European Conference on Software Architecture
+International Conference on Quality Software
+International Conference on High Performance Computing & Simulation
+Agile India
+IEEE International Workshop on Managing Technical Debt
+IEEE Symposium on Service-Oriented System Engineering
+IEEE International Conference on Software Testing, Verification and Validation
+IEEE International Conference on Software Testing, Verification and Validation Workshops
+IEEE/ACM International Workshop on Cooperative and Human Aspects of Software Engineering
+Science and Engineering for Software Development: A Recognition of Harlin D Mills Legacy
+International Workshop on Empirical Software Engineering in Practice
+IEEE International Conference on Collaboration and Internet Computing
+International Green and Sustainable Computing Conference
+International Conference on Dependable Systems and Networks
+International Conference on Software, Knowledge, Information Management & Applications
+IEEE Conference on Dependable and Secure Computing
+International Symposium on Empirical Software Engineering
+IFIP/IEEE International Symposium on Theoretical Aspects of Software Engineering
+International Conference on Quality Software
+IEEE Communications Magazine
+IEEE International Conference on Software Science, Technology and Engineering
+IEEE International Conference on Distributed Computing Systems
+IEEE International Conference on Internet of Things
+IEEE International Symposium on Software Reliability Engineering Workshops
+IEEE Symposium on Reliable Distributed Systems
+IEEE/ACM International Workshop on Rapid Continuous Software Engineering
+Symposium on Security and Privacy
+IEEE International Conference on Engineering Education
+International Conference on Robotics and Automation
+IEEE Symposium on Visual Languages and Human-Centric Computing
+IEEE Symposium on Security and Privacy
+IEEE International Conference on Cloud Engineering
+International Workshop on Automation of Software Test
+IEEE International Conference on Software Testing, Verification and Validation
+IEEE/ACIS International Conference on Software Engineering, Artificial Intelligence, Networking and Parallel/Distributed Computing
+International Symposium on Systems Engineering
+IEEE/ACM International Workshop on Metamorphic Testing
+International Workshop on Natural Language Analysis in Software Engineering
+IEEE Transactions on Very Large Scale Integration
+IEEE International Conference on Web Services
+IEEE International Conference on Cloud Computing
+IEEE International Conference on Pervasive Computing and Communications
+IEEE Annual Computer Software and Applications Conference Workshops
+IEEE International Conference on Software Quality, Reliability and Security
+International Symposium on Theoretical Aspects of Software Engineering
+X Brazilian Symposium on Software Components, Architectures and Reuse
+International Workshop on Collaborative Teaching of Globally Distributed Software Development
+IEEE Annual Computer Software and Applications Conference
+Annual International Symposium on Computer Architecture
+IEEE International Conference on Automated Software Engineering
+IEEE International Conference on Automated Software Engineering
+Annual IEEE/ACM International Symposium on Microarchitecture
+International Conference on Model-Driven Engineering and Software Development
+IEEE International Conference on Global Software Engineering
+Asia-Pacific Software Engineering Conference
+International Conference on Ubi-media Computing and Workshops
+IEEE Real-Time Systems Symposium
+IEEE/ACM International Conference on Utility and Cloud Computing Companion
+IEEE International Conference on Machine Learning and Applications
+Working Conference on Reverse Engineering
+Symposium on Integrated Circuits and Systems Design, SBCCI
+International Conference on Systems and Informatics
+IEEE Symposium on Visual Languages and Human-Centric Computing
+IEEE/ACM International Conference on Software Engineering: Software Engineering in Practice Track
+IRE Transactions on Engineering Management
+International Conference on Information and Communication Systems
+IEEE Annual Symposium on Foundations of Computer Science
+International Symposium on Empirical Software Engineering
+IEEE International Conference on Cognitive Machine Intelligence
+European Dependable Computing Conference
+IEEE Workshop on Mining and Analyzing Interaction Histories
+IEEE Symposium on Visual Languages and Human-Centric Computing
+International Symposium on Software Reliability Engineering
+IEEE Annual Computer Software and Applications Conference
+IEEE International Conference on Data Mining
+International Workshop on Affective Computing for Requirements Engineering
+IEEE Transactions on Education
+Hawaii International Conference on System Sciences
+International Conference on Software Maintenance
+IEEE Conference on Software Engineering Education and Training
+Architecture-Centric Virtual Integration
+European Dependable Computing Conference
+International Conference on Innovation and Intelligence for Informatics, Computing, and Technologies
+Testing: Academic and Industrial Conference Practice and Research Techniques - MUTATION
+IEEE Symposium on Visual Languages and Human-Centric Computing
+Iranian Conference on Electrical Engineering
+The Annual IEEE International Conference on Cyber Technology in Automation, Control and Intelligent
+International Workshop on Empirical Software Engineering in Practice
+IEEE International Conference on Software Analysis, Evolution and Reengineering
+International Symposium on Code Generation and Optimization
+IEEE Transactions on Information Forensics and Security
+Asia and South Pacific Design Automation Conference
+International Workshop on Combining Modelling and Search-Based Software Engineering
+International Conference on Software Engineering
+IEEE International Conference on Software Maintenance and Evolution
+IEE Colloquium on Software in Air Traffic Control Systems - The Future
+IEEE Conference on e-Learning, e-Management and e-Services
+IEEE Intelligent Vehicles Symposium
+Workshop on Mutation Analysis
+IEEE International Conference on Self-Adaptive and Self-Organizing Systems
+International Workshop on Software Clones
+IEEE Symposium on Computer Arithmetic
+Journal of Cognitive Neuroscience
+IEEE/ACM International Symposium on Software Engineering for Adaptive and Self-Managing Systems
+Working Conference on Reverse Engineering
+IEEE/AIAA Digital Avionics Systems Conference
+ASE IEEE International Conference on Automated Software Engineering
+UK Workshop on Computational Intelligence
+IEEE International Conference on Software Architecture
+IEEE International Conference on Information Reuse & Integration
+Euromicro Workshop on Real-Time Systems
+Annual Conference on Computer Documentation ipcc sigdoc Technology and Teamwork  IEEE Professional Communication Society International Professional Communication Conference an
+IEEE International Conference on Machine Learning and Applications
+IEEE International Conference on Software Quality, Reliability and Security Companion
+IEEE Working Conference on Mining Software Repositories
+IEEE Transactions on Software Engineering
+IEEE SmartWorld, Ubiquitous Intelligence & Computing, Advanced & Trusted Computing, Scalable Computing & Communications, Cloud & Big Data Computing, Internet of People and Smart City Innovation
+International Workshop on Managing Technical Debt
+IEEE/ACM International Workshop on Realizing Artificial Intelligence Synergies in Software Engineering
+IEEE International Requirements Engineering Conference Workshops
+International Conference on Advanced Information Networking and Applications - Workshops
+Neural Computation
+IEEE International Conference on Global Software Engineering
+International Conference on Computer, Information and Telecommunication Systems
+IEEE/ACM International Workshop on Software Engineering for Smart Cyber-Physical Systems
+IEEE INFOCOM - The Annual IEEE International Conference on Computer Communications
+IEEE International Conference on Smart Internet of Things
+Interacting with Computers
+International Workshop on Scenarios and State Machines ICSE Workshops
+Latin-American Symposium on Dependable Computing
+IEEE International High Level Design Validation and Test Workshop
+IEEE International Conference on Software Analysis, Evolution and Reengineering
+Working Conference on Reverse Engineering
+IEEE Frontiers in Education Conference
+IEEE/ACM International Workshop on CrowdSourcing in Software Engineering
+IEEE/ACM International Conference on Automated Software Engineering
+International Conference on Computer and Technology Applications
+IEEE International High-Level Design Validation and Test Workshop
+IEEE International Conference on Software Quality, Reliability and Security
+International Conference on Global Software Engineering
+IEEE International Requirements Engineering Conference
+Formal Methods in Computer-Aided Design
+IEEE/ACM International Workshop on Conducting Empirical Studies in Industry
+International Conference on Software Engineering
+Annual Symposium on Foundations of Computer Science
+SC  ACM/IEEE Conference on Supercomputing
+Australian Software Engineering Conference
+IEEE Global Communications Conference
+IEEE International Conference on Program Comprehension
+IEEE International Conference on Systems, Man and Cybernetics
+Design Issues
+International Conference on Information and Communications Technology
+Agile Development Conference
+International Conference System Modeling & Advancement in Research Trends
+International Symposium on Software Reliability Engineering
+IEEE Symposium on Visualization for Cyber Security
+International Conference on Software Engineering
+International Conference on Connected Vehicles and Expo
+IEEE International Conference on Dependable Systems and Networks With FTCS and DCC
+IEEE International Symposium on Requirements Engineering
+IEEE Transactions on Multi-Scale Computing Systems
+IEEE/ACM Cooperative and Human Aspects of Software Engineering
+IEEE International Conference on Computer Supported Cooperative Work in Design
+International Symposium on High Performance Computer Architecture
+International Symposium on Computing and Networking
+IEEE/ACM International Symposium on Software Engineering for Adaptive and Self-Managing Systems
+IEEE Transactions on Knowledge and Data Engineering
+IEEE/ACM International Workshop on Software Engineering for Smart Cyber-Physical Systems
+International Conference on Software Testing, Verification and Validation
+IEEE Symposium on Security and Privacy
+IEEE Jordan Conference on Applied Electrical Engineering and Computing Technologies
+IEEE Conference on Software Testing, Validation and Verification
+Annual IEEE Symposium on Logic in Computer Science
+International Workshop on Managing Technical Debt
+IEEE/ACM International Conference on Software Engineering: Companion
+IEEE INFOCOM - IEEE Conference on Computer Communications
+Annual Computer Security Applications Conference
+Asia-Pacific Software Engineering Conference
+IEEE Symposium on Security and Privacy
+Journal of Logic and Computation
+International Software Metrics Symposium Metrics
+International Conference on Electrical, Communication, and Computer Engineering
+International Conference on Parallel, Distributed and Grid Computing
+IEEE Symposium on Software Metrics
+IEEE Conference on Computer Vision and Pattern Recognition Workshops
+International Conference on Cyber Security and Protection of Digital Services
+International Conference of the Chilean Computer Science Society
+IEEE International Conference on Green Computing and Communications and IEEE Internet of Things and IEEE Cyber, Physical and Social Computing
+IEEE Intelligent Vehicles Symposium
+International Conference and Exhibition on Technology of Object-Oriented Languages and Systems
+IEEE International Requirements Engineering Conference
+IEEE Transactions on Cybernetics
+Workshop on Software Testing, Verification, and Analysis
+IEEE International Conference on Global Software Engineering Workshops
+International Workshop on Software Engineering for Embedded Systems
+IEEE Workshop on Visual Languages
+IEEE International Working Conference on Source Code Analysis and Manipulation
+International Conference on Advanced Communication Technology
+IEEE Transactions on Systems Science and Cybernetics
+IEEE International Symposium on Design and Diagnostics of Electronic Circuits & Systems
+International Conference on Electronics, Computers and Artificial Intelligence
+International Symposium on Empirical Software Engineering, ISESE
+Annual IEEE/IFIP International Conference on Dependable Systems and Networks Workshop
+International Conference on Embedded Software
+IEEE International Test Conference
+IEEE/ACM International Workshop on Green And Sustainable Software
+IEEE International Conference on Parallel and Distributed Systems
+International Workshop on Comparative Evaluation in Requirements Engineering - Workshop
+IEEE Games, Entertainment, Media Conference
+ACM/IEEE International Conference on Model Driven Engineering Languages and Systems
+IEEE International Conference on Software Analysis, Evolution and Reengineering
+IEEE International Enterprise Distributed Object Computing Conference
+IEEE International WIE Conference on Electrical and Computer Engineering
+International Conference on Innovative Mobile and Internet Services in Ubiquitous Computing
+IEEE Working Conference on Software Visualization
+Euromicro Conference
+IEEE International Conference on Software Testing, Verification and Validation Workshops
+IEEE International Conference on Web Services
+IEEE International Conference on Software Analysis, Evolution, and Reengineering
+IEEE/ACM International Conference on Software Engineering
+IEEE SmartWorld, Ubiquitous Intelligence & Computing, Advanced & Trusted Computed, Scalable Computing & Communications, Cloud & Big Data Computing, Internet of People and Smart City Innovation
+IEEE European Symposium on Security and Privacy
+IEEE International Conference on Adaptive Science & Technology
+IEEE International Conference on Software Architecture Companion
+EUROMICRO Conference on Software Engineering and Advanced Applications
+Central and Eastern European Software Engineering Conference
+IEEE International Conference on Systems, Man, and Cybernetics
+IEEE International Conference on Program Comprehension
+IEEE Asian Test Symposium
+IEEE Workshop on Mobile Computing Systems and Applications
+IEEE European Symposium on Security and Privacy
+International Conference on Software Testing, Verification, and Validation
+IEEE International Symposium on Software Reliability Engineering
+IEEE International Conference on Systems, Man and Cybernetics
+IEEE Workshop on IP Operations & Management
+European Conference on Software Maintenance and Reengineering
+IEEE Pacific Rim International Symposium on Dependable Computing
+IEEE International Conference on Mobile Services
+International Conference on Theoretical Aspects of Software Engineering
+International Conference on Information Assurance and Security
+IEEE International Scientific Conference on Informatics
+IEEE Conference on Automation Science and Engineering
+IEEE Transactions on Big Data
+International Conference on Engineering of Complex Computer Systems
+IEEE International Conference on Software Engineering
+IEEE European Symposium on Security and Privacy Workshops
+IEEE Internet Computing
+International Conference on Computer and Electrical Engineering
+IEEE/ACM International FME Workshop on Formal Methods in Software Engineering
+IEEE/ACM International Workshop on Search-Based Software Testing
+IEEE/ACM International Workshop on Modelling in Software Engineering
+International Symposium on Software Reliability Engineering
+IEEE International Workshop on Managing Technical Debt
+IEEE Pacific Rim International Symposium on Dependable Computing
+IEEE/IFIP Conference on Software Architecture
+IEEE Symposium on Security and Privacy
+IEEE Systems Journal
+IEEE/ACM Working Conference on Mining Software Repositories
+International Symposium on Temporal Representation and Reasoning
+IEEE International Conference on Intelligent Software Methodologies, Tools and Techniques
+International Conference on Data Engineering
+International Conference on Distributed Computing Systems
+International Conference on Quality Software
+ICSE Workshop on Principles of Engineering Service Oriented Systems
+International Conference on Application of Concurrency to System Design
+International Conference on Acoustics, Speech, and Signal Processing
+IEEE International Conference on Communications
+IEEE International Verification and Security Workshop
+IEEE International Conference on Computer and Communication Engineering Technology
+IEEE International Conference on Software Testing, Verification and Validation
+Federated Conference on Computer Science and Information Systems
+IEEE/ACM Transactions on Audio, Speech, and Language Processing
+International Software Product Line Conference
+IEEE/ACM Working Conference on Mining Software Repositories
+International Conference on Soft Computing & Machine Intelligence
+International Symposium on Empirical Software Engineering and Measurement
+International Symposium on Innovations in Intelligent SysTems and Applications
+IECON - Annual Conference of the IEEE Industrial Electronics Society
+International Conference on Methods and Models in Automation and Robotics
+IEEE International Conference on Automated Software Engineering
+IEEE International Workshop on Requirements Patterns
+IEEE/ACS International Conference on Computer Systems and Applications
+IEEE International Workshop on Artificial Intelligence for Mobile
+IEEE Workshop on Policies for Distributed Systems and Networks
+International Conference on Dependable Systems and Their Applications
+IEEE/ACM International Workshop on Establishing the Community-Wide Infrastructure for Architecture-Based Software Engineering
+Hawaii International Conference on System Sciences
+IEEE Conference on Software Engineering Education and Training
+International Software Metrics Symposium
+IEEE International Symposium on Parallel and Distributed Processing
+Asia-Pacific Software Engineering Conference
+IEEE Annual Computer Software and Applications Conference
+Annual IEEE/IFIP International Conference on Dependable Systems and Networks Workshops
+IEEE Information Technology and Mechatronics Engineering Conference
+IEEE International Conference on Cluster Computing
+International Conference on Network and Service Management
+Design Automation Conference
+International Workshop on Emerging Trends in FLOSS Research and Development ICSE Workshops
+IEEE Symposium on Computers and Communications
+Asia-Pacific Software Engineering Conference
+International Electronics Symposium
+IEEE Security and Privacy Workshops
+International Joint Conference on Neural Networks
+Euromicro Conference on Software Engineering and Advanced Applications
+IEEE International Symposium on Reliable Distributed Systems
+IEEE Network
+IEEE International Workshop on Empirical Requirements Engineering
+IEEE Symposium on Security and Privacy
+IEEE International Symposium on Cluster Computing and the Grid
+IEEE International Symposium on Software Reliability Engineering Workshops
+IEEE Workshop on Hot Topics in Web Systems and Technologies
+International Symposium on Temporal Representation and Reasoning
+IEEE International Conference on Robotics and Automation
+IEEE International Workshop on Evolving Security & Privacy Requirements Engineering
+International Joint Conference on Neural Networks
+Asia Pacific Symposium on Intelligent and Evolutionary Systems
+International Conference on Quality Software
+NAFIPS - Annual Meeting of the North American Fuzzy Information Processing Society
+IEEE International Conference on Big Data, Cloud Computing, Data Science & Engineering
+International Conference on Distributed Computing Systems
+IEEE International Conference on Software Maintenance and Evolution
+IEEE International Symposium on Industrial Electronics
+IEEE Transactions on Emerging Topics in Computing
+IEEE Journal on Selected Areas in Communications
+IEEE International Conference on Data Mining
+Testing: Academic & Industrial Conference - Practice And Research Techniques
+IEEE International Requirements Engineering Conference
+Australian Software Engineering Conference
+International Conference on Fuzzy Systems and Knowledge Discovery
+IEEE International Conference on Software Maintenance
+World Automation Congress
+IEEE International Conference on Global Software Engineering
+IEEE/ACM International Workshop on API Usage and Evolution
+IEEE International Conference on High Performance Computing and Communications; IEEE International Conference on Smart City; IEEE International Conference on Data Science and Systems
+IEEE International Conference on Computer and Information Technology; Ubiquitous Computing and Communications; Dependable, Autonomic and Secure Computing; Pervasive Intelligence and Computing
+IEEE International Conference on Consumer Electronics
+IEEE International Conference on Computer Vision
+IEEE/ACM International Workshop on Robotics Software Engineering
+Annual Conference on Privacy, Security and Trust
+Asia-Pacific Software Engineering Conference
+International Workshop on Co-operative and Human Aspects of Software Engineering
+International Conference on Autonomic Computing
+International Conference on Communication Systems and Network Technologies
+IEEE International Working Conference on Source Code Analysis and Manipulation
+IEEE International Conference on Data Engineering
+IEEE Transactions on Intelligent Transportation Systems
+IEEE Transactions on Smart Grid
+IEEE International Workshop on Software Analytics
+IEEE/ACM International Workshop on Conducting Empirical Studies in Industry
+NAFOSTED Conference on Information and Computer Science
+Asia-Pacific Software Engineering Conference
+International Conference on Dependable Systems and Networks
+IEEE International Workshops on Foundations and Applications of Self Systems
+IEEE Pacific Rim International Symposium on Dependable Computing
+IEEE Transactions on Robotics and Automation
+Australian Software Engineering Conference
+Conference on Software Maintenance
+IEEE International Conference on Industrial Technology
+IEEE Transactions on Emerging Topics in Computational Intelligence
+IEEE International Conference on Software Maintenance
+Federated Conference on Computer Science and Information Systems
+IEEE International Conference on Emerging Technologies and Factory Automation
+IEEE International Symposium on Theoretical Aspects of Software Engineering
+International Conference on Advanced Computer Science and Information Systems
+Ivannikov Memorial Workshop
+IEEE Transactions on Cloud Computing
+IEEE/ACM International Workshop on Emotional Awareness in Software Engineering
+IEEE International Symposium on Modeling, Analysis, and Simulation of Computer and Telecommunication Systems
+International Conference on Affective Computing and Intelligent Interaction Workshops and Demos
+Working IEEE/IFIP Conference on Software Architecture
+IEEE International Working Conference on Source Code Analysis and Manipulation
+International Conference on Computer and Knowledge Engineering
+Asia-Pacific Software Engineering Conference
+IEEE Conference on Communications and Network Security
+IEEE Journal on Emerging and Selected Topics in Circuits and Systems
+International Conference on Computer Science & Education
+European Conference on Software Maintenance and Reengineering
+IEEE International Workshop on Visualizing Software for Understanding and Analysis
+International Conference on Quality Software
+IEEE Computer Graphics and Applications
+International Conference on Systems Engineering
+Asia-Pacific World Congress on Computer Science and Engineering
+IEEE Symposium on Security and Privacy
+International Workshop on Principles of Software Evolution
+IEEE Transactions on Semiconductor Manufacturing
+International Conference on Social Informatics
+International Conference on Signal-Image Technology & Internet-Based Systems
+IEEE International Conference on Software Maintenance and Evolution
+Visual Languages and Human-Centric Computing
+IEEE/ACM International Conference on Mobile Software Engineering and Systems
+IEEE International Conference on Fuzzy Systems
+International Workshop on Quality of Multimedia Experience
+International Conference in Software Engineering Research and Innovation
+Intl IEEE Conferences on Ubiquitous Intelligence & Computing, Advanced and Trusted Computing, Scalable Computing and Communications, Cloud and Big Data Computing, Internet of People, and Smart World Congress
+IEEE International Symposium on Workload Characterization
+The Annual International Computer Software & Applications Conference
+Australasian Software Engineering Conference
+IEEE International Conference on Software Security and Reliability
+IEEE International Conference on Acoustics, Speech and Signal Processing
+International Workshop on Complex Systems and Networks
+Pacific Rim International Symposium on Dependable Computing
+Annual IEEE Symposium on Logic In Computer Science
+Working Conference on Reverse Engineering
+IEEE International Symposium on Software Reliability Engineering
+International Conference on Electrical Engineering and Information & Communication Technology
+Asia Joint Conference on Information Security
+Chinese Control And Decision Conference
+Annual IEEE/IFIP International Conference on Dependable Systems and Networks
+IEEE International Conference on Teaching, Assessment, and Learning for Engineering
+International Joint Conference on Neural Networks
+IEEE International Conference on Wireless and Mobile Computing, Networking and Communications
+OCEANS MTS/IEEE SEATTLE
+International Conference on New Media Studies
+International Conference on Software Engineering Research, Management and Applications
+IEEE/IFIP International Conference on Dependable Systems & Networks
+International Conference on Telecommunications
+Brazilian Conference on Intelligent Systems
+European Conference on Software Maintenance and Reengineering
+International Conference on Cyber-Enabled Distributed Computing and Knowledge Discovery
+International Conference on Big Data Computing and Communications
+IEEE International Symposium on Requirements Engineering
+IEEE International Conference on Data Mining
+International Conference on Cloud and Autonomic Computing
+Working IEEE/IFIP Conference on Software Architecture
+Computer
+International Workshop on Managing Requirements Knowledge
+IEEE International Conference on Software Engineering and Formal Methods
+IEEE International Conference on Web Services
+International Conference on Information Technology Interfaces
+International Workshop on Principles of Engineering Service-Oriented Systems
+IEEE Symposium on Visual Languages and Human-Centric Computing
+IEEE/ACM SEMAT Workshop on a General Theory of Software Engineering
+IEEE International Workshop on Source Code Analysis and Manipulation
+IEEE Symposium on Visual Languages and Human-Centric Computing
+IEEE International Symposium on Software Reliability Engineering
+IEEE International Conference on Emerging Technologies and Factory Automation
+Working Conference on Reverse Engineering
+International Conference on Multimedia Computing and Systems
+International Conference on Computing Methodologies and Communication
+International Conference on the Quality of Information and Communications Technology
+IEEE International Conference on Intelligent Transportation Systems
+IEEE International Conference on Engineering, Technology and Innovation
+IEEE Transactions on Acoustics, Speech, and Signal Processing
+IEEE International Conference on Software Architecture Companion
+Formal Methods in Computer-Aided Design
+IEEE/ACM International Workshop on Search-Based Software Testing
+IEEE International Conference on Cloud Computing and Big Data Analysis
+International Conference on Parallel Architecture and Compilation
+IEEE Workshop on Mining and Analyzing Interaction Histories
+IEEE/ACM International Conference on Software Engineering Companion
+Mediterranean Conference on Embedded Computing
+IEEE International Conference on Software Testing, Verification and Validation Workshops
+International Conference on System Reliability and Science
+International Workshop on Requirements Patterns
+International Conference on Program Comprehension
+VLSI Test Symposium
+Bell Labs Technical Journal
+IEEE International Conference on Progress in Informatics and Computing
+International Workshop on Product LinE Approaches in Software Engineering
+IEEE/ACM International Workshop on Search-Based Software Testing
+International Conference Information Visualisation
+IEEE Intl Conf on Dependable, Autonomic and Secure Computing, Intl Conf on Pervasive Intelligence and Computing, Intl Conf on Big Data Intelligence and Computing and Cyber Science and Technology Congress
+IEEE Workshop on Benchmarking Cyber-Physical Networks and Systems
+International Symposium on Computer Architecture
+ICSE Workshop on Automation of Software Test
+IEEE/ACM International Workshop on Green and Sustainable Software
+IEEE International Symposium on Software Reliability Engineering
+International Workshop on Program Comprehension
+IEEE Security and Privacy Workshops
+IEEE International Conference on Semantic Computing
+IEEE/ACM International Workshop on Automation of Software Test
+Asia-Pacific Software Engineering Conference
+Intl Conf on Applied Computing and Information Intl Conf on Computational Science/Intelligence and Applied Intl Conf on Big Data, Cloud Computing, Data Science & Engineering
+IEEE International Symposium on Signal Processing and Information Technology
+International Conference on Frontiers of Information Technology
+International Conference on Green Computing and Internet of Things
+International Workshop on the Twin Peaks of Requirements and Architecture
+International Conference on Secure System Integration and Reliability Improvement
+IEEE International Workshop of Electronics, Control, Measurement, Signals and their Application to Mechatronics
+IEEE/ACM International Symposium on Cluster, Cloud and Grid Computing
+Formal Methods in Computer-Aided Design
+IEEE Trustcom/BigDataSE/ISPA
+ACM/IEEE International Symposium on Empirical Software Engineering and Measurement
+IEEE Pacific Visualization Symposium
+International Conference on System of Systems Engineering
+International Conference on Software Engineering
+Agile Development Conference
+IEEE International Conference on Software Analysis, Evolution, and Reengineering
+IEEE International Workshop on the Twin Peaks of Requirements and Architecture
+ICSE Workshop on Traceability in Emerging Forms of Software Engineering
+IEEE Transactions on Multimedia
+IEEE Symposium on Visual Languages and Human-Centric Computing
+International Conference on Software Testing Verification and Validation
+Visualization
+International Conference on Enterprise Systems
+IEEE International Conference on Electro Information Technology
+Intelligent Systems Conference
+IEEE/ACM International Conference on Software Engineering: Software Engineering in Society
+IEEE Transactions on Systems, Man, and Cybernetics
+IEEE Transactions on Power Systems
+Euromicro Conference on Software Engineering and Advanced Applications
+IEEE Conference on Communications and Network Security
+IEEE Global Engineering Education Conference
+IEEE International Conference on Computer Systems and Applications
+Annual IEEE/ACM International Symposium on Microarchitecture
+IEEE Aerospace Conference
+Working IEEE/IFIP Conference on Software Architecture
+IEEE International Conference on Data Mining Workshops
+IEEE Symposium on Security and Privacy
+IEEE International Symposium on Rapid System Prototyping
+IEEE International Conference on Cloud Computing
+IEEE International Symposium on Software Reliability Engineering Workshops
+Brazilian Symposium on Software Components, Architectures and Reuse
+IEEE/ACM International Conference on Automated Software Engineering
+IEEE/ACM International Conference on Automated Software Engineering Workshop
+Asia Pacific Software Engineering Conference
+IEEE International Conference on Application-Specific Systems, Architectures and Processors
+International Conference on Malicious and Unwanted Software
+International Workshop on Emerging Trends in Software Metrics
+IEEE International Conference on Machine Learning and Applications
+International Conference on Intelligent Computing, Instrumentation and Control Technologies
+International Conference on Mobile Data Management: Systems, Services and Middleware
+International Workshop on Automation of Software Test
+IEEE International Conference on Data Mining
+International Conference on Innovations in Information Technology
+IEEE/ACM International Conference on Automated Software Engineering
+IEEE International Conference on Knowledge-Based Engineering and Innovation
+IEEE International Conference on Emerging Technologies and Factory Automation
+IEEE Eastern European Conference on the Engineering of Computer Based Systems
+IEEE Computer Security Foundations Symposium
+IEEE International Conference on High Performance Computing and Communications; IEEE International Conference on Smart City; IEEE International Conference on Data Science and Systems
+Conference on Software Engineering Education and Training
+International Arab Conference on Information Technology
+Annual International Symposium on Computer Architecture
+International Conference on Software Engineering, Artificial Intelligence, Networking and Parallel/Distributed Computing and ACIS International Workshop on Self-Assembling Wireless Network
+IEEE International Conference on Data Science in Cyberspace
+IEEE International Conference on Software Testing, Verification and Validation Workshops
+IEEE Symposium on Security and Privacy
+International Workshop on Modeling in Software Engineering
+IEEE Transactions on Systems, Man, and Cybernetics - Part A: Systems and Humans
+International IEEE/EMBS Conference on Neural Engineering
+IEEE Transactions on Network and Service Management
+International Symposium on Innovation in Information and Communication Technology
+IEEE International Symposium on Software Reliability Engineering
+International Conference on Engineering of Complex Computer Systems
+International Symposium on Theoretical Aspects of Software Engineering
+International Conference on the Quality of Information and Communications Technology
+IEEE/ACM International Conference on Automated Software Engineering
+IEEE Symposium on Visual Languages - Human Centric Computing
+IEEE Conference on Business Informatics
+IEEE Congress on Evolutionary Computation
+International Conference on Emerging Technologies
+IEEE International Conference on Software Maintenance
+IEEE/ACM International Conference on Software Engineering Companion
+International Conference on Dependable Systems and Networks
+IEEE Symposium on Security and Privacy
+Euromicro Conference on Software Engineering and Advanced Applications
+International Workshop on Cooperative and Human Aspects of Software Engineering
+International Workshop on Empirical Software Engineering in Practice
+International Symposium on Parallel and Distributed Computing
+IEEE International Workshop on Program Comprehension
+International Symposium on Empirical Software Engineering
+IEEE International Conference on Tools with Artificial Intelligence
+IEEE International Conference on Intelligent Computing and Information Systems
+IEEE International Parallel and Distributed Processing Symposium
+IEEE Transactions on Parallel and Distributed Systems
+IEEE International Conference on Program Comprehension
+Symposium on Assessment of Quality Software Development Tools
+IEEE/IFIP International Conference on Dependable Systems & Networks
+ICSE Workshop on Search-Driven Development-Users, Infrastructure, Tools and Evaluation
+Workshop on Techniques, Methodologies and Tools for Performance Evaluation of Complex Systems
+IET Communications
+IEEE Symposium on Security and Privacy
+IEEE International Conference on Embedded Software and Systems
+IEEE Symposium on Security and Privacy
+International Conference on the Quantitative Evaluation of Systems
+IEEE International Conference on Trust, Security and Privacy in Computing and Communications
+IEEE Intelligent Vehicles Symposium
+IEEE International Conference on Data Engineering Workshop
+IEEE International Conference on Data Mining
+Joint Working IEEE/IFIP Conference on Software Architecture and European Conference on Software Architecture
+IEEE Symposium on Security and Privacy
+IEEE International Conferences on Big Data and Cloud Computing
+IEEE Symposium on Security and Privacy
+IEEE/ACM International Conference on Software Engineering: Software Engineering Education and Training
+International Conference on Machine Learning and Cybernetics
+ICSE Workshop on Software Engineering for Computational Science and Engineering
+IX Brazilian Symposium on Components, Architectures and Reuse Software
+International Conference on Software Engineering
+International Workshop on Software Engineering for High Performance Computing in Computational Science and Engineering
+Technology Innovation Management and Engineering Science International Conference
+IEEE International Conference on Software Maintenance and Evolution
+International Conference on Electronics, Information, and Communication
+IEEE/ACIS International Conference on Software Engineering, Artificial Intelligence, Networking and Parallel/Distributed Computing
+International Conference on Data Engineering
+Annual IEEE/IFIP International Conference on Dependable Systems and Networks
+IEEE/ACM International Conference on Formal Methods in Software Engineering
+IEEE/ACM International Conference on Program Comprehension
+International Conference on Internet of Things and International Conference on Cyber, Physical and Social Computing
+IEEE Working Conference on Software Visualization
+WCRE Working Conference on Reverse Engineering
+International Conference on Engineering of Complex Computer Systems
+International Conference on Information & Communication Technology and System
+IEEE Computer Security Foundations Symposium
+IEEE International Workshop on Software Clones
+IEEE Software
+Digest of Papers Fault-Tolerant Computing: The Twenty-First International Symposium
+International Workshop on Program Comprehension
+The Computer Journal
+IEEE/ACM International Conference on Automated Software Engineering
+IEEE International Workshop on Source Code Analysis and Manipulation
+IEEE International Conference on Autonomic Computing
+ICASSP - IEEE International Conference on Acoustics, Speech and Signal Processing
+IEEE/ACM International Workshop on Gender Equality in Software Engineering
+IEEE/ACM International Conference on Program Comprehension
+Source Code Analysis and Manipulation, IEEE International Workshop on
+IEEE International Conference on Software Quality, Reliability and Security
+IEEE International Symposium on Software Reliability Engineering
+International Working Conference on Source Code Analysis and Manipulation
+International Conference on Field-Programmable Technology
+IEEE International Conference on Data Engineering Workshops
+International Workshop on Artificial Intelligence for Requirements Engineering
+International Conference on Autonomous and Intelligent Systems
+International Symposium on Software Reliability Engineering
+IEEE International Parallel & Distributed Processing Symposium
+International Workshop on Realizing AI Synergies in Software Engineering
+International Conference on Signal-Image Technology & Internet-Based Systems
+IEEE International Symposium on Software Reliability Engineering Workshops
+International Conference on Computing, Analytics and Security Trends
+International Conference on Parallel Architecture and Compilation Techniques
+International Conference on Information Technology: New Generations
+IEEE Symposium on Computers and Communication
+International Conference on Information Visualisation
+ACM/IEEE Annual International Symposium on Computer Architecture
+ACM/IEEE International Symposium on Empirical Software Engineering and Measurement
+IEEE International Working Conference on Source Code Analysis and Manipulation
+International Conference on Software Engineering
+IEEE Symposium on Computers and Communications
+IEEE International High-Level Design Validation and Test Workshop
+IEEE/ACM International Workshop on Green and Sustainable Software
+Asia-Pacific Software Engineering Conference
+International Symposium on Microarchitecture
+International Conference on Computer and Information Technology
+IEEE/ACM International Symposium on Cluster, Cloud and Grid Computing
+IEEE/ACM International Workshop on Search-Based Software Testing
+Annual Information Technology, Electromechanical Engineering and Microelectronics Conference
+IEEE Intl Conf on Dependable, Autonomic and Secure Computing, Intl Conf on Pervasive Intelligence and Computing, Intl Conf on Cloud and Big Data Computing, Intl Conf on Cyber Science and Technology Congress
+IEEE/ACM International Workshop on Emerging Trends in Software Engineering for Blockchain
+International Conference on Innovations in Electrical Engineering and Computational Technologies
+Annual International Symposium on Computer Architecture
+International Software Product Line Conference
+International Conference on Advanced Communication Technology
+Annual International Conference of the IEEE Engineering in Medicine and Biology
+Australian Software Engineering Conference
+IEEE International Conference on Software Testing, Verification and Validation Workshops
+IEEE International Workshops on Foundations and Applications of Self Systems
+TENCON - IEEE Region Conference
+International Conference on Information Science and Applications
+IEEE/ACM International Symposium on Quality of Service
+Working IEEE/IFIP Conference on Software Architecture
+IEEE Annual Computer Software and Applications Conference
+IEEE Journal of Biomedical and Health Informatics
+IEEE International Conference On Artificial Intelligence Testing
+IET Software
+IEEE/ACM International Workshop in Automation of Software Test
+IEEE International Conference on Pervasive Computing and Communications Workshops
+International Conference on Advanced Computing and Applications
+IEEE International Conference on Humanized Computing and Communication
+IEEE Micro
+IEEE Transactions on Biomedical Engineering
+IEEE Transactions on Dependable and Secure Computing
+IEEE/ACM Workflows in Support of Large-Scale Science
+Working Conference on Reverse Engineering
+Annual IEEE/IFIP International Conference on Dependable Systems and Networks
+International Symposium on Software Reliability Engineering
+Intelligent Vehicles Symposium
+IEEE Engineering Management Review
+IEEE International Conference on Software Maintenance
+IEEE Intelligent Transportation Systems Conference
+International Conference on Advanced Computing and Applications
+IEEE Conference on Computer Vision and Pattern Recognition
+IEEE/ACM International Conference on Automated Software Engineering Workshop
+National Conference with International Participation
+Annual IEEE/ACM International Symposium on Microarchitecture
+IEEE International Workshops on Enabling Technologies: Infrastructure for Collaborative Enterprises
+IEEE International Conference on Signal Processing, Communications and Computing
+IEEE Pacific Rim International Symposium on Dependable Computing
+International Conference on Software Testing, Verification, and Validation Workshops
+International Conference on Computational Intelligence and Security
+IEEE Transactions on Systems, Man, and Cybernetics
+IEEE Annual Computer Software and Applications Conference
+World Congress on Internet Security
+IEEE Working Conference on Mining Software Repositories
+IEEE International Conference on Requirements Engineering
+IEEE International Requirements Engineering Conference
+Real-Time Systems Symposium
+IEEE Conference on Computer Communications Workshops
+IEEE International Conference on Industrial Informatics
+International Conference on Computational Science and Computational Intelligence
+International Software Metrics Symposium
+IEEE Computer Society Annual Symposium on VLSI
+International Conference on Software Engineering
+IEEE Annual Computer Software and Applications Conference
+Brazilian Conference on Intelligent Systems
+IEEE/ACM International Conference on Automated Software Engineering
+International Conference on Social Computing
+IEEE International Conference on Software Maintenance
+International Symposium on Computer Architecture
+International Conference for Internet Technology and Secured Transactions
+IEEE/ACM International Workshop on API Usage and Evolution
+International Conference on Automated Software Engineering
+International Conference on Software Engineering Research, Management and Applications
+IEEE Frontiers in Education Conference
+International Conference on Software Engineering
+IEEE International Workshop on Intelligent Bug Fixing
+IEEE International Conference on Program Comprehension
+International Workshop on Games and Software Engineering: Realizing User Engagement with Game Engineering Techniques
+IEEE/ACM International Workshop on Variability and Complexity in Software Design
+Conference on Software Maintenance
+IEEE/ACM International Workshop on Bringing Architectural Design Thinking Into Developers' Daily Activities
+International Conference on Software Maintenance
+IEEE Symposium on Reliable Distributed Systems
+International Conference on Electrical, Electronics and Information Engineering
+IEEE International Conference on Intelligent Engineering Systems
+International Conference on Software Maintenance, ICSM
+International Symposium on Empirical Software Engineering and Measurement
+ISRE IEEE International Symposium on Requirements Engineering
+IEEE/ACM International Workshop on Realizing Artificial Intelligence Synergies in Software Engineering
+IEEE Transactions on Visualization and Computer Graphics
+Computing in Science & Engineering
+IEEE International Working Conference on Mining Software Repositories
+ACM/IEEE International Conference on Formal Methods and Models for System Design
+IEEE Symposium on Service-Oriented System Engineering
+IEEE International Conference on Software Maintenance
+International Conference on Dependable Systems and Networks
+IEEE Conference on Nuclear Science Symposium and Medical Imaging
+International Conference on Engineering of Complex Computer Systems
+International Workshop on Green and Sustainable Software
+IEEE European Conference on Web Services
+International Conference on Computing, Mathematics and Engineering Technologies
+IEEE/ACM International Conference on Mining Software Repositories
+IEEE International Workshop on Web Site Evolution
+IEEE/RSJ International Conference on Intelligent Robots and Systems
+IEEE International Conference on Program Comprehension
+IEEE International Conference on Distributed Computing Systems
+Australasian Software Engineering Conference
+IEEE/ACM Workshop on Emerging Trends in Software Metrics
+IEEE Conference on Communications and Network Security
+IEEE International Conference on Software Engineering and Service Science
+FME Workshop on Formal Methods in Software Engineering
+International Conference on Computing, Electronics & Communications Engineering
+IEEE International Conference on Industrial Technology
+IEEE International Conference on Bioinformatics and Bioengineering
+IEEE Signal Processing Magazine
+Asia-Pacific Software Engineering Conference
+IEEE/ACM International Symposium on Software Engineering for Adaptive and Self-Managing Systems
+IEEE International Working Conference on Source Code Analysis and Manipulation
+IEEE Frontiers in Education Conference
+on International Conference on Information Visualization
+International Symposium on Networks, Computers and Communications
+IEEE International Conference on Software Testing, Verification and Validation
+International Conference on Frontiers of Information Technology
+Annual IEEE Symposium on Logic in Computer Science
+IEEE Transactions on Pattern Analysis and Machine Intelligence
+International Workshop on Principles of Software Evolution
+International Conference on Learning and Teaching in Computing and Engineering
+IEEE/ACM International Workshop on Software Qualities and their Dependencies
+IEEE/ACM International Conference on Automated Software Engineering
+IEEE Control Systems Magazine
+International Symposium on Software Reliability Engineering
+IEEE Symposium on Security and Privacy
+International Conference on Computational Science and Applications
+IEEE International Conference and Workshops on Engineering of Computer Based Systems
+Twenty-Fifth International Symposium on Fault-Tolerant Computing Digest of Papers
+IEEE Transactions on Computer-Aided Design of Integrated Circuits and Systems
+Conference on Software Engineering Education and Training Workshops
+IEEE International Symposium on Web Systems Evolution
+Conference on Software Maintenance
+Hawaii International Conference on System Sciences
+Annual IEEE/IFIP International Conference on Dependable Systems and Networks
+International Conference on Unmanned Aircraft Systems
+International Conference on Software Engineering and Formal Methods
+IEEE Symposium on Visual Languages and Human-Centric Computing
+IEEE International Conference on Cybernetics and Computational Intelligence
+International Conference on Quality Software
+IEEE Cybersecurity Development
+ACM/IEEE International Conference on Global Software Engineering
+IEEE International Conference On Machine Learning And Applications
+Annual IEEE/IFIP International Conference on Dependable Systems and Networks
+Testing: Academic and Industrial Conference - Practice and Research Techniques
+Agile Conference
+IEEE World Forum on Internet of Things
+The International Conference on Distributed
+International Conference on Distributed Computing Systems Workshops
+IEEE International Conference on Cloud Engineering
+IEEE International Conference on Self-Adaptive and Self-Organizing Systems
+IEEE International Conference on Multimedia and Expo
+IEEE International Working Conference on Source Code Analysis and Manipulation
+IEEE International Conference on Software Architecture Workshops
+Annual IEEE Symposium on Logic in Computer Science
+IEEE International Conference on Data Mining Workshops
+IEEE/ACM International Workshop on Product Line Approaches in Software Engineering
+International Conference on Internet and Web Applications and Services
+International Workshop on Green and Sustainable Software
+Conference on Software Maintenance
+IEEE Transactions on Services Computing
+IEEE International Conference on Self-Adaptive and Self-Organizing Systems
+Formal Methods in Computer Aided Design
+IEEE International Conference on Software Maintenance and Evolution
+IEEE Canadian Conference on Electrical and Computer Engineering
+International Conference on Embedded Software
+Annual IEEE Communications Society Conference on Sensor and Ad Hoc Communications and Networks, IEEE SECON
+IEEE International Conference on Data Mining
+Sustainable Internet and ICT for Sustainability
+IEEE/ACM International Workshop on Software Correctness for HPC Applications
+IEEE/ACM International Workshop on Software Architecture and Metrics
+Hawaii International Conference on System Sciences
+IEEE International Working Conference on Source Code Analysis and Manipulation
+IEEE Symposium on Visual Languages and Human-Centric Computing
+IEEE International Conference on Big Data
+Conference on Software Engineering Education and Training
+IEEE International Performance Computing and Communications Conference
+IEEE/ACM International Workshop on Establishing the Community-Wide Infrastructure for Architecture-Based Software Engineering
+IEEE Congress on Evolutionary Computation
+International Conference on Software Maintenance
+Australian Software Engineering Conference
+IEEE/ACS International Conference of Computer Systems and Applications
+IEEE Trustcom/BigDataSE/ICESS
+TRON Symposium
+IEEE International Conference on Data Science and Advanced Analytics
+Iranian Conference on Electrical Engineering
+IEEE/ACM International Conference on Mobile Software Engineering and Systems
+Conference on Software Engineering Education and Training
+International Workshop on Program Comprehension
+International Symposium on High-Performance Computer Architecture
+IEEE International Conference on Automated Software Engineering
+IEEE International Conference on Information Reuse and Integration
+IEEE International Requirements Engineering Conference Workshops
+Working Conference on Software Visualization
+IEEE International Symposium on Software Reliability Engineering Workshops
+Workshop on Sharing and Reusing Architectural Knowledge - Architecture, Rationale, and Design Intent ICSE Workshops
+Pacific Rim International Symposium on Dependable Computing
+IEEE-RAS International Conference on Humanoid Robots
+IEEE International Conference on Engineering Education
+International Conference on Information Technology: New Generations
+IEEE International Conference on Tools with Artificial Intelligence
+IEEE International Conference on Software Engineering and Formal Methods
+IEEE/ACIS International Conference on Computer and Information Science
+IEEE Transactions on Industrial Electronics
+International Conference on Emerging Technologies
+IEEE International Conference on Systems, Man, and Cybernetics
+Annual IEEE/ACM International Symposium on Microarchitecture
+International Joint Conference on Software Technologies
+International Conference on Research Challenges in Information Science
+IEEE International Conference on Advanced Information Networking and Applications
+Hawaii International Conference on System Sciences
+IEEE International Conference on Distributed Computing Systems Workshops
+International Symposium on Computer Architecture
+Annual IEEE/ACM International Symposium on Microarchitecture
+IEEE International Conference Automated Software Engineering
+IEEE International Conference on Software Engineering and Service Science
+Asia and South Pacific Design Automation Conference
+International Conference on Software Analysis, Testing and Evolution
+International Workshop on Search-Driven Development: Users, Infrastructure, Tools, and Evaluation
+IEEE International Conference on Computer Vision
+Conference on Foundations of Computer Science
+International Symposium on Computer Architecture
+Design, Automation & Test in Europe Conference & Exhibition
+IEEE Transactions on Human-Machine Systems
+International Symposium on Theoretical Aspects of Software Engineering
+IEEE International Conference on Trust, Privacy and Security in Intelligent Systems and Applications
+IEEE International Conference on Software Testing, Verification and Validation
+IEEE/ACM International Workshop on CrowdSourcing in Software Engineering
+International Conference on Information Visualisation
+IRE Transactions on Reliability and Quality Control
+SC  ACM/IEEE International Conference for High Performance Computing, Networking, Storage and Analysis
+IEEE/ACM International Workshop on Automation of Software Test
+IEEE Transactions on Neural Networks and Learning Systems
+IEEE International Conference on Information Reuse & Integration
+Design, Automation & Test in Europe
+International Symposium on Software Engineering for Adaptive and Self-Managing Systems
+IEEE International Conference on Software Security and Reliability
+International Conference on Dependable Systems and Their Applications
+International Iranian Society of Cryptology Conference on Information Security and Cryptology
+IEEE International Enterprise Distributed Object Computing Conference
+International Symposium on Theoretical Aspects of Software Engineering
+IEEE International Conference on Software Maintenance and Evolution
+IEEE International Conference on Computer Vision
+International Conference on New Trends in Computing Sciences
+IEEE International Conference on Automation, Quality and Testing, Robotics
+IEEE Annual Information Technology, Electronics and Mobile Communication Conference
+Annual Hawaii International Conference on System Sciences of the
+Frontiers in Education Conference
+IEEE International Conference on Software Testing, Verification and Validation Workshops
+International Conference on Evaluation of Novel Approaches to Software Engineering
+Ivannikov Ispras Open Conference
+International Conference on Network and Information Systems for Computers
+International Conference on Industrial Engineering, Management Science and Application
+IEEE Transactions on Engineering Management
+The IEEE International Symposium on Software Reliability
+IEEE International Requirements Engineering Conference
+IT Professional
+IEEE/ACM International Conference on Automated Software Engineering
+IEEE International Conference on Dependable, Autonomic and Secure Computing
+IEEE Transactions on Consumer Electronics
+International Conference on Electrical Engineering and Information Communication Technology
+IEEE/ACM International Conference on Software Engineering: Software Engineering in Society
+International Symposium on Code Generation and Optimization
+IEEE Global Engineering Education Conference
+IEEE International Conference on Network Infrastructure and Digital Content
+International Conference on Software Engineering Companion
+IEEE International Conference on Software Testing, Verification and Validation
+Working Conference on Reverse Engineering
+Conference on Software Engineering Education & Training
+International Conference on Information Science and Communication Technology
+SEMAT Workshop on a General Theory of Software Engineering
+IEEE/ACM International Workshop on Cooperative and Human Aspects of Software Engineering
+International Conference on Frontiers of Information Technology
+IEEE International Conference on Software Engineering and Formal Methods
+IEEE/ACM International Conference on Software Engineering: Software Engineering in Society Track
+International Conference on Information and Communication Technology Convergence
+IEEE International Conference on Cluster Computing
+Agile
+International Conference on Software Engineering
+International Workshop on Software Specification and Design
+IEEE/ACM International Symposium on Microarchitecture
+Design, Automation & Test in Europe Conference & Exhibition
+IEEE International Conference on Acoustics, Speech and Signal Processing
+Chinese Control Conference
+IEEE/ACM International Workshop on the Twin Peaks of Requirements and Architecture
+International Conference on Parallel, Grid, Cloud and Internet Computing
+Design Automation Conference
+IEEE Intelligent Systems
+IEEE/ACM International Conference on Technical Debt
+IEEE International Symposium on Software Reliability Engineering
+IEEE International Conference on Pervasive Computing and Communications
+IEEE Robotics & Automation Magazine
+IEEE International Conference on High Performance Computing and Communications, IEEE International Symposium on Cyberspace Safety and Security, and IEEE International Conference on Embedded Software and Systems
+IEEE International Requirements Engineering Conference Workshops
+Asia and South Pacific Design Automation Conference
+IEEE International Conference on Communications
+EUROMICRO Conference on Software Engineering and Advanced Applications
+Asia-Pacific Software Engineering Conference
+IEEE International Symposium on Software Reliability Engineering Workshops
+International Conference on Computers in Education
+International Workshop on Recommendation Systems for Software Engineering
+IEEE International Requirements Engineering Conference
+IEEE International Conference on Systems, Man, and Cybernetics
+IEEE International Symposium on Workload Characterization
+IEEE Transactions on Systems, Man, and Cybernetics
+IEEE International Conference on Data Engineering
+International Arab Conference on Information Technology
+ASE/IEEE International Conference on BioMedical Computing
+Euromicro Conference on Software Engineering and Advanced Applications
+IEEE Cybersecurity Development
+IEEE Conference on Visual Analytics Science and Technology
+IEEE/ACM International Workshop on Bots in Software Engineering
+Intl Conf on Applied Computing and Information Intl Conf on Computational Science/Intelligence and Applied Intl Conf on Big Data, Cloud Computing, Data Science
+IEEE International Conference on Software Quality, Reliability and Security
+International Conference on Computing, Engineering and Information
+IBM Systems Journal
+International Conference on Big Data Computing and Communications
+IEEE/ACM International Conference on Program Comprehension
+IEEE International Conference on Program Comprehension
+International Joint Conference on Computer Science and Software Engineering
+European Conference on Software Maintenance and Reengineering
+IEEE/ACM International Conference on Mining Software Repositories
+IEEE/ACM International Conference on Software Engineering
+IEEE Transactions on Information Theory
+IEEE Transactions on Computers
+IEEE Symposium on Visual Languages and Human-Centric Computing
+IEEE Symposium on Security and Privacy
+IEEE International Conference on Self-Adaptive and Self-Organizing Systems
+International Workshop on Traceability in Emerging Forms of Software Engineering
+IEEE International Symposium on Software Reliability Engineering
+International Conference on Malicious and Unwanted Software
+Software Evolution Week - IEEE Conference on Software Maintenance, Reengineering, and Reverse Engineering
+IEEE International Workshop on Software Clones
+IEEE International Conference on Global Software Engineering
+IEEE European Symposium on Security and Privacy
+IEEE/IFIP International Conference on Dependable Systems and Networks Workshops
+IEEE International Conference on Computer and Communications
+International Conference on Smart Computing and Electronic Enterprise
+International Conference on Control, Automation, Robotics and Vision
+IEEE International Conference on Data Mining
+IEEE Conference on Communications and Network Security
+IEEE Conference on Software Engineering Education and Training
+IEEE ASSP Magazine
+IEEE International Conference on Program Comprehension
+Working Conference on Reverse Engineering
+Data Compression Conference
+Working Conference on Reverse Engineering
+IEEE Transactions on Information Technology in Biomedicine
+International Conference on Parallel, Distributed and Grid Computing
+IEEE International Conference on Big Data
+International Conference on Software Engineering Education and Training
+IEEE Cloud Computing
+IEEE International Conference on Software Architecture
+IEEE European Symposium on Security and Privacy
+Annual IEEE/IFIP International Conference on Dependable Systems and Networks
+The International Conference on Computer and Automation Engineering
+IEEE International High-Assurance Systems Engineering Symposium
+IEEE International Congress on Big Data
+IEEE International Conference on Computational Intelligence and Computing Research
+International Symposium on Empirical Software Engineering and Measurement
+IEEE Blocks and Beyond Workshop
+Future of Software Engineering
+International Symposium on Intelligent Information Technology Application
+International Conference on Control Systems and Computer Science
+IEEE Annual Computer Software and Applications Conference
+International IEEE Enterprise Distributed Object Computing Conference
+IEEE International Symposium on Parallel & Distributed Processing
+Annual IEEE/ACM International Symposium on Microarchitecture
+ACM/IEEE International Symposium on Empirical Software Engineering and Measurement
+International Conference on Hardware/Software Codesign and System Synthesis
+ACM/IEEE International Conference on Model Driven Engineering Languages and Systems
+ACM / IEEE International Symposium on Empirical Software Engineering and Measurement
+IEEE Internet of Things Journal
+IEEE/ACM International Workshop on Search-Based Software Testing
+IEEE Conference on Open Systems
+Design Automation Conference
+International Scientific and Technical Conference on Computer Sciences and Information Technologies
+IEEE International Conference on Robotics and Automation
+IEEE Cybersecurity Development
+IEEE International Conference on Industrial Engineering and Engineering Management
+IEEE International Conference on Semantic Computing
+IEE - Vision, Image and Signal Processing
+IEEE International Conference on Software Quality, Reliability and Security
+IEEE/ACM International Conference on Technical Debt
+International Symposium on Search Based Software Engineering
+International Conference on Machine Learning and Applications
+IEEE International Conference on Robotics and Automation
+Working Conference on Reverse Engineering
+International Conference on Information & Communication Technology and System
+IEEE/ACS International Conference on Computer Systems and Applications
+IEEE International Conference on Software Testing, Verification and Validation Workshops
+IEEE International Symposium on Hardware-Oriented Security and Trust
+Conference on Knowledge Based Engineering and Innovation
+IEEE/ACM International Conference on Software Engineering
+Global IoT Summit
+IEE - Software
+Conference on Software Engineering Education
+International Conference on Inventive Research in Computing Applications
+IEEE International Working Conference on Source Code Analysis and Manipulation
+International Conference on Software Engineering
+IEEE International Symposium on Cluster Computing and the Grid
+IEEE Global Engineering Education Conference
+International Conference on Broadband, Wireless Computing, Communication and Applications
+IEEE/ACM International Symposium on Software and Systems Traceability
+IEEE Transactions on Evolutionary Computation
+International Conference on Evaluation of Novel Approaches to Software Engineering
+IEEE International Conference on Software Quality, Reliability and Security Companion
+IEEE International Conference on Software Engineering Research, Management and Applications
+Design, Automation & Test in Europe Conference & Exhibition
+IEEE International Conference on Software Maintenance
+IEEE International Conference on Big Data
+European Conference onSoftware Maintenance and Reengineering
+IEEE International Symposium on High-Assurance Systems Engineering
+IEEE International Conference on Program Comprehension
+ICSE Workshop on Emerging Trends in Free/Libre/Open Source Software Research and Development
+IEEE Working Conference on Software Visualization
+International Conference on Malicious and Unwanted Software
+IEEE Conference on Network Softwarization
+IEEE International Conference on Global Software Engineering
+IEEE International Conference on Web Services
+IEEE International Symposium on Quality of Service
+IEEE/ACM International Workshop on Emerging Trends in Software Metrics
+International Conference on Smart Grid and Smart Cities
+Conference on Software Maintenance
+Design, Automation & Test in Europe Conference & Exhibition
+IEEE International Conference on Energy Internet
+International Conference on Research Challenges in Information Science
+IEEE/ACM International Workshop on Cooperative and Human Aspects of Software Engineering
+IEEE/ACM International Symposium on Code Generation and Optimization
+Working Conference on Mining Software Repositories
+IEEE/ACM International Workshop on Modeling in Software Engineering
+IEEE/ACM International Conference on Computer-Aided Design
+IEEE Symposium on Reliable Distributed Systems
+IEEE International Conference on Space Mission Challenges for Information Technology
+IEEE International Conference on Data Mining
+IEEE Computational Science and Engineering
+The International Symposium on Software Reliability Engineering
+IEEE/ACM International Conference on Mobile Software Engineering and Systems
+The International Conference on Quality Software
+International Conference on Software Engineering
+International Workshop on Empirical Software Engineering in Practice
+International Conference on Advanced Communication Technology
+International Green and Sustainable Computing Conference
+International Conference on Engineering, Technology and Innovation
+IEEE International Conference on Acoustics, Speech, and Signal Processing
+IEEE/ACM International Workshop on Eye Movements in Programming
+IEEE/ACM International Workshop on Refactoring
+International Conference on Software Engineering - Companion Volume
+ACM/IEEE International Conference on Model Driven Engineering Languages and Systems
+International Workshop on Mining Software Repositories Workshops
+IET International Conference on System Safety
+IEEE International Conference on Emerging Technologies and Innovative Business Practices for the Transformation of Societies
+International Conference on Electronics, Computers and Artificial Intelligence
+IEEE International Symposium on Software Reliability Engineering
+International Symposium on Code Generation and Optimization
+International Workshop on Managing Requirements Knowledge
+IEEE International Software Metrics Symposium
+IEEE Symposium on Visual Languages and Human-Centric Computing
+IEEE/ACM IEEE International Conference on Software Engineering
+IEEE Annual Consumer Communications & Networking Conference
+IEEE Working Conference on Software Visualization
+International Conference on IT Convergence and Security
+IEEE/ACM International Workshop on Modelling in Software Engineering
+European Conference on Software Maintenance and Reengineering
+Hawaii International Conference on System Sciences
+Working Conference on Reverse Engineering
+IEEE International Conference on Software Testing, Verification and Validation
+International Conference Information Visualisation
+IWPC International Workshop on Program Comprehension
+IEEE Real-Time and Embedded Technology and Applications Symposium
+IEEE International Conference on Big Data
+IEEE International Conference on Systems, Man, and Cybernetics
+Simposio Brasileiro de Sistemas Colaborativos
+IEEE International Conference on Smart Grid Communications
+European Conference on Software Maintenance and Reengineering
+International Conference on Research and Innovation in Information Systems
+GLOBECOM - IEEE Global Communications Conference
+International Workshop on Empirical Software Engineering in Practice
+IEEE/ACM International Conference on Software Engineering: Software Engineering in Practice
+Euromicro Conference on Software Engineering and Advanced Applications
+International Conference on Information Technology - New Generations
+International Workshop on Database and Expert Systems Applications
+IEEE/ACM International Workshop on Software Engineering for Smart Cyber-Physical Systems
+IEEE International Symposium on Performance Analysis of Systems and Software
+Brazilian Symposium on Software Engineering
+IEEE International Conference on Software Quality, Reliability and Security Companion
+International Conference on the Quality of Information and Communications Technology
+International Conference on Availability, Reliability and Security
+IEEE International Conference on Autonomic Computing
+Euromicro Conference on Software Engineering and Advanced Applications
+Hawaii International Conference on System Sciences
+Frontiers of Software Maintenance
+Asian Control Conference
+IEEE International Symposium on High Assurance Systems Engineering
+ACM and IEEE International Conference on Formal Methods and Models for Co-Design
+IEEE/ACM International Symposium on Software and Systems Traceability
+IEEE International Conference on Research Challenges in Information Science
+IEEE Conference on Virtual Reality and User Interfaces
+Asia-Pacific Software Engineering Conference Workshops
+The Annual International Conference on Mobile and Ubiquitous Systems: Networking and Services
+IEEE Transactions on Circuits and Systems
+Annual International Computer Software and Applications Conference
+Ivannikov ISPRAS Open Conference
+IEEE/ACM International Conference on Mobile Software Engineering and Systems
+IEEE Transactions on Computational Social Systems
+International Conference on Advances in Computing, Communication & Automation
+IEEE Access
+International Multitopic Conference
+Working Conference on Reverse Engineering
+Transdisciplinary Conference on Distributed Diagnosis and Home Healthcare
+Conference on Software Engineering Education and Training
+Hawaii International Conference on System Sciences
+IEEE International Congress on Big Data
+IEEE/ACM Transactions on Networking
+Software Engineering Journal
+International Symposium on Computers in Education
+IEEE Transactions on Reliability
+IEEE Computer Security Foundations Symposium
+IEEE Conference on Computer Vision and Pattern Recognition
+IEEE Conference on Computer Vision and Pattern Recognition
+International Conference on Electrical, Computer and Communication Engineering
+IEEE International Conference on Rebooting Computing
+IEEE Transactions on Neural Systems and Rehabilitation Engineering
+Hawaii International Conference on System Sciences
+Formal Methods in Computer-Aided Design
+International Conference on Innovative Computing
+IEEE International Conference on Software Engineering Education and Training
+IEEE International Working Conference on Source Code Analysis and Manipulation
+IEEE International Conference on Cluster Computing
+Workshop on Content-based Access of Image and Video Libraries
+International Conference on Computational and Information Sciences
+International Workshop on Software Engineering for Computational Science and Engineering
+Working Conference on Reverse Engineering, WCRE
+International Conference on Wireless Communication and Sensor Network
+Iberian Conference on Information Systems and Technologies
+IEEE International Symposium on Real-Time Distributed Computing
+IEEE International Conference on Computer Science and Educational Informatization
+International IEEE Conference on Commercial-off-the-Shelf
+IEEE International Symposium on Object/Component/Service-Oriented Real-Time Distributed Computing
+IEEE Transactions on Mobile Computing
+IEEE Transactions on Industrial Informatics
+IEEE Symposium on Visual Languages and Human-Centric Computing
+IEEE International Conference on Systems, Man, and Cybernetics
+IEEE/ACM International Workshop on Software Engineering Curricula for Millennials
+International Conference in Software Engineering Research and Innovation
+International Conference on Parallel Architectures and Compilation Techniques
+IEEE International Workshop on Program Comprehension
+IEEE/ACM International Workshop on Conducting Empirical Studies in Industry
+IEEE International Conference on Agents
+International Workshop on Program Comprehension
+IEEE International Conference on Self-Adaptive and Self-Organizing Systems
+IEEE/ACM International Conference on Automated Software Engineering
+International Workshop on Multimedia Requirements Engineering - Workshop
+Working IEEE/IFIP Conference on Software Architecture
+Annual IEEE/ACM International Symposium on Microarchitecture
+International Symposium on Search Based Software Engineering
+IEEE Security and Privacy Workshops
+IEEE Symposium on Service-Oriented System Engineering
+The Bell System Technical Journal
+IEEE International Conference on Automation Science and Engineering
+IEEE/ACM International Workshop on Emotion Awareness in Software Engineering
+IEEE International Working Conference on Source Code Analysis and Manipulation
+IEEE International Symposium on Workload Characterization
+Formal Methods in Computer Aided Design
+European Conference on Software Maintenance and Reengineering
+International Workshop on the Twin Peaks of Requirements and Architecture
+International Siberian Conference on Control and Communications
+International Conference on Computer and Information Sciences
+International Symposium on Code Generation and Optimization
+IEEE International Symposium on Object/Component/Service-Oriented Real-Time Distributed Computing
+IEEE/ACM International Conference on Software and System Processes
+IEEE International Conference on Cognitive Informatics & Cognitive Computing
+IEEE International Conference on Acoustics, Speech and Signal Processing
+Pacific Rim International Symposium on Dependable Computing
+SoutheastCon
+IEEE International Conference on Requirements Engineering
+Annual IEEE Systems Conference
+the IEEE Workshop on Internet Applications
+International Symposium on Theoretical Aspects of Software Engineering
+IBM Journal of Research and Development
+International Conference on Advanced Information Networking and Applications
+International Conference on Quality Software
+IEEE/ACM International Workshop on Cooperative and Human Aspects of Software Engineering
+International Conference on Intelligent Control and Information Processing
+IEEE Transactions on Image Processing
+IEEE International Workshop on Visualizing Software for Understanding and Analysis
+IEEE International Conference on Software Maintenance - 'Software Maintenance for Business Change'
+International Conference on Software Maintenance
+IEEE International Conference on Intelligent Transportation Systems
+VII Brazilian Symposium on Software Components, Architectures and Reuse
+IEEE Journal of Oceanic Engineering
+Euromicro International Conference on Parallel, Distributed, and Network-Based Processing
+International Conference on Recent Trends in Information, Telecommunication and Computing
+International Workshop on Developing Tools as Plug-Ins
+IEEE International Symposium on Software Reliability Engineering
+IEEE International Symposium on Computer-Based Medical Systems
+International Software Product Line Conference
+IEEE International Conference on Tools with Artificial Intelligence
+IEEE Transactions on Electron Devices
+IAPR International Workshop on Document Analysis Systems
+International Conference on Applied Information Technology and Innovation
+IEEE Instrumentation and Measurement Technology Conference
+IEEE/ACM International Workshop on Genetic Improvement
+IEEE Conference on Control Applications
+IEEE International Advance Computing Conference
+EUROMICRO Conference on Software Engineering and Advanced Applications
+IEEE International Requirements Engineering Conference
+Formal Methods in Computer Aided Design
+International Conference on Engineering of Complex Computer Systems
+IEEE/ACM International Conference on Software Engineering: Companion
+IEEE International Conference on Software Testing, Verification and Validation Workshops
+IEEE Conference on Self-Adaptive and Self-Organizing Systems Workshops
+IEEE International Conference on Software Maintenance
+IEEE International Workshop on Empirical Requirements Engineering
+Iberian Conference on Information Systems and Technologies
+International Conference on Computer and Knowledge Engineering
+International Conference on Hardware/Software Codesign and System Synthesis
+ACM/IEEE International Conference on Model Driven Engineering Languages and Systems Companion
+IEEE/ACM International Conference on Software Engineering: New Ideas and Emerging Technologies Results Track
+International Symposium on Software Reliability Engineering
+International Conference on Distributed Computing Systems
+IEEE Security and Privacy Workshops
+ACM/IEEE International Conference on Cyber-Physical Systems
+Design, Automation & Test in Europe Conference & Exhibition
+IEEE/ACM International Workshop on Variability and Complexity in Software Design
+Euromicro Conference on Parallel, Distributed and Network-Based Processing
+IEEE/ACM Joint International Workshop on Conducting Empirical Studies in Industry
+International Conference on Data Engineering
+IEEE International Conference and Workshops on Engineering of Computer Based Systems
+International Conference on Software Engineering
+Data Compression Conference
+IEEE International Conference on Services Computing
+International Conference on Quality Software
+IEEE Transactions on Robotics
+IEEE Symposium on Mass Storage Systems and Technologies
+International Convention on Information and Communication Technology, Electronics and Microelectronics
+IEEE Signal Processing Letters
+IEEE International Symposium on Software Reliability Engineering Workshops
+IEEE International Conference on Smart Cloud
+IEEE/ACM International Workshop on Automation of Software Testing
+European Conference on Software Maintenance and Reengineering, CSMR
+IEEE Frontiers in Education Conference
+International Conference on Advanced Technologies for Communications
+IEEE Transactions on Neural Networks
+IEEE/ACM International Workshop on Automation of Software Test
+IEEE International Workshop on Visualizing Software for Understanding and Analysis
+International Conference on Trustworthy Systems and their Applications
+IEEE International Conference on Industrial Informatics
+IEEE International Workshop on Source Code Analysis and Manipulation
+IEEE International Requirements Engineering Conference
+IEEE International Conference on Global Software Engineering Workshops
+International Conference on Information Technology
+International Conference on Software Engineering
+IEEE International Conference on Data Mining
+Annual ACM/IEEE Symposium on Logic in Computer Science
+IEEE International Conference on Data Mining
+IEEE International Conference on Industrial Informatics
+International Workshop on Program Comprehension
+International Workshop on Decision Making in Software ARCHitecture
+Formal Methods in Computer-Aided Design
+IEEE International Symposium on Real-Time Distributed Computing
+International Symposium on Computing and Networking
+Euromicro International Conference on Parallel, Distributed, and Network-Based Processing
+IEEE International Conference on Cloud Computing
+Supercomputing of the ACM/IEEE Conference on Supercomputing, Vol
+Conference on Software Engineering Education and Training
+IEEE Transactions on Signal Processing
+ICSE Workshop on Model-Based Methodologies for Pervasive and Embedded Software
+Web Information Systems and Applications Conference
+IEEE International Conference on Software Quality, Reliability and Security Companion
+Annual IEEE/IFIP International Conference on Dependable Systems and Networks
+IEEE Communications Surveys & Tutorials
+IEEE International Conference on Cloud Computing and Big Data Analysis
+Annual International Computer Software and Applications Conference
+Technology of Object-Oriented Languages TOOLS
+IEEE/ACM International Workshop on Metamorphic Testing
+Asia-Pacific Software Engineering Conference
+IEEE International Conference on Web Services
+IEEE International Systems Conference
+International Conference on Information Technology Based Higher Education and Training
+IEEE Security & Privacy
+IEEE Intl Conf on Dependable, Autonomic and Secure Computing, Intl Conf on Pervasive Intelligence and Computing, Intl Conf on Big Data Intelligence and Computing and Cyber Science and Technology Congress
+Annual International Computer Software and Applications
+Canadian Conference on Electrical and Computer Engineering
+International Workshop on Multimedia and Enjoyable Requirements Engineering - Beyond Mere Descriptions and with More Fun and Games
+IEEE/ACM International Symposium on Code Generation and Optimization

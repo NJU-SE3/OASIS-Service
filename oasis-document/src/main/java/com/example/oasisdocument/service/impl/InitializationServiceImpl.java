@@ -20,6 +20,10 @@ import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
+import java.io.IOException;
 import java.math.BigDecimal;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -46,7 +50,6 @@ public class InitializationServiceImpl implements InitializationService {
 
 	//机构初始化
 	//会议初始化
-	@Async
 	@Override
 	public void initAffiliationBase() {
 		final String checkColumn = "affiliationName";
@@ -55,16 +58,28 @@ public class InitializationServiceImpl implements InitializationService {
 				.map(Author::getAffiliationName)
 				.filter((String name) -> !name.isEmpty())
 				.collect(Collectors.toSet());
+		File file = new File("/Users/mac/Documents/repos/SE3/OASIS-Service/oasis-data/affiliation_post.txt");
+		List<String> names = new LinkedList<>();
+		try {
+			BufferedReader bufferedReader = new BufferedReader(new FileReader(file));
+			names.add(bufferedReader.readLine());
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+
+		int idx = 0;
 		for (String affName : affiliationNameFullSet) {
+			String name = names.get(idx++);
 			//不添加重复项
 			if (mongoTemplate.exists(
 					Query.query(Criteria.where(checkColumn).is(affName)), Affiliation.class)) {
 				continue;
 			}
-			Affiliation entity = new Affiliation();
-			entity.setAffiliationName(affName);
+
+//			Affiliation entity = new Affiliation();
+//			entity.setAffiliationName(affName);
 			//存储
-			entity = mongoTemplate.save(entity);
+//			entity = mongoTemplate.save(entity);
 		}
 	}
 

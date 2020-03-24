@@ -1,18 +1,17 @@
 package com.example.oasisdocument.dao;
 
 import com.example.oasisdocument.model.docs.Paper;
+import com.example.oasisdocument.model.docs.extendDoc.Affiliation;
 import com.example.oasisdocument.repository.docs.PaperRepository;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringRunner;
 
-import java.math.BigInteger;
 import java.util.List;
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.locks.ReentrantLock;
 
 import static org.junit.Assert.*;
 
@@ -22,6 +21,9 @@ import static org.junit.Assert.*;
 public class PaperCrudTest {
     @Autowired
     private PaperRepository paperRepository;
+    @Autowired
+    private MongoTemplate mongoTemplate;
+
 
     @Test
     public void findTest() {
@@ -49,8 +51,11 @@ public class PaperCrudTest {
         assertEquals(0, papers.size());
     }
 
-    private void run() {
-        ReentrantLock lock = new ReentrantLock();
-
+    @Test
+    public void run() {
+        List<Affiliation> conferences = mongoTemplate.findAll(Affiliation.class);
+        for (Affiliation c : conferences) {
+            System.out.println(c.getAffiliationName());
+        }
     }
 }

@@ -1,6 +1,5 @@
 package com.example.oasisdocument.service;
 
-import com.example.oasisdocument.model.docs.counter.CounterBaseEntity;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -13,13 +12,9 @@ import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringRunner;
 
-import java.util.List;
-
-import static org.junit.Assert.assertEquals;
-
 @RunWith(SpringRunner.class)
 @SpringBootTest
-@ActiveProfiles("test")
+@ActiveProfiles("dev")
 public class InitServiceTest {
 	private static final Logger logger = LoggerFactory.getLogger(InitServiceTest.class);
 	@Autowired
@@ -32,7 +27,7 @@ public class InitServiceTest {
 	}
 	@Test
 	public void initCounterTest() {
-
+		initializationService.initAffiliationBase();
 	}
 
 
