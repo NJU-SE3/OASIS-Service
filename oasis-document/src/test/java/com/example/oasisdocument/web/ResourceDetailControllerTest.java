@@ -2,6 +2,7 @@ package com.example.oasisdocument.web;
 
 import com.example.oasisdocument.model.docs.Author;
 import com.example.oasisdocument.model.docs.extendDoc.Affiliation;
+import com.example.oasisdocument.model.docs.extendDoc.Conference;
 import com.example.oasisdocument.model.docs.extendDoc.Field;
 import org.junit.Before;
 import org.junit.Test;
@@ -47,6 +48,7 @@ public class ResourceDetailControllerTest {
 		mockMvc = MockMvcBuilders.webAppContextSetup(wac).build();
 	}
 
+	//领域详细数据获取
 	@Test
 	public void fieldDetailTest1() throws Exception {
 		final Field en = mongoTemplate.findOne(new Query(), Field.class);
@@ -55,6 +57,7 @@ public class ResourceDetailControllerTest {
 		detailTemplate(uri, en.getId());
 	}
 
+	//作者详细数据获取
 	@Test
 	public void authorDetailTest1() throws Exception {
 		final String uri = "/author/detail";
@@ -62,6 +65,24 @@ public class ResourceDetailControllerTest {
 		assertThat(en).isNotNull();
 		detailTemplate(uri, en.getId());
 	}
+
+	//机构详细数据获取
+	@Test
+	public void conferenceDetailTest1() throws Exception {
+		final String uri = "/conference/detail";
+		final Conference en = mongoTemplate.findOne(new Query(), Conference.class);
+		assertThat(en).isNotNull();
+		detailTemplate(uri, en.getId());
+	}
+
+	@Test
+	public void affDetailTest1() throws Exception {
+		final String uri = "/affiliation/detail";
+		final Affiliation en = mongoTemplate.findOne(new Query(), Affiliation.class);
+		assertThat(en).isNotNull();
+		detailTemplate(uri, en.getId());
+	}
+
 
 	private void detailTemplate(final String uri, final String id) throws Exception {
 		MultiValueMap<String, String> params = new LinkedMultiValueMap<>();

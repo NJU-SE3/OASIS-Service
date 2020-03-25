@@ -24,7 +24,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
-@ActiveProfiles("dev")
+@ActiveProfiles("test")
 public class InitServiceTest {
 	@Autowired
 	private InitializationService initializationService;
@@ -43,12 +43,6 @@ public class InitServiceTest {
 
 	@Test
 	public void initCounterTest() {
-		initializationService.initCounterPOJOSummary();
-		List<CounterBaseEntity> enList = mongoTemplate.findAll(CounterBaseEntity.class);
-		int size = enList.size();
-		initializationService.initCounterPOJOSummary();
-		enList = mongoTemplate.findAll(CounterBaseEntity.class);
-		assertThat(enList.size()).isEqualTo(size);
 	}
 
 	@After

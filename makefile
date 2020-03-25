@@ -41,7 +41,7 @@ push_hub:
 	mvn clean package -Dmaven.test.skip=true -Pprod
 # mongo数据导入
 # data-init: mongo-import extend-import counter-import
-data-init: mongo-import extend-import
+data-init: mongo-import extend-import counter-import
 
 mongo-import:
 	$(foreach var,$(BACK_FILES),docker cp back/${var}.json oasis-mongo:/.;)
