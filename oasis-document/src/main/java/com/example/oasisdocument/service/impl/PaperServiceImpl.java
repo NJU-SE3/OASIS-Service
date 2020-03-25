@@ -2,6 +2,7 @@ package com.example.oasisdocument.service.impl;
 
 import com.alibaba.fastjson.JSONObject;
 import com.example.oasisdocument.exceptions.BadReqException;
+import com.example.oasisdocument.exceptions.EntityNotFoundException;
 import com.example.oasisdocument.model.VO.PaperBriefVO;
 import com.example.oasisdocument.model.VO.PaperInsertVO;
 import com.example.oasisdocument.model.docs.Author;
@@ -89,13 +90,13 @@ public class PaperServiceImpl implements PaperService {
     @Async
     public void insertPaperVOEntity(PaperInsertVO entity) {
         if (null == mongoTemplate.findById(entity.getId(), Paper.class)) {
-            List<Long> array = entity.getAuthorIds();
+            List<String> array = entity.getAuthorIds().stream().map(String::valueOf).collect(Collectors.toList());
             List<Author> authors = new LinkedList<>();
             //author 设置
             if (!array.isEmpty()) {
                 List<String> affNameList = new LinkedList<>(),
                         authorNameList = new LinkedList<>();
-                for (Long authorId : array) {
+                for (String authorId : array) {
                     Author author = mongoTemplate.findById(authorId, Author.class);
                     if (null != author) {
                         String aff = author.getAffiliationName();
@@ -256,6 +257,27 @@ public class PaperServiceImpl implements PaperService {
         List<Paper> papers = new LinkedList<>();
         en.getPaperList().forEach((String pid) -> papers.addAll(paperRepository.findAllById(pid)));
         return papers;
+    }
+
+    //根据 其他各种实体 id 获取隶属
+    @Override
+    public List<Paper> fetchPaperList(String id, EntityType type) {
+        List<Paper> ans = new LinkedList<>();
+        switch (type) {
+            case FIELD:
+
+                break;
+            case AUTHOR:
+                Author author = mongoTemplate.findById(id, Author.class);
+                if (null == author) throw new EntityNotFoundException();
+
+                break;
+            case CONFERENCE:
+                break;
+            case AFFILIATION:
+                break;
+        }
+        return ans;
     }
 
     private Map<String, List<String>> refineAnalysis(final List<String> refinements) {

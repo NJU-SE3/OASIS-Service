@@ -9,6 +9,7 @@ import com.example.oasisdocument.model.docs.extendDoc.Affiliation;
 import com.example.oasisdocument.model.docs.extendDoc.Conference;
 import com.example.oasisdocument.model.docs.extendDoc.Field;
 import com.example.oasisdocument.repository.docs.PaperRepository;
+import com.example.oasisdocument.service.BaseService;
 import com.example.oasisdocument.service.InitializationService;
 import com.example.oasisdocument.utils.ComputeUtil;
 import org.slf4j.Logger;
@@ -20,10 +21,6 @@ import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileReader;
-import java.io.IOException;
 import java.math.BigDecimal;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -39,6 +36,8 @@ public class InitializationServiceImpl implements InitializationService {
 	private ComputeUtil computeUtil;
 	@Autowired
 	private PaperRepository paperRepository;
+	@Autowired
+	private BaseService baseService;
 
 	@Override
 	public CounterBaseEntity getSummaryInfo(String id) {
@@ -58,28 +57,18 @@ public class InitializationServiceImpl implements InitializationService {
 				.map(Author::getAffiliationName)
 				.filter((String name) -> !name.isEmpty())
 				.collect(Collectors.toSet());
-		File file = new File("/Users/mac/Documents/repos/SE3/OASIS-Service/oasis-data/affiliation_post.txt");
-		List<String> names = new LinkedList<>();
-		try {
-			BufferedReader bufferedReader = new BufferedReader(new FileReader(file));
-			names.add(bufferedReader.readLine());
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
 
-		int idx = 0;
 		for (String affName : affiliationNameFullSet) {
-			String name = names.get(idx++);
 			//不添加重复项
 			if (mongoTemplate.exists(
 					Query.query(Criteria.where(checkColumn).is(affName)), Affiliation.class)) {
 				continue;
 			}
 
-//			Affiliation entity = new Affiliation();
-//			entity.setAffiliationName(affName);
-			//存储
-//			entity = mongoTemplate.save(entity);
+			Affiliation entity = new Affiliation();
+			entity.setAffiliationName(affName);
+//			存储
+			entity = mongoTemplate.save(entity);
 		}
 	}
 
@@ -150,54 +139,38 @@ public class InitializationServiceImpl implements InitializationService {
 	 */
 	@Override
 	public void initCounterPOJOSummary() {
-		final String authorCol = "authors";
-		final String conferenceCol = "conference";
-		final String termCol = "terms";
-		final String affiliationCol = "affiliations";
 		new Thread(() -> {
 			//作者
 			for (Author entity : mongoTemplate.findAll(Author.class)) {
-				List<Paper> papers = mongoTemplate.find(
-						Query.query(Criteria.where(authorCol).regex(entity.getAuthorName())),
-						Paper.class);
-				String id = entity.getId();
-				persistCounterSummary(id, papers);
+				List<Paper> papers = baseService.getPapersByAuthorName(entity.getAuthorName());
+				persistCounterSummary(entity.getId(), papers);
 			}
 		}).start();
 
-//		new Thread(() -> {
-//			//机构
-//			for (Affiliation entity : mongoTemplate.findAll(Affiliation.class)) {
-//				List<Paper> papers = mongoTemplate.find(
-//						Query.query(Criteria.where(affiliationCol).regex(entity.getAffiliationName())),
-//						Paper.class);
-//				String id = entity.getId();
-//				persistCounterSummary(id, papers);
-//
-//			}
-//		}).start();
-//		new Thread(() -> {
-//			//会议
-//			for (Conference entity : mongoTemplate.findAll(Conference.class)) {
-//				List<Paper> papers = mongoTemplate.find(
-//						Query.query(Criteria.where(conferenceCol).is(entity.getConferenceName())),
-//						Paper.class);
-//				String id = entity.getId();
-//				persistCounterSummary(id, papers);
-//			}
-//		}).start();
+		//机构
+		for (Affiliation entity : mongoTemplate.findAll(Affiliation.class)) {
+			//获取全部author
+			List<Author> authorList = baseService.getAuthorsByAffName(entity.getAffiliationName());
+			List<Paper> papers = new LinkedList<>();
+			authorList.forEach((Author author) ->
+					papers.addAll(baseService.getPapersByAuthorName(author.getAuthorName())));
+			persistCounterSummary(entity.getId(), papers);
 
-		new Thread(() -> {
-//			//领域
-			for (Field entity : mongoTemplate.findAll(Field.class)) {
-				List<Paper> papers = mongoTemplate.find(
-						Query.query(Criteria.where(termCol).regex(entity.getFieldName())),
-						Paper.class);
-				String id = entity.getId();
-				persistCounterSummary(id, papers);
-			}
-		}).start();
+		}
+		//会议
+		for (Conference entity : mongoTemplate.findAll(Conference.class)) {
+			List<Paper> papers = baseService.getPapersByConferenceName(entity.getConferenceName());
+			persistCounterSummary(entity.getId(), papers);
+		}
 
+		//领域
+		for (Field entity : mongoTemplate.findAll(Field.class)) {
+			List<Author> authorList = baseService.getAuthorsByFieldName(entity.getFieldName());
+			List<Paper> papers = new LinkedList<>();
+			authorList.forEach((Author author) ->
+					papers.addAll(baseService.getPapersByAuthorName(author.getAuthorName())));
+			persistCounterSummary(entity.getId(), papers);
+		}
 	}
 
 	/**
@@ -213,6 +186,9 @@ public class InitializationServiceImpl implements InitializationService {
 		countSingleEntity(id, -1, papers);
 	}
 
+	/**
+	 * 按照年份持久化counter POJO
+	 */
 	@Override
 	public void initCounterPOJO(String id) {
 		List<CounterBaseEntity> entities = mongoTemplate.find(
@@ -262,15 +238,5 @@ public class InitializationServiceImpl implements InitializationService {
 		totalPOJO.setHeat(computeUtil.getHeat(papers));
 		//save
 		mongoTemplate.save(totalPOJO);
-	}
-
-	private static boolean isNumeric(String str) {
-		String bigStr;
-		try {
-			bigStr = new BigDecimal(str).toString();
-		} catch (Exception e) {
-			return false;//异常 说明包含非数字。
-		}
-		return true;
 	}
 }

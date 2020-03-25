@@ -17,16 +17,6 @@ public class DataAnalysisInitController {
 	@Autowired
 	private InitializationService initializationService;
 
-//	/**
-//	 * 机构初始化
-//	 */
-//	@PostMapping("/detail")
-//	public void initAffiliationBasic() {
-//		initializationService.initAffiliationBase();
-//		initializationService.initConferenceBasic();
-//		initializationService.initFieldBasic();
-//	}
-
 	/**
 	 * 计数分析初始化
 	 * 由于时间耗费较大,这一步进行每一个实体的summary初始化, 而不精确到年份
