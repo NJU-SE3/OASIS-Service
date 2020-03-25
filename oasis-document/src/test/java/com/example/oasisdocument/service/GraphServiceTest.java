@@ -26,9 +26,9 @@ public class GraphServiceTest {
 	@Autowired
 	private MongoTemplate mongoTemplate;
 
-	@Test(expected = EntityNotFoundException.class)
+	@Test
 	public void fieldMapVIaIdTest1() {
-		List<GraphEdge> edges = graphService.fieldMapViaId("23");
+		List<GraphEdge> edges = graphService.fieldMapViaId("5e7a20d1b04a431b0988bed9");
 	}
 
 

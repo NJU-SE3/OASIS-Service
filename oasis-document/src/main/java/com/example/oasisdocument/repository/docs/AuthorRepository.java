@@ -10,4 +10,6 @@ import java.util.List;
 
 public interface AuthorRepository extends BaseMongoRepo<Author> {
 	List<Author> findAllById(String id);
+
+	List<Author> findAllByAuthorName(String authorName);
 }

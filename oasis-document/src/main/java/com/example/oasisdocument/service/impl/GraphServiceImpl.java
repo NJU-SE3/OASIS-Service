@@ -21,6 +21,7 @@ import java.util.*;
 
 @Service
 public class GraphServiceImpl implements GraphService {
+	private static final String authorSplitter = ";";
 	@Autowired
 	private MongoTemplate mongoTemplate;
 	@Autowired
@@ -30,6 +31,7 @@ public class GraphServiceImpl implements GraphService {
 	@Autowired
 	private PaperRepository paperRepository;
 
+	//作者关系图构建
 	@Override
 	public List<Set<GraphEdge>> authorMapViaId(String id) {
 		//首先查找图中是否已经存在这个顶点
@@ -65,24 +67,25 @@ public class GraphServiceImpl implements GraphService {
 			GraphEdge edge = new GraphEdge();
 			edge.setBegin(begin.getId());
 			edge.setEnd(end.getId());
-
 		}
 		return curSet;
 	}
 
+	//领域图构建
 	@Override
-	public List<GraphEdge> fieldMapViaId(String id) {
+	public List<GraphEdge> fieldMapViaId(String fieldId) {
 		//首先查找图中是否已经存在这个顶点
-		List<GraphEdge> edges = mongoTemplate.find(Query.query(new Criteria("begin").is(id)),
+		List<GraphEdge> edges = mongoTemplate.find(Query.query(new Criteria("begin").is(fieldId)),
 				GraphEdge.class);
 		//如果已经存在了 , 那么直接返回
 		if (!edges.isEmpty()) return edges;
 		//如果不存在 , 那么进行持久化
 		//首先找到中心点 Field
-		Field beginNode = mongoTemplate.findById(id, Field.class);
+		Field beginNode = mongoTemplate.findById(fieldId, Field.class);
 		if (null == beginNode) throw new EntityNotFoundException();
+		//接下来查询中心节点关联的所有paper
 		CounterBaseEntity baseEntity =
-				mongoTemplate.findOne(Query.query(new Criteria("checkId").is(beginNode.getId())),
+				mongoTemplate.findOne(Query.query(new Criteria("checkId").is(fieldId)),
 						CounterBaseEntity.class);
 		if (null == baseEntity) throw new EntityNotFoundException();
 		List<String> paperIds = baseEntity.getPaperList();
@@ -92,7 +95,10 @@ public class GraphServiceImpl implements GraphService {
 		for (String paperId : paperIds) {
 			Paper paper = mongoTemplate.findById(paperId, Paper.class);
 			assert null != paper;
-			for (Author author : paper.getAuthorList()) {
+			for (String authorName : paper.getAuthors().split(authorSplitter)) {
+				Author author = mongoTemplate.findOne(Query.query(new Criteria("authorName").is(authorName))
+						, Author.class);
+				if (author == null) continue;
 				for (String fieldName : author.getField().split(",")) {
 					Field en = mongoTemplate.findOne(Query.query(new Criteria("fieldName").is(fieldName)),
 							Field.class);
@@ -111,11 +117,12 @@ public class GraphServiceImpl implements GraphService {
 			edge.setWeight(neighbors.get(nodeId));
 			ans.add(edge);
 			//执行持久化
-			mongoTemplate.save(edge);
+//			mongoTemplate.save(edge);
 		}
 		return ans;
 	}
 
+	//机构图构建
 	@Override
 	public List<GraphEdge> affMapViaId(String id) {
 		return null;

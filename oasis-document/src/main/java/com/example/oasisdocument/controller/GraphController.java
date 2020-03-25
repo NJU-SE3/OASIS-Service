@@ -30,8 +30,8 @@ public class GraphController {
 //	}
 
 	@GetMapping("/field")
-	public JSONArray fieldMapViaId(@RequestParam(name = "id") String id) {
-		List<GraphEdge> edges = graphService.fieldMapViaId(id);
+	public JSONArray fieldMapViaId(@RequestParam(name = "id") String fieldId) {
+		List<GraphEdge> edges = graphService.fieldMapViaId(fieldId);
 		JSONArray array = new JSONArray();
 		edges.forEach((GraphEdge edge) -> {
 			JSONObject obj = generalJsonVO.fieldEdge2VO(edge);
