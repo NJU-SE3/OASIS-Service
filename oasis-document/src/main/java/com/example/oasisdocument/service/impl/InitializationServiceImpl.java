@@ -181,7 +181,7 @@ public class InitializationServiceImpl implements InitializationService {
 	 * 2. 进行每一年的单个年查询 , 每一个记录的生命为 1h
 	 * 如果当前年的记录已经存在 , 并且没有超时 , 那么不进行更新
 	 */
-	private void persistCounterSummary(String id, List<Paper> papers) {
+	public void persistCounterSummary(String id, List<Paper> papers) {
 		//save to basic summary count data
 		countSingleEntity(id, -1, papers);
 	}

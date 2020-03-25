@@ -87,11 +87,11 @@ public class AuthorServiceImpl implements AuthorService {
 		if (strings.length != 2) throw new BadReqException();
 		String id = strings[1];
 		if (strings[0].equals("affiliation")) {
-			Affiliation aff = mongoTemplate.findOne(Query.query(new Criteria("id").is(id)), Affiliation.class);
+			Affiliation aff = mongoTemplate.findById(id, Affiliation.class);
 			if (null == aff) throw new EntityNotFoundException();
 			return mongoTemplate.find(Query.query(new Criteria(affiCol).regex(aff.getAffiliationName())), Author.class);
 		} else if (strings[0].equals("field")) {
-			Field field = mongoTemplate.findOne(Query.query(new Criteria("id").is(id)), Field.class);
+			Field field = mongoTemplate.findById(id, Field.class);
 			if (null == field) throw new EntityNotFoundException();
 			return mongoTemplate.find(Query.query(new Criteria(fieldCol).regex(field.getFieldName())), Author.class);
 		} else throw new BadReqException();

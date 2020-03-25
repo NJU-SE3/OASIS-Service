@@ -143,6 +143,9 @@ public class ResourceDetailController {
 		return array;
 	}
 
+	/**
+	 * 论文列表获取
+	 */
 	@GetMapping("/conference/list")
 	public JSONArray fetchConferenceList(@RequestParam(name = "refinement", defaultValue = "") String refinement) {
 		List<Conference> conferenceList =

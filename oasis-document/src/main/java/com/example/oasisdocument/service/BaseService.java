@@ -60,7 +60,7 @@ public class BaseService {
 	public List<Paper> getPapersByConferenceName(String conName) {
 		final String conCol = "conference";
 		return mongoTemplate.find(
-				Query.query(Criteria.where(conCol).regex(conName)),
+				Query.query(Criteria.where(conCol).is(conName)),
 				Paper.class);
 	}
 
@@ -104,7 +104,7 @@ public class BaseService {
 	public List<Author> getAuthorsByFieldName(String fieldName) {
 		final String fieldCol = "field";
 		return mongoTemplate.find(
-				Query.query(Criteria.where(fieldCol).is(fieldName)),
+				Query.query(Criteria.where(fieldCol).regex(fieldName)),
 				Author.class
 		);
 	}
