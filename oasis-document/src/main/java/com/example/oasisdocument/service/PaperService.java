@@ -21,7 +21,7 @@ public interface PaperService {
 
 	JSONObject papersSummary(List<PaperBriefVO> papers);
 
-	List<Paper> fetchPaperList(String id);
+	List<PaperBriefVO> fetchPaperList(String id);
 
 	//根据 其他各种实体 id 获取隶属
 	List<Paper> fetchPaperList(String id, PaperServiceImpl.EntityType type);

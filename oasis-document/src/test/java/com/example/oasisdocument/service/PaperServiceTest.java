@@ -3,7 +3,6 @@ package com.example.oasisdocument.service;
 import com.example.oasisdocument.exceptions.EntityNotFoundException;
 import com.example.oasisdocument.model.VO.PaperBriefVO;
 import com.example.oasisdocument.model.docs.Author;
-import com.example.oasisdocument.model.docs.Paper;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -82,7 +81,7 @@ public class PaperServiceTest {
     public void fetchPaperListTest1() {
         final Author en = mongoTemplate.findOne(new Query(), Author.class);
         assertThat(en).isNotNull();
-        List<Paper> papers = paperService.fetchPaperList(en.getId());
+        List<?> papers = paperService.fetchPaperList(en.getId());
         assertNotNull(papers);
         assertThat(papers.size()).isGreaterThanOrEqualTo(0);
     }

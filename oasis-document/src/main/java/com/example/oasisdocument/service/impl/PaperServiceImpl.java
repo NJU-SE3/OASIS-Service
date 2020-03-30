@@ -251,12 +251,15 @@ public class PaperServiceImpl implements PaperService {
     }
 
     @Override
-    public List<Paper> fetchPaperList(String id) {
+    @Cacheable(cacheNames = "fetchPaperList", unless = "#result==null")
+    public List<PaperBriefVO> fetchPaperList(String id) {
         //获取分析数据
         CounterBaseEntity en = initializationService.getSummaryInfo(id);
         List<Paper> papers = new LinkedList<>();
         en.getPaperList().forEach((String pid) -> papers.addAll(paperRepository.findAllById(pid)));
-        return papers;
+        return papers.stream()
+                .map(PaperBriefVO::PO2VO)
+                .collect(Collectors.toList());
     }
 
     //根据 其他各种实体 id 获取隶属

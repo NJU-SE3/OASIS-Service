@@ -10,3 +10,5 @@ sqlalchemy
 html5lib
 selenium
 requests
+py2neo
+pymongo

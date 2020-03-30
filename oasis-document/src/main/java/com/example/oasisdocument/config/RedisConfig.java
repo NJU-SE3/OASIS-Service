@@ -1,7 +1,6 @@
 package com.example.oasisdocument.config;
 
 
-
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
@@ -24,9 +23,7 @@ import org.springframework.data.redis.serializer.StringRedisSerializer;
 
 import java.time.Duration;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Map;
-import java.util.Set;
 
 
 @Configuration
@@ -35,9 +32,6 @@ import java.util.Set;
 @EnableConfigurationProperties(RedisProperties.class)
 
 public class RedisConfig extends CachingConfigurerSupport {
-    @Value("${cache.default.expire-time}")
-    private int defaultExpireTime;
-
     /**
      * 缓存管理器
      *
@@ -48,7 +42,7 @@ public class RedisConfig extends CachingConfigurerSupport {
     public CacheManager cacheManager(RedisConnectionFactory lettuceConnectionFactory) {
         RedisCacheConfiguration defaultCacheConfig = RedisCacheConfiguration.defaultCacheConfig();
         // 设置缓存管理器管理的缓存的默认过期时间
-        defaultCacheConfig = defaultCacheConfig.entryTtl(Duration.ofSeconds(defaultExpireTime))
+        defaultCacheConfig = defaultCacheConfig.entryTtl(Duration.ofMinutes(30))
                 // 设置 key为string序列化
                 .serializeKeysWith(RedisSerializationContext.SerializationPair.fromSerializer(new StringRedisSerializer()))
                 // 设置value为json序列化

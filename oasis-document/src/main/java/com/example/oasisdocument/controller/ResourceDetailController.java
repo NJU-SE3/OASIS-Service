@@ -3,7 +3,6 @@ package com.example.oasisdocument.controller;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
-import com.example.oasisdocument.model.VO.PaperBriefVO;
 import com.example.oasisdocument.model.VO.extendVO.GeneralJsonVO;
 import com.example.oasisdocument.model.docs.Author;
 import com.example.oasisdocument.model.docs.counter.CounterBaseEntity;
@@ -18,7 +17,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 @RestController
 public class ResourceDetailController {
@@ -87,10 +85,7 @@ public class ResourceDetailController {
 	 */
 	@GetMapping("/paper/list")
 	public JSONArray fetchPaperList(@RequestParam(name = "id") String id) {
-		List<PaperBriefVO> paperList = paperService.fetchPaperList(id).stream()
-				.map(PaperBriefVO::PO2VO)
-				.collect(Collectors.toList());
-		return JSONArray.parseArray(JSON.toJSONString(paperList));
+		return JSONArray.parseArray(JSON.toJSONString(paperService.fetchPaperList(id)));
 	}
 //======================================================================================================================================================
 
