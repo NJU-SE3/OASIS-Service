@@ -29,7 +29,7 @@ public class GraphServiceTest {
 
 	@Test
 	public void authorMapTest1() {
-		final String id = "37295488600";
+		final String id = "37271338700";
 		JSONObject o = graphService.centeralAuthor(id);
 		System.out.println(o.toJSONString());
 	}

@@ -1,29 +1,21 @@
 package com.example.oasisdocument.model.graph.nodes;
 
 import com.alibaba.fastjson.annotation.JSONField;
+import com.example.oasisdocument.model.docs.Paper;
 import org.neo4j.ogm.annotation.NodeEntity;
 import org.neo4j.ogm.annotation.Relationship;
 
 import java.util.Set;
 
-@NodeEntity(label = "conference")
-public class ConferenceNeo extends BaseNeo {
-	private String conferenceName;
+@NodeEntity(label = "field")
+public class FieldNeo extends BaseNeo {
+	private String fieldName;
 
-	@Relationship(type = "published_on", direction = Relationship.INCOMING)
+	@Relationship(type = "describe", direction = Relationship.INCOMING)
 	@JSONField(serialize = false, deserialize = false)
 	private Set<PaperNeo> paperNeoSet;
 
-	public ConferenceNeo() {
-	}
-
-	public String getConferenceName() {
-		return conferenceName;
-	}
-
-	public void setConferenceName(String conferenceName) {
-		this.conferenceName = conferenceName;
-	}
+	FieldNeo(){}
 
 	public Set<PaperNeo> getPaperNeoSet() {
 		return paperNeoSet;
@@ -31,5 +23,13 @@ public class ConferenceNeo extends BaseNeo {
 
 	public void setPaperNeoSet(Set<PaperNeo> paperNeoSet) {
 		this.paperNeoSet = paperNeoSet;
+	}
+
+	public String getFieldName() {
+		return fieldName;
+	}
+
+	public void setFieldName(String fieldName) {
+		this.fieldName = fieldName;
 	}
 }

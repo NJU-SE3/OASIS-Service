@@ -24,14 +24,12 @@ public class GraphController {
 	}
 
 	@GetMapping("/field")
-	public JSONArray fieldMapViaId(@RequestParam(name = "id") String fieldId) {
-		JSONArray array = new JSONArray();
-		return array;
+	public JSONObject fieldMapViaId(@RequestParam(name = "id") String fieldId) {
+		return graphService.fieldMapViaId(fieldId);
 	}
 
 	@GetMapping("/affiliation")
-	public JSONArray affMapViaId(@RequestParam(name = "id") String id) {
-		JSONArray array = new JSONArray();
-		return array;
+	public JSONObject affMapViaId(@RequestParam(name = "id") String affId) {
+		return graphService.affMapViaId(affId);
 	}
 }

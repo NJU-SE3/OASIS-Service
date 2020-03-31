@@ -7,6 +7,7 @@ import com.example.oasisdocument.model.docs.counter.CounterBaseEntity;
 import com.example.oasisdocument.model.docs.extendDoc.Affiliation;
 import com.example.oasisdocument.model.docs.extendDoc.Conference;
 import com.example.oasisdocument.model.docs.extendDoc.Field;
+import com.example.oasisdocument.model.graph.nodes.AuthorNeo;
 import com.example.oasisdocument.service.AffiliationService;
 import com.example.oasisdocument.service.CounterService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,6 +22,13 @@ public class GeneralJsonVO {
 	private MongoTemplate mongoTemplate;
 	@Autowired
 	private CounterService counterService;
+
+	public JSONObject authorNeo2VO(AuthorNeo entity) {
+		JSONObject res = new JSONObject();
+		res.put("id", entity.getXid());
+		res.put("authorName", entity.getAuthorName());
+		return res;
+	}
 
 	public JSONObject author2VO(Author en, CounterBaseEntity baseEntity) {
 		JSONObject res = new JSONObject();

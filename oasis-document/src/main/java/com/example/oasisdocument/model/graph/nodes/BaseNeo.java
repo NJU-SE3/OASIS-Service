@@ -10,22 +10,13 @@ import java.io.Serializable;
 @ExcludeSuperclassListeners
 public class BaseNeo implements Serializable {
 	@Id
-	@JSONField(serialize = false)
+	@JSONField(serialize = false, deserialize = false)
 	private Long id;
 
 	@Id
-	@Property(name = "ID")
+	@Property(name = "xid")
 	@JSONField(name = "id")
-	private String ID;
-
-
-	public String getID() {
-		return ID;
-	}
-
-	public void setID(String ID) {
-		this.ID = ID;
-	}
+	private String xid;
 
 	public Long getId() {
 		return id;
@@ -33,5 +24,13 @@ public class BaseNeo implements Serializable {
 
 	public void setId(Long id) {
 		this.id = id;
+	}
+
+	public String getXid() {
+		return xid;
+	}
+
+	public void setXid(String xid) {
+		this.xid = xid;
 	}
 }

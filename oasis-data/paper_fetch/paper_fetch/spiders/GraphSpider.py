@@ -1,3 +1,5 @@
+import json
+
 import pymongo
 import scrapy
 from py2neo import Graph
@@ -46,15 +48,15 @@ class GraphSpider(scrapy.Spider):
             :return:
             """
             for paper in coll_paper.find():
-                paper_id = paper['_id']
+                paper_id = str(paper['_id'])
                 selector = NodeMatcher(graph)
-                items = selector.match('paper', ID=paper_id)
+                items = selector.match('paper', xid=paper_id)
                 # 如果这个论文paper已经存在
                 if len(items) > 0:
                     paper_node = list(items)[0]
                 # 否则创建新节点
                 else:
-                    paper_node = Node('paper', title=paper['title'], ID=paper_id)
+                    paper_node = Node('paper', title=paper['title'], xid=paper_id)
                     graph.create(paper_node)
 
                 for author_name in paper['authors'].split(';'):
@@ -63,8 +65,8 @@ class GraphSpider(scrapy.Spider):
                     if entity is None: continue
                     # 查找图中是否有这个author
                     selector = NodeMatcher(graph)
-                    items = selector.match('author', ID=entity['_id'])
-                    author_node = Node('author', authorName=author_name, ID=entity['_id']) if len(items) == 0 else \
+                    items = selector.match('author', xid=str(entity['_id']))
+                    author_node = Node('author', authorName=author_name, xid=str(entity['_id'])) if len(items) == 0 else \
                         list(items)[0]
                     R = Relationship(author_node, 'publish', paper_node)
                     graph.create(R)
@@ -76,20 +78,20 @@ class GraphSpider(scrapy.Spider):
                 paper_id = paper['_id']
                 con_name = paper['conference']
                 selector = NodeMatcher(graph)
-                items = selector.match('paper', ID=paper_id)
+                items = selector.match('paper', xid=paper_id)
                 # 如果这个论文paper已经存在
                 if len(items) > 0:
                     paper_node = list(items)[0]
                 # 否则创建新节点
                 else:
-                    paper_node = Node('paper', title=paper['title'], ID=paper_id)
+                    paper_node = Node('paper', title=paper['title'], xid=paper_id)
                     graph.create(paper_node)
                 entity = coll_conference.find_one({'conferenceName': con_name, 'year': paper['year']})
                 if entity is None: continue
                 en_id = str(entity['_id'])
                 selector = NodeMatcher(graph)
-                items = selector.match('conference', ID=en_id)
-                con_node = Node('conference', conferenceName=con_name, ID=en_id, year=paper['year']) if len(
+                items = selector.match('conference', xid=en_id)
+                con_node = Node('conference', conferenceName=con_name, xid=en_id, year=paper['year']) if len(
                     items) == 0 else \
                     list(items)[0]
                 R = Relationship(paper_node, 'published_on', con_node)
@@ -99,13 +101,13 @@ class GraphSpider(scrapy.Spider):
             for author in coll_author.find():
                 aid, author_name, aff_name = author['_id'], author['authorName'], author['affiliationName']
                 selector = NodeMatcher(graph)
-                items = selector.match('author', ID=aid)
+                items = selector.match('author', xid=aid)
                 # 如果这个论文paper已经存在
                 if len(items) > 0:
                     author_node = list(items)[0]
                 # 否则创建新节点
                 else:
-                    author_node = Node('author', authorName=author['authorName'], ID=aid)
+                    author_node = Node('author', authorName=author['authorName'], xid=aid)
                     graph.create(author_node)
 
                 entity = coll_aff.find_one({'affiliationName': aff_name})
@@ -113,19 +115,48 @@ class GraphSpider(scrapy.Spider):
                 # affiliation id
                 en_id = str(entity['_id'])
                 selector = NodeMatcher(graph)
-                items = selector.match('affiliation', ID=en_id)
-                aff_node = Node('affiliation', affiliationName=aff_name, ID=en_id) if len(items) == 0 else \
+                items = selector.match('affiliation', xid=en_id)
+                aff_node = Node('affiliation', affiliationName=aff_name, xid=en_id) if len(items) == 0 else \
                     list(items)[0]
                 R = Relationship(author_node, 'work_in', aff_node)
                 graph.create(R)
 
-        # paper_author()
+        def paper_field():
+            for paper in coll_paper.find():
+                paper_id = paper['_id']
+                terms = json.loads(str(paper['terms']).replace("\'", "\""))['IEEE Keywords']
+                selector = NodeMatcher(graph)
+                items = selector.match('paper', xid=paper_id)
+                # 如果这个论文paper已经存在
+                if len(items) > 0:
+                    paper_node = list(items)[0]
+                # 否则创建新节点
+                else:
+                    paper_node = Node('paper', title=paper['title'], xid=paper_id)
+                    graph.create(paper_node)
+
+                for field_name in terms:
+                    entity = coll_field.find_one({'fieldName': field_name})
+                    if entity is None: continue
+                    en_id = str(entity['_id'])
+                    selector = NodeMatcher(graph)
+                    items = selector.match('field', xid=en_id)
+                    field_node = Node('field', fieldName=field_name, xid=en_id) if len(
+                        items) == 0 else \
+                        list(items)[0]
+                    R = Relationship(paper_node, 'describe', field_node)
+                    graph.create(R)
+
+        paper_author()
         paper_conference()
-        # author_affiliation()
+        author_affiliation()
+        paper_field()
 
     def start_requests(self):
         self.construct_graph()
 
     def parse(self, response):
         pass
+
+
 
