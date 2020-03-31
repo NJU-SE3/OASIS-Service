@@ -1,5 +1,6 @@
 package com.example.oasisdocument.service;
 
+import com.example.oasisdocument.model.docs.counter.CounterBaseEntity;
 import com.example.oasisdocument.repository.docs.AuthorRepository;
 import com.example.oasisdocument.repository.docs.PaperRepository;
 import com.example.oasisdocument.utils.ComputeUtil;
@@ -36,6 +37,7 @@ public class InitServiceTest {
 
 	@Before
 	public void init() {
+		mongoTemplate.remove(CounterBaseEntity.class);
 	}
 //
 //	@Test

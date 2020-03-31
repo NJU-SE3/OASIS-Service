@@ -8,6 +8,7 @@ import com.example.oasisdocument.model.docs.extendDoc.Conference;
 import com.example.oasisdocument.service.ConferenceService;
 import com.example.oasisdocument.service.CounterService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
@@ -39,6 +40,7 @@ public class ConferenceServiceImpl implements ConferenceService {
 	}
 
 	@Override
+	@Cacheable(cacheNames = "fetchConferenceList", unless = "#result==null")
 	public List<Conference> fetchConferenceList(String refinement) {
 		final String fieldKey = "field", conNameCol = "conferenceName";
 		String[] datas = refinement.split(refineSplitter);

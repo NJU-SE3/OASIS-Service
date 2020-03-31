@@ -3,8 +3,9 @@ package com.example.oasisdocument.service.impl;
 import com.example.oasisdocument.exceptions.BadReqException;
 import com.example.oasisdocument.exceptions.EntityNotFoundException;
 import com.example.oasisdocument.model.docs.Author;
+import com.example.oasisdocument.model.docs.Paper;
+import com.example.oasisdocument.model.docs.counter.CounterBaseEntity;
 import com.example.oasisdocument.model.docs.extendDoc.Affiliation;
-import com.example.oasisdocument.model.docs.extendDoc.Field;
 import com.example.oasisdocument.repository.docs.AuthorRepository;
 import com.example.oasisdocument.service.AuthorService;
 import com.example.oasisdocument.service.CounterService;
@@ -16,6 +17,7 @@ import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
+import java.util.LinkedList;
 import java.util.List;
 
 @Service
@@ -76,11 +78,20 @@ public class AuthorServiceImpl implements AuthorService {
 			return mongoTemplate.find(Query.query(new Criteria(affiCol).is(aff.getAffiliationName())),
 					Author.class);
 		} else if (strings[0].equals("field")) {
-			Field field = mongoTemplate.findById(id, Field.class);
-			if (null == field) throw new EntityNotFoundException();
-			//TODO: 暂时设定为 fieldName 的正则匹配
-			return mongoTemplate.find(Query.query(new Criteria(fieldCol).regex(field.getFieldName())),
-					Author.class);
+			CounterBaseEntity entity = counterService.getSummaryInfo(id);
+			if (null == entity) throw new EntityNotFoundException();
+			List<Author> authors = new LinkedList<>();
+			for (String pid : entity.getPaperList()) {
+				Paper paper = mongoTemplate.findById(pid, Paper.class);
+				String[] authorNames = paper.getAuthors().split(";");
+				for (String name : authorNames) {
+					Author author = mongoTemplate.findOne(Query.query(new Criteria("authorName").is(name)),
+							Author.class);
+					if (author != null)
+						authors.add(author);
+				}
+			}
+			return authors;
 		} else throw new BadReqException();
 	}
 

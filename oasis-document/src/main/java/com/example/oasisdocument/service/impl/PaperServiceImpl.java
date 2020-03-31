@@ -108,7 +108,6 @@ public class PaperServiceImpl implements PaperService {
                 entity.setAuthors(String.join(authorSplitter, authorNameList));
             }
             Paper paper = entity.VO2PO();
-            paper.setAuthorList(authors);
             //conference 设置
             Conference conEn = mongoTemplate.findOne(Query.query(new Criteria("conferenceName")
                             .is(paper.getConference()).and("year").is(entity.getYear())),

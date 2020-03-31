@@ -8,6 +8,7 @@ import com.example.oasisdocument.model.docs.extendDoc.Field;
 import com.example.oasisdocument.service.CounterService;
 import com.example.oasisdocument.service.FieldService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
@@ -38,6 +39,7 @@ public class FieldServiceImpl implements FieldService {
 	}
 
 	@Override
+	@Cacheable(cacheNames = "fetchFieldList", unless = "#result==null")
 	public List<Field> fetchFieldList(String refinement) {
 		//应当包含会议id
 		final String conKey = "conference";

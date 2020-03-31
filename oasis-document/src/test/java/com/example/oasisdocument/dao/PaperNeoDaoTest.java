@@ -24,8 +24,8 @@ public class PaperNeoDaoTest {
 
 	@Test
 	public void run() {
-		AuthorNeo nep = authorNeoRepo.findByID(37295488600L);
-		nep = authorNeoRepo.findAuthorNeoByAuthorName("Christine D. Piatko");
+		AuthorNeo nep = authorNeoRepo.findByID("37267752500");
+		nep = authorNeoRepo.findAuthorNeoByAuthorName("Adam Porter");
 		System.out.println();
 	}
 }

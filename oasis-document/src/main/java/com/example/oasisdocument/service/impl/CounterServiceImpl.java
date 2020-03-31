@@ -18,6 +18,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
 import java.util.HashMap;
@@ -40,47 +41,59 @@ public class CounterServiceImpl implements CounterService {
 
 	@Override
 	public CounterBaseEntity getSummaryInfo(String id) {
-		List<CounterBaseEntity> en = mongoTemplate.find(Query.query(new Criteria("checkId").is(id)
+		CounterBaseEntity en = mongoTemplate.findOne(Query.query(new Criteria("checkId").is(id)
 				.and("year").is(-1)), CounterBaseEntity.class);
-		if (en.isEmpty()) throw new EntityNotFoundException();
-		return en.get(0);
+		if (null == en)
+			throw new EntityNotFoundException();
+		return en;
 	}
 
 	/**
 	 * 基本计数信息初始化,不包含年份的分析
 	 */
 	@Override
+	@Async
 	public void initCounterPOJOSummary() {
-		new Thread(() -> {
+		new Thread(()->{
+
 			//作者
 			for (Author entity : mongoTemplate.findAll(Author.class)) {
 				List<Paper> papers = baseService.getPapersByAuthorName(entity.getAuthorName());
 				persistCounterSummary(entity.getId(), papers);
 			}
 		}).start();
+		new Thread(()->{
 
-		//机构
-		for (Affiliation entity : mongoTemplate.findAll(Affiliation.class)) {
-			//获取全部author
-			List<Paper> papers = mongoTemplate.find(Query.query(new Criteria("affiliations")
-					.is(entity.getAffiliationName())), Paper.class);
-			persistCounterSummary(entity.getId(), papers);
-		}
-		new Thread(() -> {
+			//机构
+			for (Affiliation entity : mongoTemplate.findAll(Affiliation.class)) {
+				//获取全部author
+				try {
+					List<Paper> papers = mongoTemplate.find(Query.query(new Criteria("affiliations")
+							.regex(entity.getAffiliationName())), Paper.class);
+					persistCounterSummary(entity.getId(), papers);
+				} catch (Exception ignore) {
+				}
+			}
+		}).start();
+		new Thread(()->{
+
 			//会议
 			for (Conference entity : mongoTemplate.findAll(Conference.class)) {
 				List<Paper> papers = baseService.getPapersByConferenceName(entity.getConferenceName());
 				persistCounterSummary(entity.getId(), papers);
 			}
 		}).start();
+		new Thread(()->{
 
-		//领域
-		for (Field entity : mongoTemplate.findAll(Field.class)) {
-			List<Paper> papers = mongoTemplate.find(Query.query(new Criteria("terms").regex(entity.getFieldName())),
-					Paper.class);
-			persistCounterSummary(entity.getId(), papers);
-		}
+			//领域
+			for (Field entity : mongoTemplate.findAll(Field.class)) {
+				List<Paper> papers = mongoTemplate.find(Query.query(new Criteria("terms")
+						.regex(entity.getFieldName())), Paper.class);
+				persistCounterSummary(entity.getId(), papers);
+			}
+		}).start();
 	}
+
 
 	/**
 	 * 持久化单个实体

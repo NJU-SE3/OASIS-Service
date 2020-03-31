@@ -5,6 +5,6 @@ import com.example.oasisdocument.model.graph.nodes.AuthorNeo;
 public interface AuthorNeoRepo extends BaseNeoRepo<AuthorNeo> {
 	AuthorNeo findAuthorNeoByAuthorName(String name);
 
-	AuthorNeo findByID(Long ID);
+	AuthorNeo findByID(String ID);
 
 }

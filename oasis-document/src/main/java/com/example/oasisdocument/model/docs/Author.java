@@ -25,8 +25,6 @@ public class Author extends BaseEntity {
 
 	@DBRef(lazy = true)
 	private Affiliation affiliationEntity;
-	@DBRef(lazy = true)
-	private List<Paper> paperList;
 
 	public Author() {
 	}
@@ -111,11 +109,4 @@ public class Author extends BaseEntity {
 		this.affiliationEntity = affiliationEntity;
 	}
 
-	public List<Paper> getPaperList() {
-		return paperList;
-	}
-
-	public void setPaperList(List<Paper> paperList) {
-		this.paperList = paperList;
-	}
 }

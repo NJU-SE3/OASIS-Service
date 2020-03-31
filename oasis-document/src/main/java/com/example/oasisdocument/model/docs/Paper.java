@@ -56,8 +56,6 @@ public class Paper extends BaseEntity {
     @JSONField(name = "affiliations")
     private String affiliations; //机构
 
-    @DBRef(lazy = true)
-    private List<Author> authorList;
     @DBRef(lazy=true)
     private Conference conferenceEntity;
 
@@ -177,14 +175,6 @@ public class Paper extends BaseEntity {
         this.affiliations = affiliations;
     }
 
-
-    public List<Author> getAuthorList() {
-        return authorList;
-    }
-
-    public void setAuthorList(List<Author> authorList) {
-        this.authorList = authorList;
-    }
 
     public List<Long> getCitations() {
         return citations;

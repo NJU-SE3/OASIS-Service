@@ -12,8 +12,7 @@ public class Conference extends BaseEntity {
 	private String conferenceName;                //会议名称
 	private int year;                            //年份
 	private String ranker;        //届
-	@DBRef(lazy = true)
-	private List<Paper> paperList;
+
 	public Conference() {
 	}
 
@@ -47,11 +46,4 @@ public class Conference extends BaseEntity {
 				",year = " + year + ",ranker = " + ranker;
 	}
 
-	public List<Paper> getPaperList() {
-		return paperList;
-	}
-
-	public void setPaperList(List<Paper> paperList) {
-		this.paperList = paperList;
-	}
 }

@@ -10,8 +10,6 @@ import java.util.List;
 @Document(collection = "affiliations")
 public class Affiliation extends BaseEntity {
 	private String affiliationName;                //机构名称
-	@DBRef(lazy = true)
-	private List<Author> authorList;
 
 	public Affiliation() {
 	}
@@ -24,11 +22,4 @@ public class Affiliation extends BaseEntity {
 		this.affiliationName = affiliationName;
 	}
 
-	public List<Author> getAuthorList() {
-		return authorList;
-	}
-
-	public void setAuthorList(List<Author> authorList) {
-		this.authorList = authorList;
-	}
 }
