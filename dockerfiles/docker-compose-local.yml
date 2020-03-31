@@ -4,6 +4,7 @@ services:
   redis: # Redis缓存
     image: redis
     container_name: oasis-redis
+    restart: always
     command: redis-server
     ports:
       - "6379:6379"
@@ -26,7 +27,8 @@ services:
       - MONGODB_PASSWORD=mongo
       - MONGODB_DATABASE=se
   neo4j:
-    image: neo4j:latest
+    image: neo4j:3.5.1
+    restart: always
     ports:
       - "7473:7473"
       - "7474:7474"

@@ -70,17 +70,21 @@ public class Paper extends BaseEntity {
     }
 
     public static Set<String> getAllTerms(Paper entity) {
-        Set<String> ans = new HashSet<>();
         JSONObject object = new JSONObject();
         try {
             object = (JSONObject) JSON.parse(entity.terms);
         } catch (Exception e) {
             entity.terms = "";
         }
-        for (String key : object.keySet()) {
-            JSONArray array = object.getJSONArray(key);
-            List<String> termList = JSON.parseArray(array.toJSONString(), String.class);
-            ans.addAll(termList);
+        JSONArray array = (JSONArray) object.getOrDefault("IEEE Keywords", new JSONArray());
+        List<String> termList = JSON.parseArray(array.toJSONString(), String.class);
+        return new HashSet<>(termList);
+    }
+
+    public static Set<String> getAllAuthors(Paper entity) {
+        Set<String> ans = new HashSet<>();
+        for (String str : entity.authors.split(";")) {
+            if (!str.isEmpty()) ans.add(str);
         }
         return ans;
     }

@@ -6,7 +6,7 @@ import com.example.oasisdocument.model.docs.Paper;
 import com.example.oasisdocument.model.docs.counter.CounterBaseEntity;
 import com.example.oasisdocument.model.docs.extendDoc.Conference;
 import com.example.oasisdocument.service.ConferenceService;
-import com.example.oasisdocument.service.InitializationService;
+import com.example.oasisdocument.service.CounterService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.mongodb.core.MongoTemplate;
@@ -24,7 +24,7 @@ public class ConferenceServiceImpl implements ConferenceService {
 	@Autowired
 	private MongoTemplate mongoTemplate;
 	@Autowired
-	private InitializationService initializationService;
+	private CounterService counterService;
 
 	@Override
 	public Conference fetchEnById(String id) {
@@ -45,7 +45,7 @@ public class ConferenceServiceImpl implements ConferenceService {
 		if (datas.length != 2 || !datas[0].equals(fieldKey)) throw new BadReqException();
 		String fieldId = datas[1];
 		//找到领域
-		CounterBaseEntity en = initializationService.getSummaryInfo(fieldId);
+		CounterBaseEntity en = counterService.getSummaryInfo(fieldId);
 		if (null == en) throw new EntityNotFoundException();
 		List<String> confNames = en.getPaperList().stream()
 				.map((String pid) -> {

@@ -24,7 +24,6 @@ public class PaperCrudTest {
     @Autowired
     private MongoTemplate mongoTemplate;
 
-
     @Test
     public void findTest() {
         List<Paper> papers = paperRepository.findAll();

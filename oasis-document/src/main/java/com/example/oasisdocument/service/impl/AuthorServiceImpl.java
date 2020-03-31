@@ -7,7 +7,7 @@ import com.example.oasisdocument.model.docs.extendDoc.Affiliation;
 import com.example.oasisdocument.model.docs.extendDoc.Field;
 import com.example.oasisdocument.repository.docs.AuthorRepository;
 import com.example.oasisdocument.service.AuthorService;
-import com.example.oasisdocument.service.InitializationService;
+import com.example.oasisdocument.service.CounterService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.mongodb.core.MongoTemplate;
@@ -16,7 +16,6 @@ import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
-import java.util.LinkedList;
 import java.util.List;
 
 @Service
@@ -26,7 +25,7 @@ public class AuthorServiceImpl implements AuthorService {
 	@Autowired
 	private MongoTemplate mongoTemplate;
 	@Autowired
-	private InitializationService initializationService;
+	private CounterService counterService;
 	private static final String refineSplitter = ":";
 
 	//author 导入
@@ -36,7 +35,6 @@ public class AuthorServiceImpl implements AuthorService {
 	public void insert(Author entity) {
 		if (null == mongoTemplate.findById(entity.getId(), Author.class)) {
 			String affName = entity.getAffiliationName();
-			String[] filedNameList = entity.getField().split(",");
 			//导入机构
 			Affiliation affEn = mongoTemplate.findOne(Query.query(new Criteria("affiliationName").is(affName)),
 					Affiliation.class);
@@ -47,21 +45,7 @@ public class AuthorServiceImpl implements AuthorService {
 					affEn = mongoTemplate.save(affEn);
 				}
 			}
-			//导入field
-			List<Field> fields = new LinkedList<>();
-			for (String fieldName : filedNameList) {
-				Field fieldEn = mongoTemplate.findOne(Query.query(new Criteria("fieldName").is(fieldName)),
-						Field.class);
-				if (null == fieldEn) {
-					if (affName.isEmpty()) continue;
-					fieldEn = new Field();
-					fieldEn.setFieldName(fieldName);
-					fieldEn = mongoTemplate.save(fieldEn);
-				}
-				fields.add(fieldEn);
-			}
 			entity.setAffiliationEntity(affEn);
-			entity.setFieldList(fields);
 			authorRepository.save(entity);
 		}
 	}
@@ -79,7 +63,7 @@ public class AuthorServiceImpl implements AuthorService {
 				Author.class);
 	}
 
-	//查找某一个限定条件下的作者列表
+	//查找某一个限定条件下的作者列表 , 可以是机构 , 领域限制
 	@Override
 	public List<Author> fetchAuthorList(String refinement) {
 		final String affiCol = "affiliationName", fieldCol = "field";
@@ -89,11 +73,14 @@ public class AuthorServiceImpl implements AuthorService {
 		if (strings[0].equals("affiliation")) {
 			Affiliation aff = mongoTemplate.findById(id, Affiliation.class);
 			if (null == aff) throw new EntityNotFoundException();
-			return mongoTemplate.find(Query.query(new Criteria(affiCol).regex(aff.getAffiliationName())), Author.class);
+			return mongoTemplate.find(Query.query(new Criteria(affiCol).is(aff.getAffiliationName())),
+					Author.class);
 		} else if (strings[0].equals("field")) {
 			Field field = mongoTemplate.findById(id, Field.class);
 			if (null == field) throw new EntityNotFoundException();
-			return mongoTemplate.find(Query.query(new Criteria(fieldCol).regex(field.getFieldName())), Author.class);
+			//TODO: 暂时设定为 fieldName 的正则匹配
+			return mongoTemplate.find(Query.query(new Criteria(fieldCol).regex(field.getFieldName())),
+					Author.class);
 		} else throw new BadReqException();
 	}
 

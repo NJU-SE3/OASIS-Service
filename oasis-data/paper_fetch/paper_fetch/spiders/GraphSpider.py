@@ -1,5 +1,3 @@
-import json
-
 import pymongo
 import scrapy
 from py2neo import Graph
@@ -50,13 +48,13 @@ class GraphSpider(scrapy.Spider):
             for paper in coll_paper.find():
                 paper_id = paper['_id']
                 selector = NodeMatcher(graph)
-                items = selector.match('paper', id=paper_id)
+                items = selector.match('paper', ID=paper_id)
                 # 如果这个论文paper已经存在
                 if len(items) > 0:
                     paper_node = list(items)[0]
                 # 否则创建新节点
                 else:
-                    paper_node = Node('paper', title=paper['title'], id=paper_id)
+                    paper_node = Node('paper', title=paper['title'], ID=paper_id)
                     graph.create(paper_node)
 
                 for author_name in paper['authors'].split(';'):
@@ -65,8 +63,8 @@ class GraphSpider(scrapy.Spider):
                     if entity is None: continue
                     # 查找图中是否有这个author
                     selector = NodeMatcher(graph)
-                    items = selector.match('author', id=entity['_id'])
-                    author_node = Node('author', authorName=author_name, id=entity['_id']) if len(items) == 0 else \
+                    items = selector.match('author', ID=entity['_id'])
+                    author_node = Node('author', authorName=author_name, ID=entity['_id']) if len(items) == 0 else \
                         list(items)[0]
                     R = Relationship(author_node, 'publish', paper_node)
                     graph.create(R)
@@ -78,20 +76,20 @@ class GraphSpider(scrapy.Spider):
                 paper_id = paper['_id']
                 con_name = paper['conference']
                 selector = NodeMatcher(graph)
-                items = selector.match('paper', id=paper_id)
+                items = selector.match('paper', ID=paper_id)
                 # 如果这个论文paper已经存在
                 if len(items) > 0:
                     paper_node = list(items)[0]
                 # 否则创建新节点
                 else:
-                    paper_node = Node('paper', title=paper['title'], id=paper_id)
+                    paper_node = Node('paper', title=paper['title'], ID=paper_id)
                     graph.create(paper_node)
                 entity = coll_conference.find_one({'conferenceName': con_name, 'year': paper['year']})
                 if entity is None: continue
                 en_id = str(entity['_id'])
                 selector = NodeMatcher(graph)
-                items = selector.match('conference', id=en_id)
-                con_node = Node('conference', conferenceName=con_name, id=en_id, year=paper['year']) if len(
+                items = selector.match('conference', ID=en_id)
+                con_node = Node('conference', conferenceName=con_name, ID=en_id, year=paper['year']) if len(
                     items) == 0 else \
                     list(items)[0]
                 R = Relationship(paper_node, 'published_on', con_node)
@@ -101,13 +99,13 @@ class GraphSpider(scrapy.Spider):
             for author in coll_author.find():
                 aid, author_name, aff_name = author['_id'], author['authorName'], author['affiliationName']
                 selector = NodeMatcher(graph)
-                items = selector.match('author', id=aid)
+                items = selector.match('author', ID=aid)
                 # 如果这个论文paper已经存在
                 if len(items) > 0:
                     author_node = list(items)[0]
                 # 否则创建新节点
                 else:
-                    author_node = Node('author', authorName=author['authorName'], id=aid)
+                    author_node = Node('author', authorName=author['authorName'], ID=aid)
                     graph.create(author_node)
 
                 entity = coll_aff.find_one({'affiliationName': aff_name})
@@ -115,8 +113,8 @@ class GraphSpider(scrapy.Spider):
                 # affiliation id
                 en_id = str(entity['_id'])
                 selector = NodeMatcher(graph)
-                items = selector.match('affiliation', id=en_id)
-                aff_node = Node('affiliation', affiliationName=aff_name, id=en_id) if len(items) == 0 else \
+                items = selector.match('affiliation', ID=en_id)
+                aff_node = Node('affiliation', affiliationName=aff_name, ID=en_id) if len(items) == 0 else \
                     list(items)[0]
                 R = Relationship(author_node, 'work_in', aff_node)
                 graph.create(R)

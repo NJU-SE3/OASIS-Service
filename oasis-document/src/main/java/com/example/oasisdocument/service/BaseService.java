@@ -89,26 +89,5 @@ public class BaseService {
 		);
 	}
 
-	/**
-	 * 根据领域获取作者列表
-	 */
-	public List<Author> getAuthorsByFieldId(String fieldId) {
-		Field entity = mongoTemplate.findById(fieldId, Field.class);
-		if (null == entity) throw new EntityNotFoundException();
-		return getAuthorsByFieldName(entity.getFieldName());
-	}
-
-	/**
-	 * 根据领域名称获取作者列表
-	 */
-	public List<Author> getAuthorsByFieldName(String fieldName) {
-		final String fieldCol = "field";
-		return mongoTemplate.find(
-				Query.query(Criteria.where(fieldCol).regex(fieldName)),
-				Author.class
-		);
-	}
-
-
 
 }

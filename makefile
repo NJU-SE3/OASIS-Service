@@ -39,6 +39,7 @@ test:
 
 push_hub:
 	mvn clean package -Dmaven.test.skip=true -Pprod
+	mvn clean
 # mongo数据导入
 # data-init: mongo-import extend-import counter-import
 data-init: mongo-import extend-import counter-import

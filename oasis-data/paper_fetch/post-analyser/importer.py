@@ -40,7 +40,7 @@ def import_papers(df):
                 citationCount=row['citationCount'] if row['citationCount'] != 'nan' else '0',
                 referenceCount=ref_cnt
             )
-            requests.post('http://localhost:8081/query/paper', data=json.dumps(paper),
+            requests.post('http://localhost:8081/data/initialization/field', data=json.dumps(paper),
                       headers={'Content-Type': 'application/json'})
 
 def import_authors(df):

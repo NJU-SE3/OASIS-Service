@@ -26,6 +26,10 @@ public class InitServiceTest {
 	@Autowired
 	private PaperRepository paperRepository;
 	@Autowired
+	private FieldService fieldService;
+	@Autowired
+	private CounterService counterService;
+	@Autowired
 	private BaseService baseService;
 	@Autowired
 	private ComputeUtil computeUtil;
@@ -33,9 +37,19 @@ public class InitServiceTest {
 	@Before
 	public void init() {
 	}
+//
+//	@Test
+//	public void initCounterTest() {
+//		for (Paper entity : paperRepository.findAll()){
+//			fieldService.insertFields(entity);
+//		}
+//		List<Field> li = mongoTemplate.findAll(Field.class);
+//
+//	}
 
 	@Test
-	public void initCounterTest() {
+	public void initCounterTest1() {
+		counterService.initCounterPOJOSummary();
 	}
 
 

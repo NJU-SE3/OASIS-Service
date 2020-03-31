@@ -1,7 +1,6 @@
 package com.example.oasisdocument.repository.graph;
 
-import com.example.oasisdocument.model.graph.nodes.Paper;
-import org.springframework.data.neo4j.repository.Neo4jRepository;
+import com.example.oasisdocument.model.graph.nodes.PaperNeo;
 
-public interface PaperNeoRepo extends Neo4jRepository<Paper, Long> {
+public interface PaperNeoRepo extends BaseNeoRepo<PaperNeo> {
 }

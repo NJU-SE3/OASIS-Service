@@ -8,7 +8,7 @@ import com.example.oasisdocument.model.docs.counter.CounterBaseEntity;
 import com.example.oasisdocument.repository.analysis.AuthorCitationRepo;
 import com.example.oasisdocument.repository.docs.AuthorRepository;
 import com.example.oasisdocument.repository.docs.PaperRepository;
-import com.example.oasisdocument.service.InitializationService;
+import com.example.oasisdocument.service.CounterService;
 import com.example.oasisdocument.service.ReportService;
 import com.example.oasisdocument.utils.PageHelper;
 import com.example.oasisdocument.utils.Pair;
@@ -45,7 +45,7 @@ public class ReportServiceImpl implements ReportService {
     private AuthorCitationRepo authorCitationRepo;
 
     @Autowired
-    private InitializationService initializationService;
+    private CounterService counterService;
 
     @Override
     @Cacheable(cacheNames = "getWordCloudOfYear", unless = "#result==null")
@@ -146,7 +146,7 @@ public class ReportServiceImpl implements ReportService {
                         CounterBaseEntity.class);
         //如果还未初始化每年的数据
         if (baseEntities.isEmpty()) {
-            initializationService.initCounterPOJO(id);
+            counterService.initCounterPOJO(id);
             baseEntities =
                     mongoTemplate.find(Query.query(new Criteria("checkId").is(id).and("year").ne(-1)),
                             CounterBaseEntity.class);

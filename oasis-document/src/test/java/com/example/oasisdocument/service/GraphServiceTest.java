@@ -1,7 +1,6 @@
 package com.example.oasisdocument.service;
 
-import com.example.oasisdocument.exceptions.EntityNotFoundException;
-import com.example.oasisdocument.model.docs.analysis.GraphEdge;
+import com.alibaba.fastjson.JSONObject;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.slf4j.Logger;
@@ -11,8 +10,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringRunner;
-
-import java.util.List;
 
 
 @RunWith(SpringRunner.class)
@@ -28,7 +25,13 @@ public class GraphServiceTest {
 
 	@Test
 	public void fieldMapVIaIdTest1() {
-		List<GraphEdge> edges = graphService.fieldMapViaId("5e7a20d1b04a431b0988bed9");
+	}
+
+	@Test
+	public void authorMapTest1() {
+		final String id = "37295488600";
+		JSONObject o = graphService.centeralAuthor(id);
+		System.out.println(o.toJSONString());
 	}
 
 

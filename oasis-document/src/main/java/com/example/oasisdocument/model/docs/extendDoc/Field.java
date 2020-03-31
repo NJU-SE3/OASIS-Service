@@ -10,8 +10,6 @@ import java.util.List;
 @Document(collection = "fields")
 public class Field extends BaseEntity {
 	private String fieldName;            //领域名称
-	@DBRef(lazy = true)
-	private List<Author> authorList;
 
 	public Field() {
 	}

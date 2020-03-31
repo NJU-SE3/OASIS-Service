@@ -24,8 +24,6 @@ public class Author extends BaseEntity {
 	private String photoUrl;
 
 	@DBRef(lazy = true)
-	private List<com.example.oasisdocument.model.docs.extendDoc.Field> fieldList;
-	@DBRef(lazy = true)
 	private Affiliation affiliationEntity;
 	@DBRef(lazy = true)
 	private List<Paper> paperList;
@@ -103,14 +101,6 @@ public class Author extends BaseEntity {
 
 	public void setPhotoUrl(String photoUrl) {
 		this.photoUrl = photoUrl;
-	}
-
-	public List<com.example.oasisdocument.model.docs.extendDoc.Field> getFieldList() {
-		return fieldList;
-	}
-
-	public void setFieldList(List<com.example.oasisdocument.model.docs.extendDoc.Field> fieldList) {
-		this.fieldList = fieldList;
 	}
 
 	public Affiliation getAffiliationEntity() {

@@ -1,6 +1,7 @@
 package com.example.oasisdocument.controller;
 
-import com.example.oasisdocument.service.InitializationService;
+import com.example.oasisdocument.service.FieldService;
+import com.example.oasisdocument.service.CounterService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -15,7 +16,9 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/data/initialization")
 public class DataAnalysisInitController {
 	@Autowired
-	private InitializationService initializationService;
+	private CounterService counterService;
+	@Autowired
+	private FieldService fieldService;
 
 	/**
 	 * 计数分析初始化
@@ -23,6 +26,7 @@ public class DataAnalysisInitController {
 	 */
 	@PostMapping("/counter/base")
 	public void initCounterPOJO() {
-		initializationService.initCounterPOJOSummary();
+		counterService.initCounterPOJOSummary();
 	}
+
 }

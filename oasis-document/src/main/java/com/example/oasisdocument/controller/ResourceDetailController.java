@@ -29,7 +29,7 @@ public class ResourceDetailController {
 	@Autowired
 	private FieldService fieldService;
 	@Autowired
-	private InitializationService initializationService;
+	private CounterService counterService;
 	@Autowired
 	private PaperService paperService;
 	@Autowired
@@ -44,7 +44,7 @@ public class ResourceDetailController {
 	@GetMapping("/field/detail")
 	public JSONObject fetchFieldDetail(@RequestParam(name = "id") String id) {
 		Field en = fieldService.fetchEnById(id);
-		CounterBaseEntity baseEntity = initializationService.getSummaryInfo(id);
+		CounterBaseEntity baseEntity = counterService.getSummaryInfo(id);
 		return generalJsonVO.field2VO(en, baseEntity);
 	}
 
@@ -54,7 +54,7 @@ public class ResourceDetailController {
 	@GetMapping("/author/detail")
 	public JSONObject fetchAuthorDetail(@RequestParam(name = "id") String id) {
 		Author en = authorService.fetchEnById(id);
-		CounterBaseEntity baseEntity = initializationService.getSummaryInfo(id);
+		CounterBaseEntity baseEntity = counterService.getSummaryInfo(id);
 		return generalJsonVO.author2VO(en, baseEntity);
 	}
 
@@ -64,7 +64,7 @@ public class ResourceDetailController {
 	@GetMapping("/affiliation/detail")
 	public JSONObject fetchAffiliationDetail(@RequestParam(name = "id") String id) {
 		Affiliation en = affiliationService.fetchEnById(id);
-		CounterBaseEntity baseEntity = initializationService.getSummaryInfo(id);
+		CounterBaseEntity baseEntity = counterService.getSummaryInfo(id);
 		return generalJsonVO.affiliation2VO(en, baseEntity);
 	}
 
@@ -74,7 +74,7 @@ public class ResourceDetailController {
 	@GetMapping("/conference/detail")
 	public JSONObject fetchConferenceDetail(@RequestParam(name = "id") String id) {
 		Conference en = conferenceService.fetchEnById(id);
-		CounterBaseEntity baseEntity = initializationService.getSummaryInfo(id);
+		CounterBaseEntity baseEntity = counterService.getSummaryInfo(id);
 		return generalJsonVO.conference2VO(en, baseEntity);
 	}
 
@@ -100,7 +100,7 @@ public class ResourceDetailController {
 				authorService.fetchAuthorList(refinement);
 		JSONArray array = new JSONArray();
 		for (Author author : authorList) {
-			CounterBaseEntity baseEntity = initializationService.getSummaryInfo(author.getId());
+			CounterBaseEntity baseEntity = counterService.getSummaryInfo(author.getId());
 			array.add(generalJsonVO.author2VO(author, baseEntity));
 		}
 		return array;
@@ -116,7 +116,7 @@ public class ResourceDetailController {
 
 		JSONArray array = new JSONArray();
 		for (Affiliation affiliation : affiliationList) {
-			CounterBaseEntity baseEntity = initializationService.getSummaryInfo(affiliation.getId());
+			CounterBaseEntity baseEntity = counterService.getSummaryInfo(affiliation.getId());
 			array.add(generalJsonVO.affiliation2VO(affiliation, baseEntity));
 		}
 		return array;
@@ -132,14 +132,14 @@ public class ResourceDetailController {
 				fieldService.fetchFieldList(refinement);
 		JSONArray array = new JSONArray();
 		for (Field field : fieldList) {
-			CounterBaseEntity baseEntity = initializationService.getSummaryInfo(field.getId());
+			CounterBaseEntity baseEntity = counterService.getSummaryInfo(field.getId());
 			array.add(generalJsonVO.field2VO(field, baseEntity));
 		}
 		return array;
 	}
 
 	/**
-	 * 论文列表获取
+	 * 会议列表获取
 	 */
 	@GetMapping("/conference/list")
 	public JSONArray fetchConferenceList(@RequestParam(name = "refinement", defaultValue = "") String refinement) {
@@ -148,7 +148,7 @@ public class ResourceDetailController {
 						conferenceService.fetchConferenceList(refinement);
 		JSONArray array = new JSONArray();
 		for (Conference conference : conferenceList) {
-			CounterBaseEntity baseEntity = initializationService.getSummaryInfo(conference.getId());
+			CounterBaseEntity baseEntity = counterService.getSummaryInfo(conference.getId());
 			array.add(generalJsonVO.conference2VO(conference, baseEntity));
 		}
 		return array;

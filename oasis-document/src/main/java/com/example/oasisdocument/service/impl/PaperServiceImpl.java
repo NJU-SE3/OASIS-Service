@@ -2,7 +2,6 @@ package com.example.oasisdocument.service.impl;
 
 import com.alibaba.fastjson.JSONObject;
 import com.example.oasisdocument.exceptions.BadReqException;
-import com.example.oasisdocument.exceptions.EntityNotFoundException;
 import com.example.oasisdocument.model.VO.PaperBriefVO;
 import com.example.oasisdocument.model.VO.PaperInsertVO;
 import com.example.oasisdocument.model.docs.Author;
@@ -11,7 +10,7 @@ import com.example.oasisdocument.model.docs.counter.CounterBaseEntity;
 import com.example.oasisdocument.model.docs.extendDoc.Conference;
 import com.example.oasisdocument.repository.docs.AuthorRepository;
 import com.example.oasisdocument.repository.docs.PaperRepository;
-import com.example.oasisdocument.service.InitializationService;
+import com.example.oasisdocument.service.CounterService;
 import com.example.oasisdocument.service.PaperService;
 import com.example.oasisdocument.utils.Pair;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -41,7 +40,7 @@ public class PaperServiceImpl implements PaperService {
     private AuthorRepository authorRepository;
 
     @Autowired
-    private InitializationService initializationService;
+    private CounterService counterService;
 
     /**
      * 内部类, 专门用于实现
@@ -254,33 +253,12 @@ public class PaperServiceImpl implements PaperService {
     @Cacheable(cacheNames = "fetchPaperList", unless = "#result==null")
     public List<PaperBriefVO> fetchPaperList(String id) {
         //获取分析数据
-        CounterBaseEntity en = initializationService.getSummaryInfo(id);
+        CounterBaseEntity en = counterService.getSummaryInfo(id);
         List<Paper> papers = new LinkedList<>();
         en.getPaperList().forEach((String pid) -> papers.addAll(paperRepository.findAllById(pid)));
         return papers.stream()
                 .map(PaperBriefVO::PO2VO)
                 .collect(Collectors.toList());
-    }
-
-    //根据 其他各种实体 id 获取隶属
-    @Override
-    public List<Paper> fetchPaperList(String id, EntityType type) {
-        List<Paper> ans = new LinkedList<>();
-        switch (type) {
-            case FIELD:
-
-                break;
-            case AUTHOR:
-                Author author = mongoTemplate.findById(id, Author.class);
-                if (null == author) throw new EntityNotFoundException();
-
-                break;
-            case CONFERENCE:
-                break;
-            case AFFILIATION:
-                break;
-        }
-        return ans;
     }
 
     private Map<String, List<String>> refineAnalysis(final List<String> refinements) {

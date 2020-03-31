@@ -12,8 +12,10 @@ spring:
     store-type: redis
   data:
     neo4j:
-      uri: http://localhost:7474
+      uri: http://116.62.7.102:7474
 spring.main.allow-bean-definition-overriding: true
+
+
 
 
 eureka:
@@ -23,7 +25,3 @@ eureka:
   client:
     serviceUrl:
       defaultZone: http://${eureka.instance.hostname}:8761/eureka/
-
-# seconds
-cache.default.expire-time: 120
-cache.user.expire-time: 180
