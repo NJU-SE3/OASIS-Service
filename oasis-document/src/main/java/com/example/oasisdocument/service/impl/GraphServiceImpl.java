@@ -2,7 +2,6 @@ package com.example.oasisdocument.service.impl;
 
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
-import com.example.oasisdocument.exceptions.BadReqException;
 import com.example.oasisdocument.exceptions.EntityNotFoundException;
 import com.example.oasisdocument.model.VO.extendVO.GeneralJsonVO;
 import com.example.oasisdocument.model.graph.nodes.AffiliationNeo;
@@ -15,6 +14,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.HashSet;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -48,11 +49,11 @@ public class GraphServiceImpl implements GraphService {
 				neighbors.add(neo);
 			}
 		}
-		JSONArray edges = new JSONArray(), nodes = new JSONArray();
+		JSONArray edges = new JSONArray();
+		List<AuthorNeo> nodes = new LinkedList<>();
 		// construct the nodes set
-		nodes.add(generalJsonVO.authorNeo2VO(centerEntity));
-		nodes.addAll(neighbors.stream()
-				.map((AuthorNeo neo) -> generalJsonVO.authorNeo2VO(neo)).collect(Collectors.toList()));
+		nodes.add(centerEntity);
+		nodes.addAll(neighbors);
 		// construct the edges set
 		for (AuthorNeo authorNeo : neighbors) {
 			JSONObject obj = new JSONObject();
@@ -61,7 +62,10 @@ public class GraphServiceImpl implements GraphService {
 			edges.add(obj);
 		}
 		JSONObject ans = new JSONObject();
-		ans.put("nodes", nodes);
+		ans.put("nodes", nodes.stream()
+				.map((AuthorNeo neo) -> generalJsonVO.authorNeo2VO(neo))
+				.collect(Collectors.toList())
+		);
 		ans.put("edges", edges);
 
 		return ans;
@@ -70,7 +74,7 @@ public class GraphServiceImpl implements GraphService {
 	@Override
 	public JSONObject fieldMapViaId(String fieldId) {
 		FieldNeo centerEntity = fieldNeoRepo.findByXid(fieldId);
-		if (null == centerEntity) throw new BadReqException();
+		if (null == centerEntity) throw new EntityNotFoundException();
 		// One neighbour
 		Set<FieldNeo> neighbors = new HashSet<>();
 		for (PaperNeo paper : centerEntity.getPaperNeoSet()) {
@@ -80,7 +84,8 @@ public class GraphServiceImpl implements GraphService {
 				neighbors.add(neo);
 			}
 		}
-		JSONArray edges = new JSONArray(), nodes = new JSONArray();
+		JSONArray edges = new JSONArray();
+		List<FieldNeo> nodes = new LinkedList<>();
 		// construct the nodes set
 		nodes.add(centerEntity);
 		nodes.addAll(neighbors);
@@ -92,7 +97,9 @@ public class GraphServiceImpl implements GraphService {
 			edges.add(obj);
 		}
 		JSONObject ans = new JSONObject();
-		ans.put("nodes", nodes);
+		ans.put("nodes", nodes.stream()
+				.map((FieldNeo neo) -> generalJsonVO.fieldNeo2VO(neo))
+				.collect(Collectors.toList()));
 		ans.put("edges", edges);
 
 		return ans;
@@ -101,9 +108,49 @@ public class GraphServiceImpl implements GraphService {
 	@Override
 	public JSONObject affMapViaId(String affId) {
 		AffiliationNeo centerEntity = affiliationNeoRepo.findByXid(affId);
-		if (null == centerEntity) throw new BadReqException();
-		// One neighbour
-		Set<FieldNeo> neighbors = new HashSet<>();
-		return new JSONObject();
+		if (null == centerEntity) throw new EntityNotFoundException();
+		Set<AffiliationNeo> neighbors = new HashSet<>();
+		for (AuthorNeo authorNeo : centerEntity.getAuthorNeoSet()) {
+			//Search into author
+			authorNeo = authorNeoRepo.findByXid(authorNeo.getXid());
+			Set<AuthorNeo> relatedAuthors = getCoAuthors(authorNeo);
+			for (AuthorNeo relatedAuthor : relatedAuthors) {
+				relatedAuthor = authorNeoRepo.findByXid(relatedAuthor.getXid());
+				if (null != relatedAuthor
+						&& null != relatedAuthor.getAffiliationNeo()
+						&& !relatedAuthor.getAffiliationNeo().getXid().equals(affId))
+					neighbors.add(relatedAuthor.getAffiliationNeo());
+			}
+		}
+		JSONArray edges = new JSONArray();
+		List<AffiliationNeo> nodes = new LinkedList<>();
+		nodes.add(centerEntity);
+		nodes.addAll(neighbors);
+		for (AffiliationNeo affiliationNeo : neighbors) {
+			JSONObject obj = new JSONObject();
+			obj.put("begin", affId);
+			obj.put("end", affiliationNeo.getXid());
+			edges.add(obj);
+		}
+		JSONObject ans = new JSONObject();
+
+		ans.put("nodes", nodes.stream()
+				.map((AffiliationNeo affiliationNeo) -> generalJsonVO.affNeo2VO(affiliationNeo))
+				.collect(Collectors.toList()));
+		ans.put("edges", edges);
+		return ans;
+	}
+
+	private Set<AuthorNeo> getCoAuthors(AuthorNeo center) {
+		Set<AuthorNeo> neighbors = new HashSet<>();
+		if (center.getPaperNeoSet() == null) return neighbors;
+		for (PaperNeo paper : center.getPaperNeoSet()) {
+			paper = paperNeoRepo.findByXid(paper.getXid());
+			for (AuthorNeo neo : paper.getAuthorNeoSet()) {
+				if (neo.getXid().equals(center.getXid())) continue;
+				neighbors.add(neo);
+			}
+		}
+		return neighbors;
 	}
 }

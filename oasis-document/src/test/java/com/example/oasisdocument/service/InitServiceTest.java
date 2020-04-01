@@ -39,20 +39,11 @@ public class InitServiceTest {
 	public void init() {
 		mongoTemplate.remove(CounterBaseEntity.class);
 	}
-//
-//	@Test
-//	public void initCounterTest() {
-//		for (Paper entity : paperRepository.findAll()){
-//			fieldService.insertFields(entity);
-//		}
-//		List<Field> li = mongoTemplate.findAll(Field.class);
-//
-//	}
 
 	@Test
-	public void initCounterTest1() {
-		counterService.initCounterPOJOSummary();
+	public void initCounterTest() {
 	}
+
 
 
 	@After

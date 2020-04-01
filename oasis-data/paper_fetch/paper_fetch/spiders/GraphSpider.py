@@ -124,7 +124,8 @@ class GraphSpider(scrapy.Spider):
         def paper_field():
             for paper in coll_paper.find():
                 paper_id = paper['_id']
-                terms = json.loads(str(paper['terms']).replace("\'", "\""))['IEEE Keywords']
+                term_dic = json.loads(str(paper['terms']).replace("\'", "\""))
+                terms = term_dic['IEEE Keywords'] if 'IEEE Keywords' in term_dic else []
                 selector = NodeMatcher(graph)
                 items = selector.match('paper', xid=paper_id)
                 # 如果这个论文paper已经存在
@@ -147,9 +148,9 @@ class GraphSpider(scrapy.Spider):
                     R = Relationship(paper_node, 'describe', field_node)
                     graph.create(R)
 
-        paper_author()
-        paper_conference()
-        author_affiliation()
+        # paper_author()
+        # paper_conference()
+        # author_affiliation()
         paper_field()
 
     def start_requests(self):

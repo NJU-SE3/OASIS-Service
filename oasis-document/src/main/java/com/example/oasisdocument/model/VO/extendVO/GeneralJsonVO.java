@@ -7,7 +7,9 @@ import com.example.oasisdocument.model.docs.counter.CounterBaseEntity;
 import com.example.oasisdocument.model.docs.extendDoc.Affiliation;
 import com.example.oasisdocument.model.docs.extendDoc.Conference;
 import com.example.oasisdocument.model.docs.extendDoc.Field;
+import com.example.oasisdocument.model.graph.nodes.AffiliationNeo;
 import com.example.oasisdocument.model.graph.nodes.AuthorNeo;
+import com.example.oasisdocument.model.graph.nodes.FieldNeo;
 import com.example.oasisdocument.service.AffiliationService;
 import com.example.oasisdocument.service.CounterService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,6 +29,20 @@ public class GeneralJsonVO {
 		JSONObject res = new JSONObject();
 		res.put("id", entity.getXid());
 		res.put("authorName", entity.getAuthorName());
+		return res;
+	}
+
+	public JSONObject fieldNeo2VO(FieldNeo entity) {
+		JSONObject res = new JSONObject();
+		res.put("id", entity.getXid());
+		res.put("fieldName", entity.getFieldName());
+		return res;
+	}
+
+	public JSONObject affNeo2VO(AffiliationNeo neo) {
+		JSONObject res = new JSONObject();
+		res.put("id", neo.getXid());
+		res.put("affiliationName", neo.getAffiliationName());
 		return res;
 	}
 
@@ -102,5 +118,6 @@ public class GeneralJsonVO {
 		res.put("activeness", baseEntity.getActiveness());
 		res.put("H_index", baseEntity.getH_index());
 	}
+
 
 }
