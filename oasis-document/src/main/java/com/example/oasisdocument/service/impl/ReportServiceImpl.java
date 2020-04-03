@@ -77,6 +77,7 @@ public class ReportServiceImpl implements ReportService {
 
     //paper citation排名
     @Override
+    @Cacheable(cacheNames = "getPaperRankViaCitation", unless = "#result==null")
     public List<Paper> getPaperRankViaCitation(int rank) {
         Query query = new Query();
         query.with(new Sort(Sort.Direction.DESC, "citationCount"));
@@ -97,7 +98,6 @@ public class ReportServiceImpl implements ReportService {
     }
 
     @Override
-    @Cacheable(cacheNames = "getAuthorOfMostPaper", unless = "#result==null")
     public List<Pair<String, List<Paper>>> getAuthorOfMostCitation(int rank) {
         Query query = new Query();
         query.with(new Sort(Sort.Direction.DESC, "citationCount"));
@@ -138,6 +138,7 @@ public class ReportServiceImpl implements ReportService {
     }
 
     @Override
+    @Cacheable(cacheNames = "getPaperTrend", unless = "#result==null")
     public List<Pair<Integer, Double>> getPaperTrend(String type, String id) {
         //指标类型. 可以取值 count , heat , citation , activeness , H_index
         //把所有年份相关的查询

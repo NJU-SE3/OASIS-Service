@@ -4,13 +4,17 @@ import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.example.oasisdocument.exceptions.EntityNotFoundException;
 import com.example.oasisdocument.model.VO.extendVO.GeneralJsonVO;
+import com.example.oasisdocument.model.docs.counter.CounterBaseEntity;
 import com.example.oasisdocument.model.graph.nodes.AffiliationNeo;
 import com.example.oasisdocument.model.graph.nodes.AuthorNeo;
 import com.example.oasisdocument.model.graph.nodes.FieldNeo;
 import com.example.oasisdocument.model.graph.nodes.PaperNeo;
 import com.example.oasisdocument.repository.graph.*;
+import com.example.oasisdocument.service.CounterService;
 import com.example.oasisdocument.service.GraphService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
+import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.stereotype.Service;
 
 import java.util.HashSet;
@@ -32,6 +36,10 @@ public class GraphServiceImpl implements GraphService {
 	private ConferenceNeoRepo conferenceNeoRepo;
 	@Autowired
 	private FieldNeoRepo fieldNeoRepo;
+	@Autowired
+	private MongoTemplate mongoTemplate;
+	@Autowired
+	private CounterService counterService;
 	@Autowired
 	private GeneralJsonVO generalJsonVO;
 
@@ -63,7 +71,7 @@ public class GraphServiceImpl implements GraphService {
 		}
 		JSONObject ans = new JSONObject();
 		ans.put("nodes", nodes.stream()
-				.map((AuthorNeo neo) -> generalJsonVO.authorNeo2VO(neo))
+				.map((AuthorNeo neo) -> appendActiveness(generalJsonVO.authorNeo2VO(neo)))
 				.collect(Collectors.toList())
 		);
 		ans.put("edges", edges);
@@ -98,7 +106,7 @@ public class GraphServiceImpl implements GraphService {
 		}
 		JSONObject ans = new JSONObject();
 		ans.put("nodes", nodes.stream()
-				.map((FieldNeo neo) -> generalJsonVO.fieldNeo2VO(neo))
+				.map((FieldNeo neo) -> appendActiveness(generalJsonVO.fieldNeo2VO(neo)))
 				.collect(Collectors.toList()));
 		ans.put("edges", edges);
 
@@ -135,10 +143,17 @@ public class GraphServiceImpl implements GraphService {
 		JSONObject ans = new JSONObject();
 
 		ans.put("nodes", nodes.stream()
-				.map((AffiliationNeo affiliationNeo) -> generalJsonVO.affNeo2VO(affiliationNeo))
+				.map((AffiliationNeo affiliationNeo) -> appendActiveness(generalJsonVO.affNeo2VO(affiliationNeo)))
 				.collect(Collectors.toList()));
 		ans.put("edges", edges);
 		return ans;
+	}
+
+	private JSONObject appendActiveness(JSONObject obj) {
+		String id = obj.getString("id");
+		CounterBaseEntity en = counterService.getSummaryInfo(id);
+		obj.put("activeness", en.getActiveness());
+		return obj;
 	}
 
 	private Set<AuthorNeo> getCoAuthors(AuthorNeo center) {

@@ -10,6 +10,7 @@ import com.example.oasisdocument.repository.docs.AuthorRepository;
 import com.example.oasisdocument.service.AuthorService;
 import com.example.oasisdocument.service.CounterService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
@@ -53,6 +54,7 @@ public class AuthorServiceImpl implements AuthorService {
 	}
 
 	@Override
+	@Cacheable(cacheNames = "fetchEnById", unless = "#result==null")
 	public Author fetchEnById(String id) {
 		List<Author> list = authorRepository.findAllById(id);
 		if (list.isEmpty()) throw new EntityNotFoundException();
@@ -60,6 +62,7 @@ public class AuthorServiceImpl implements AuthorService {
 	}
 
 	@Override
+	@Cacheable(cacheNames = "fetchAuthorList", unless = "#result==null")
 	public List<Author> fetchAuthorList(int pageNum, int pageSize) {
 		return mongoTemplate.find(new Query().with(PageRequest.of(pageNum, pageSize)),
 				Author.class);
@@ -67,6 +70,7 @@ public class AuthorServiceImpl implements AuthorService {
 
 	//查找某一个限定条件下的作者列表 , 可以是机构 , 领域限制
 	@Override
+	@Cacheable(cacheNames = "fetchAuthorList", unless = "#result==null")
 	public List<Author> fetchAuthorList(String refinement) {
 		final String affiCol = "affiliationName", fieldCol = "field";
 		String[] strings = refinement.split(refineSplitter);

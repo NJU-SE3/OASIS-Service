@@ -63,11 +63,13 @@ public class FieldServiceImpl implements FieldService {
 	}
 
 	@Override
+	@Cacheable(cacheNames = "fetchFieldList", unless = "#result==null")
 	public List<Field> fetchFieldList(int pageNum, int pageSize) {
 		return mongoTemplate.find(new Query().with(PageRequest.of(pageNum, pageSize)), Field.class);
 	}
 
 	@Override
+	@Cacheable(cacheNames = "fetchFieldList", unless = "#result==null")
 	public void insertFields(Paper entity) {
 		final String fieldCol = "fieldName";
 		for (String fieldName : Paper.getAllTerms(entity)) {
