@@ -1,6 +1,7 @@
 package com.example.oasisdocument.service;
 
 
+import com.alibaba.fastjson.JSONArray;
 import com.example.oasisdocument.model.docs.Paper;
 import com.example.oasisdocument.utils.Pair;
 
@@ -42,4 +43,9 @@ public interface ReportService {
      * @param type : 指标类型. 可以取值 count , heat , citation , activeness , H_index
      */
     List<Pair<Integer, Double>> getPaperTrend(String type, String id);
+
+    /**
+     * 获取基本排名数据
+     */
+    JSONArray getRankViaType(String type, int pageNum, int pageSize);
 }

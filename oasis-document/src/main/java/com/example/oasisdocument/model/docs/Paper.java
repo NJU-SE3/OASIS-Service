@@ -87,6 +87,14 @@ public class Paper extends BaseEntity {
         return ans;
     }
 
+    public static Set<String> getAllAffiliations(Paper entity) {
+        Set<String> ans = new HashSet<>();
+        for (String str : entity.affiliations.split(";")) {
+            if (!str.isEmpty()) ans.add(str);
+        }
+        return ans;
+    }
+
     public String getTitle() {
         return title;
     }

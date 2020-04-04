@@ -1,13 +1,22 @@
 package com.example.oasisdocument.service.impl;
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson.JSONObject;
 import com.example.oasisdocument.exceptions.BadReqException;
+import com.example.oasisdocument.model.VO.extendVO.GeneralJsonVO;
 import com.example.oasisdocument.model.docs.Author;
 import com.example.oasisdocument.model.docs.Paper;
 import com.example.oasisdocument.model.docs.analysis.AuthorCitation;
+import com.example.oasisdocument.model.docs.analysis.NormalBuffer;
 import com.example.oasisdocument.model.docs.counter.CounterBaseEntity;
+import com.example.oasisdocument.model.docs.extendDoc.Affiliation;
+import com.example.oasisdocument.model.docs.extendDoc.Conference;
+import com.example.oasisdocument.model.docs.extendDoc.Field;
 import com.example.oasisdocument.repository.analysis.AuthorCitationRepo;
 import com.example.oasisdocument.repository.docs.AuthorRepository;
 import com.example.oasisdocument.repository.docs.PaperRepository;
+import com.example.oasisdocument.service.BaseService;
 import com.example.oasisdocument.service.CounterService;
 import com.example.oasisdocument.service.ReportService;
 import com.example.oasisdocument.utils.PageHelper;
@@ -46,6 +55,10 @@ public class ReportServiceImpl implements ReportService {
 
     @Autowired
     private CounterService counterService;
+    @Autowired
+    private BaseService baseService;
+    @Autowired
+    private GeneralJsonVO generalJsonVO;
 
     @Override
     @Cacheable(cacheNames = "getWordCloudOfYear", unless = "#result==null")
@@ -178,5 +191,64 @@ public class ReportServiceImpl implements ReportService {
             default:
                 throw new BadReqException();
         }
+    }
+
+    @Override
+    public JSONArray getRankViaType(String type, int pageNum, int pageSize) {
+        List<NormalBuffer> buffers = mongoTemplate.find(Query.query(new Criteria("type").is(type)), NormalBuffer.class);
+        //Not init yet
+        JSONArray array = new JSONArray();
+
+        if (buffers.isEmpty()) {
+            // On the one hand , return the data back
+            switch (type) {
+                case "author":
+                    List<Author> authorList = mongoTemplate.find(
+                            new Query().with(PageRequest.of(pageNum, pageSize)), Author.class
+                    );
+                    for (Author author : authorList) {
+                        CounterBaseEntity baseEntity = counterService.getSummaryInfo(author.getId());
+                        array.add(generalJsonVO.author2VO(author, baseEntity));
+                    }
+                    break;
+                case "affiliation":
+                    List<Affiliation> affiliationList = mongoTemplate.find(
+                            new Query().with(PageRequest.of(pageNum, pageSize)), Affiliation.class
+                    );
+                    for (Affiliation affiliation : affiliationList) {
+                        CounterBaseEntity baseEntity = counterService.getSummaryInfo(affiliation.getId());
+                        array.add(generalJsonVO.affiliation2VO(affiliation, baseEntity));
+                    }
+                    break;
+                case "field":
+                    List<Field> fieldList = mongoTemplate.find(
+                            new Query().with(PageRequest.of(pageNum, pageSize)), Field.class
+                    );
+                    for (Field field : fieldList) {
+                        CounterBaseEntity baseEntity = counterService.getSummaryInfo(field.getId());
+                        array.add(generalJsonVO.field2VO(field, baseEntity));
+                    }
+                    break;
+                case "conference":
+                    List<Conference> conferenceList = mongoTemplate.find(
+                            new Query().with(PageRequest.of(pageNum, pageSize)), Conference.class
+                    );
+                    for (Conference conference : conferenceList) {
+                        CounterBaseEntity baseEntity = counterService.getSummaryInfo(conference.getId());
+                        array.add(generalJsonVO.conference2VO(conference, baseEntity));
+                    }
+                    break;
+                default:
+                    throw new BadReqException();
+            }
+            //init the true data async
+            baseService.initEntityRank(type);
+        } else {
+            for (NormalBuffer buf : buffers) {
+                JSONObject obj = (JSONObject) JSON.parse(buf.getContent());
+                array.add(obj);
+            }
+        }
+        return pageHelper.sortAndPage(array, 0, -1);
     }
 }

@@ -16,8 +16,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.List;
-
 @RestController
 public class ResourceDetailController {
 	@Autowired
@@ -32,6 +30,8 @@ public class ResourceDetailController {
 	private CounterService counterService;
 	@Autowired
 	private PaperService paperService;
+	@Autowired
+	private ReportService reportService;
 	@Autowired
 	private GeneralJsonVO generalJsonVO;
 	@Autowired
@@ -97,7 +97,7 @@ public class ResourceDetailController {
 									 @RequestParam(name = "pageNum", defaultValue = "0") int pageNum,
 									 @RequestParam(name = "pageSize", defaultValue = "20") int pageSize) {
 		//需要考察是否需要筛选
-		return refinement.isEmpty() ? authorService.fetchAuthorList(pageNum, pageSize) :
+		return refinement.isEmpty() ? reportService.getRankViaType("author", pageNum, pageSize) :
 				authorService.fetchAuthorList(refinement, pageNum, pageSize);
 	}
 
@@ -107,9 +107,11 @@ public class ResourceDetailController {
 	 */
 	@GetMapping("/affiliation/list")
 	public JSONArray fetchAffiliationList(
+			@RequestParam(name = "refinement", defaultValue = "") final String refinement,
 			@RequestParam(name = "pageNum", defaultValue = "0") int pageNum,
 			@RequestParam(name = "pageSize", defaultValue = "20") int pageSize) {
-		return affiliationService.fetchAffiliationList(pageNum, pageSize);
+		return refinement.isEmpty() ? reportService.getRankViaType("affiliation", pageNum, pageSize) :
+				affiliationService.fetchAffiliationList(refinement, pageNum, pageSize);
 	}
 
 	/**
@@ -120,7 +122,7 @@ public class ResourceDetailController {
 	public JSONArray fetchFieldList(@RequestParam(name = "refinement", defaultValue = "") final String refinement,
 									@RequestParam(name = "pageNum", defaultValue = "0") final int pageNum,
 									@RequestParam(name = "pageSize", defaultValue = "20") final int pageSize) {
-		return refinement.isEmpty() ? fieldService.fetchFieldList(pageNum, pageSize) :
+		return refinement.isEmpty() ? reportService.getRankViaType("field", pageNum, pageSize) :
 				fieldService.fetchFieldList(refinement, pageNum, pageSize);
 	}
 
@@ -131,7 +133,7 @@ public class ResourceDetailController {
 	public JSONArray fetchConferenceList(@RequestParam(name = "refinement", defaultValue = "") String refinement,
 										 @RequestParam(name = "pageNum", defaultValue = "0") int pageNum,
 										 @RequestParam(name = "pageSize", defaultValue = "20") int pageSize) {
-		return refinement.isEmpty() ? conferenceService.fetchConferenceList(pageNum, pageSize) :
-						conferenceService.fetchConferenceList(refinement,pageNum,pageSize);
+		return refinement.isEmpty() ? reportService.getRankViaType("conference", pageNum, pageSize) :
+				conferenceService.fetchConferenceList(refinement, pageNum, pageSize);
 	}
 }

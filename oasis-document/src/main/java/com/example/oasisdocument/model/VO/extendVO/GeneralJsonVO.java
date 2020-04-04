@@ -78,6 +78,7 @@ public class GeneralJsonVO {
 		JSONObject res = new JSONObject();
 		res.put("id", en.getId());
 		res.put("conferenceName", en.getConferenceName());
+		res.put("year", en.getYear());
 		updateCounter(res, baseEntity);
 		return res;
 	}

@@ -10,4 +10,6 @@ public interface AffiliationService {
 	Affiliation fetchEnById(String id);
 
 	JSONArray fetchAffiliationList(int pageNum, int pageSize);
+
+	JSONArray fetchAffiliationList(String refinement, int pageNum, int pageSize);
 }

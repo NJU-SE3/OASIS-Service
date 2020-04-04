@@ -27,6 +27,8 @@ import java.util.List;
 
 @Service
 public class AuthorServiceImpl implements AuthorService {
+	private static final String refineSplitter = ":";
+
 	@Autowired
 	private AuthorRepository authorRepository;
 	@Autowired
@@ -37,7 +39,6 @@ public class AuthorServiceImpl implements AuthorService {
 	private GeneralJsonVO generalJsonVO;
 	@Autowired
 	private PageHelper pageHelper;
-	private static final String refineSplitter = ":";
 
 	//author 导入
 	//涉及到 affiliation 和 field 的导入
