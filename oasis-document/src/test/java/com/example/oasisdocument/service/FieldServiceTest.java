@@ -1,5 +1,6 @@
 package com.example.oasisdocument.service;
 
+import com.alibaba.fastjson.JSONArray;
 import com.example.oasisdocument.exceptions.BadReqException;
 import com.example.oasisdocument.exceptions.EntityNotFoundException;
 import com.example.oasisdocument.model.docs.extendDoc.Conference;
@@ -30,7 +31,7 @@ public class FieldServiceTest {
 
 	@Test
 	public void fetchListTest1() {
-		List<Field> fieldList = fieldService.fetchFieldList(0, 10);
+		JSONArray fieldList = fieldService.fetchFieldList(0, 10);
 		assertThat(fieldList).isNotNull();
 	}
 
@@ -39,7 +40,7 @@ public class FieldServiceTest {
 		final String id = mongoTemplate.findOne(Query.query(new Criteria()), Conference.class).getId();
 		final String refine = "conference:" + id;
 		//2010 Fourth International Conference on Research Challenges in Information Science (RCIS)
-		List<Field> fieldList = fieldService.fetchFieldList(refine);
+		JSONArray fieldList = fieldService.fetchFieldList(refine, 0, 10);
 		assertThat(fieldList).isNotNull();
 		assertThat(fieldList.size()).isGreaterThanOrEqualTo(1);
 	}
@@ -47,11 +48,11 @@ public class FieldServiceTest {
 	@Test(expected = BadReqException.class)
 	public void fetchListTest3() {
 		final String refine = "conference";
-		List<Field> fieldList = fieldService.fetchFieldList(refine);
+		JSONArray fieldList = fieldService.fetchFieldList(refine, 0, 10);
 	}
 
 	@Test(expected = EntityNotFoundException.class)
 	public void fetchListTest4() {
-		List<Field> fieldList = fieldService.fetchFieldList("confernece:233");
+		JSONArray fieldList = fieldService.fetchFieldList("confernece:233", 0, 10);
 	}
 }

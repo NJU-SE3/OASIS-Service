@@ -255,9 +255,12 @@ public class PaperServiceImpl implements PaperService {
         CounterBaseEntity en = counterService.getSummaryInfo(id);
         List<Paper> papers = new LinkedList<>();
         en.getPaperList().forEach((String pid) -> papers.addAll(paperRepository.findAllById(pid)));
-        return papers.stream()
+        List<PaperBriefVO> ans = papers.stream()
                 .map(PaperBriefVO::PO2VO)
                 .collect(Collectors.toList());
+        //Sort by citation count
+        ans.sort((o1, o2) -> o2.getCitationCount() - o1.getCitationCount());
+        return ans;
     }
 
     private Map<String, List<String>> refineAnalysis(final List<String> refinements) {

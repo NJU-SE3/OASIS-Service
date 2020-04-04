@@ -42,6 +42,7 @@ public class InitServiceTest {
 
 	@Test
 	public void initCounterTest() {
+		counterService.initCounterPOJOSummary();
 	}
 
 

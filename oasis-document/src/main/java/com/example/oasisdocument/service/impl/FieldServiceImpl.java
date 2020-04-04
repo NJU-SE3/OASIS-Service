@@ -4,14 +4,15 @@ import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.example.oasisdocument.exceptions.BadReqException;
 import com.example.oasisdocument.exceptions.EntityNotFoundException;
+import com.example.oasisdocument.model.VO.extendVO.GeneralJsonVO;
 import com.example.oasisdocument.model.docs.Paper;
 import com.example.oasisdocument.model.docs.counter.CounterBaseEntity;
 import com.example.oasisdocument.model.docs.extendDoc.Field;
 import com.example.oasisdocument.service.CounterService;
 import com.example.oasisdocument.service.FieldService;
+import com.example.oasisdocument.utils.PageHelper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.Cacheable;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
@@ -35,6 +36,11 @@ public class FieldServiceImpl implements FieldService {
 	@Autowired
 	private CounterService counterService;
 
+	@Autowired
+	private GeneralJsonVO generalJsonVO;
+	@Autowired
+	private PageHelper pageHelper;
+
 	@Override
 	public Field fetchEnById(String id) {
 		Field en = mongoTemplate.findById(id, Field.class);
@@ -44,32 +50,52 @@ public class FieldServiceImpl implements FieldService {
 
 	@Override
 	@Cacheable(cacheNames = "fetchFieldList", unless = "#result==null")
-	public List<Field> fetchFieldList(String refinement) {
+	public JSONArray fetchFieldList(String refinement, int pageNum, int pageSize) {
 		//应当包含会议id
-		final String conKey = "conference";
+		final String conKey = "conference", affKey = "affiliation";
 		String[] datas = refinement.split(refineSplitter);
-		if (datas.length != 2 || !datas[0].equals(conKey)) throw new BadReqException();
-		String conferenceId = datas[1];
-		//找到全部关联的作者
-		CounterBaseEntity en = counterService.getSummaryInfo(conferenceId);
-		if (null == en) throw new EntityNotFoundException();
-		List<Paper> papers = en.getPaperList().stream()
-				.map((String pid) -> mongoTemplate.findById(pid, Paper.class)).collect(Collectors.toList());
-		List<Field> ans = new LinkedList<>();
-		for (Paper paper : papers) {
-			for (String name : Paper.getAllTerms(paper)) {
-				Field field = mongoTemplate.findOne(Query.query(new Criteria("fieldName").is(name)),
-						Field.class);
-				if (field != null) ans.add(field);
+		if (datas.length != 2)
+			throw new BadReqException();
+		String id = datas[1];
+		List<Field> fieldList;
+		if (datas[0].equals(conKey) || datas[0].equals(affKey)) {
+			//找到全部关联的作者
+			CounterBaseEntity en =
+					counterService.getSummaryInfo(id);
+			if (null == en)
+				throw new EntityNotFoundException();
+			List<Paper> papers = en.getPaperList().stream()
+					.map((String pid) -> mongoTemplate.findById(pid, Paper.class)).collect(Collectors.toList());
+			fieldList = new LinkedList<>();
+			for (Paper paper : papers) {
+				for (String name : Paper.getAllTerms(paper)) {
+					Field field = mongoTemplate.findOne(Query.query(new Criteria("fieldName").is(name)),
+							Field.class);
+					if (field != null) fieldList.add(field);
+				}
 			}
+			//return ans;
+		} else
+			throw new BadReqException();
+
+		JSONArray array = new JSONArray();
+		for (Field field : fieldList) {
+			CounterBaseEntity baseEntity = counterService.getSummaryInfo(field.getId());
+			array.add(generalJsonVO.field2VO(field, baseEntity));
 		}
-		return ans;
+		return (JSONArray) pageHelper.of(array, pageSize, pageNum);
 	}
 
 	@Override
 	@Cacheable(cacheNames = "fetchFieldList", unless = "#result==null")
-	public List<Field> fetchFieldList(int pageNum, int pageSize) {
-		return mongoTemplate.find(new Query().with(PageRequest.of(pageNum, pageSize)), Field.class);
+	public JSONArray fetchFieldList(int pageNum, int pageSize) {
+		List<Field> fieldList = mongoTemplate.findAll(Field.class);
+		JSONArray array = new JSONArray();
+		for (Field field : fieldList) {
+			CounterBaseEntity baseEntity = counterService.getSummaryInfo(field.getId());
+			array.add(generalJsonVO.field2VO(field, baseEntity));
+		}
+		return (JSONArray) pageHelper.of(array, pageSize, pageNum);
 	}
 
 	@Override

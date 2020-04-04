@@ -1,15 +1,15 @@
 package com.example.oasisdocument.service;
 
+import com.alibaba.fastjson.JSONArray;
 import com.example.oasisdocument.model.docs.extendDoc.Conference;
 
-import java.math.BigInteger;
 import java.util.List;
 
 public interface ConferenceService {
 	Conference fetchEnById(String id);
 
-	List<Conference> fetchConferenceList(int pageNum, int pageSize);
+	JSONArray fetchConferenceList(int pageNum, int pageSize);
 
-	List<Conference> fetchConferenceList(String refinement);
+	JSONArray fetchConferenceList(String refinement, int pageNum, int pageSize);
 
 }

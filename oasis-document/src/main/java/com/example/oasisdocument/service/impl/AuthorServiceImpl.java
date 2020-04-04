@@ -1,7 +1,10 @@
 package com.example.oasisdocument.service.impl;
 
+import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson.JSONObject;
 import com.example.oasisdocument.exceptions.BadReqException;
 import com.example.oasisdocument.exceptions.EntityNotFoundException;
+import com.example.oasisdocument.model.VO.extendVO.GeneralJsonVO;
 import com.example.oasisdocument.model.docs.Author;
 import com.example.oasisdocument.model.docs.Paper;
 import com.example.oasisdocument.model.docs.counter.CounterBaseEntity;
@@ -9,15 +12,16 @@ import com.example.oasisdocument.model.docs.extendDoc.Affiliation;
 import com.example.oasisdocument.repository.docs.AuthorRepository;
 import com.example.oasisdocument.service.AuthorService;
 import com.example.oasisdocument.service.CounterService;
+import com.example.oasisdocument.utils.PageHelper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.Cacheable;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
+import java.util.Comparator;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -29,6 +33,10 @@ public class AuthorServiceImpl implements AuthorService {
 	private MongoTemplate mongoTemplate;
 	@Autowired
 	private CounterService counterService;
+	@Autowired
+	private GeneralJsonVO generalJsonVO;
+	@Autowired
+	private PageHelper pageHelper;
 	private static final String refineSplitter = ":";
 
 	//author 导入
@@ -55,48 +63,60 @@ public class AuthorServiceImpl implements AuthorService {
 
 	@Override
 	@Cacheable(cacheNames = "fetchEnById", unless = "#result==null")
-	public Author fetchEnById(String id) {
-		List<Author> list = authorRepository.findAllById(id);
-		if (list.isEmpty()) throw new EntityNotFoundException();
-		return list.get(0);
+	public JSONObject fetchEnById(String id) {
+		Author en = mongoTemplate.findById(id, Author.class);
+		if (null == en) throw new EntityNotFoundException();
+		CounterBaseEntity baseEntity = counterService.getSummaryInfo(id);
+		return generalJsonVO.author2VO(en, baseEntity);
 	}
 
 	@Override
 	@Cacheable(cacheNames = "fetchAuthorList", unless = "#result==null")
-	public List<Author> fetchAuthorList(int pageNum, int pageSize) {
-		return mongoTemplate.find(new Query().with(PageRequest.of(pageNum, pageSize)),
-				Author.class);
+	public JSONArray fetchAuthorList(int pageNum, int pageSize) {
+		List<Author> authorList = mongoTemplate.findAll(Author.class);
+		JSONArray array = new JSONArray();
+		for (Author author : authorList) {
+			CounterBaseEntity baseEntity = counterService.getSummaryInfo(author.getId());
+			array.add(generalJsonVO.author2VO(author, baseEntity));
+		}
+		return pageHelper.sortAndPage(array, pageSize, pageNum);
 	}
 
 	//查找某一个限定条件下的作者列表 , 可以是机构 , 领域限制
 	@Override
 	@Cacheable(cacheNames = "fetchAuthorList", unless = "#result==null")
-	public List<Author> fetchAuthorList(String refinement) {
-		final String affiCol = "affiliationName", fieldCol = "field";
+	public JSONArray fetchAuthorList(String refinement, int pageNum, int pageSize) {
+		final String affiCol = "affiliationName", fieldCol = "field", auName = "authorName";
 		String[] strings = refinement.split(refineSplitter);
 		if (strings.length != 2) throw new BadReqException();
 		String id = strings[1];
+		List<Author> authorList;
 		if (strings[0].equals("affiliation")) {
 			Affiliation aff = mongoTemplate.findById(id, Affiliation.class);
 			if (null == aff) throw new EntityNotFoundException();
-			return mongoTemplate.find(Query.query(new Criteria(affiCol).is(aff.getAffiliationName())),
+			authorList = mongoTemplate.find(Query.query(new Criteria(affiCol).is(aff.getAffiliationName())),
 					Author.class);
 		} else if (strings[0].equals("field")) {
 			CounterBaseEntity entity = counterService.getSummaryInfo(id);
 			if (null == entity) throw new EntityNotFoundException();
-			List<Author> authors = new LinkedList<>();
+			authorList = new LinkedList<>();
 			for (String pid : entity.getPaperList()) {
 				Paper paper = mongoTemplate.findById(pid, Paper.class);
-				String[] authorNames = paper.getAuthors().split(";");
-				for (String name : authorNames) {
-					Author author = mongoTemplate.findOne(Query.query(new Criteria("authorName").is(name)),
+				for (String name : Paper.getAllAuthors(paper)) {
+					Author author = mongoTemplate.findOne(Query.query(new Criteria(auName).is(name)),
 							Author.class);
 					if (author != null)
-						authors.add(author);
+						authorList.add(author);
 				}
 			}
-			return authors;
 		} else throw new BadReqException();
-	}
 
+		JSONArray array = new JSONArray();
+
+		for (Author author : authorList) {
+			CounterBaseEntity baseEntity = counterService.getSummaryInfo(author.getId());
+			array.add(generalJsonVO.author2VO(author, baseEntity));
+		}
+		return pageHelper.sortAndPage(array, pageSize, pageNum);
+	}
 }

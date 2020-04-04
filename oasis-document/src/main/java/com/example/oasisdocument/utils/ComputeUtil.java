@@ -1,6 +1,12 @@
 package com.example.oasisdocument.utils;
 
+import com.example.oasisdocument.exceptions.EntityNotFoundException;
 import com.example.oasisdocument.model.docs.Paper;
+import com.example.oasisdocument.model.docs.counter.CounterBaseEntity;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.mongodb.core.MongoTemplate;
+import org.springframework.data.mongodb.core.query.Criteria;
+import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Component;
 
 import java.util.*;
@@ -8,8 +14,11 @@ import java.util.stream.Collectors;
 
 @Component
 public class ComputeUtil {
+	@Autowired
+	private MongoTemplate mongoTemplate;
+
 	/**
-	 * 活跃度计算
+	 * 活跃度计算 , 总数计算
 	 * paper数的和（以3年为周期，每向前3年paper数除以Math.ceiling（今年-当年年份/3））
 	 */
 	public double getActiveness(List<Paper> paperList) {
@@ -36,6 +45,23 @@ public class ComputeUtil {
 		}
 		return heat;
 	}
+
+	/**
+	 * 活跃度计算 , 以某一年为结束时间
+	 */
+	public double getActiveness(int endYear, String id) {
+		CounterBaseEntity en = mongoTemplate.findOne(Query.query(new Criteria("checkId").is(id)
+				.and("year").is(-1)), CounterBaseEntity.class);
+		if (null == en)
+			throw new EntityNotFoundException();
+		List<Paper> papers = new LinkedList<>();
+		en.getPaperList().forEach((String pid) -> {
+			Paper paper = mongoTemplate.findById(pid, Paper.class);
+			if (null != paper && endYear >= paper.getYear()) papers.add(paper);
+		});
+		return getActiveness(papers);
+	}
+
 
 	/**
 	 * H_index计算
@@ -76,5 +102,17 @@ public class ComputeUtil {
 	public int getPaperCount(List<Paper> paperList) {
 		assert null != paperList;
 		return paperList.size();
+	}
+
+	/**
+	 * 作者数目添加
+	 */
+	public int getAuthorCnt(List<Paper> paperList) {
+		assert null != paperList;
+		int ans = 0;
+		for (Paper paper : paperList) {
+			ans += Paper.getAllAuthors(paper).size();
+		}
+		return ans;
 	}
 }

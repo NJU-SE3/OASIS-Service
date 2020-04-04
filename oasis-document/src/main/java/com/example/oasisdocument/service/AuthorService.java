@@ -1,16 +1,16 @@
 package com.example.oasisdocument.service;
 
+import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson.JSONObject;
 import com.example.oasisdocument.model.docs.Author;
-
-import java.util.List;
 
 public interface AuthorService {
 	void insert(Author entity);
 
-	Author fetchEnById(String id);
+	JSONObject fetchEnById(String id);
 
-	List<Author> fetchAuthorList(int pageNum, int pageSize);
+	JSONArray fetchAuthorList(int pageNum, int pageSize);
 
-	List<Author> fetchAuthorList(String refinement);
+	JSONArray fetchAuthorList(String refinement, int pageNum, int pageSize);
 
 }

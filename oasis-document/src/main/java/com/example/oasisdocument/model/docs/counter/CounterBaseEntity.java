@@ -14,6 +14,7 @@ public class CounterBaseEntity extends BaseEntity {
 	protected int H_index;
 	protected int year;
 	protected double heat;
+	protected int authorCount;
 	protected List<String> paperList;
 
 	public int getPaperCount() {
@@ -78,5 +79,13 @@ public class CounterBaseEntity extends BaseEntity {
 
 	public void setCheckId(String checkId) {
 		this.checkId = checkId;
+	}
+
+	public int getAuthorCount() {
+		return authorCount;
+	}
+
+	public void setAuthorCount(int authorCount) {
+		this.authorCount = authorCount;
 	}
 }

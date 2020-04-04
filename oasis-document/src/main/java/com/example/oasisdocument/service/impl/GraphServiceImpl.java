@@ -44,6 +44,7 @@ public class GraphServiceImpl implements GraphService {
 	private GeneralJsonVO generalJsonVO;
 
 	@Override
+	@Cacheable(cacheNames = "centeralAuthor", unless = "#result==null")
 	public JSONObject centeralAuthor(String authorId) {
 		AuthorNeo centerEntity = authorNeoRepo.findByXid(authorId);
 		if (null == centerEntity) throw new EntityNotFoundException();
@@ -80,6 +81,7 @@ public class GraphServiceImpl implements GraphService {
 	}
 
 	@Override
+	@Cacheable(cacheNames = "fieldMapViaId", unless = "#result==null")
 	public JSONObject fieldMapViaId(String fieldId) {
 		FieldNeo centerEntity = fieldNeoRepo.findByXid(fieldId);
 		if (null == centerEntity) throw new EntityNotFoundException();
@@ -114,6 +116,7 @@ public class GraphServiceImpl implements GraphService {
 	}
 
 	@Override
+	@Cacheable(cacheNames = "affMapViaId", unless = "#result==null")
 	public JSONObject affMapViaId(String affId) {
 		AffiliationNeo centerEntity = affiliationNeoRepo.findByXid(affId);
 		if (null == centerEntity) throw new EntityNotFoundException();

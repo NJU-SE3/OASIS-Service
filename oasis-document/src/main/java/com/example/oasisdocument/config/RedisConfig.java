@@ -30,7 +30,6 @@ import java.util.Map;
 @EnableCaching
 @ConditionalOnClass(RedisOperations.class)
 @EnableConfigurationProperties(RedisProperties.class)
-
 public class RedisConfig extends CachingConfigurerSupport {
     /**
      * 缓存管理器

@@ -118,6 +118,7 @@ public class GeneralJsonVO {
 		res.put("citationCount", baseEntity.getCitationCount());
 		res.put("activeness", baseEntity.getActiveness());
 		res.put("H_index", baseEntity.getH_index());
+		res.put("authorCount", baseEntity.getAuthorCount());
 	}
 
 

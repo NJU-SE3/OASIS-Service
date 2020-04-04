@@ -1,15 +1,16 @@
 package com.example.oasisdocument.service.impl;
 
+import com.alibaba.fastjson.JSONArray;
 import com.example.oasisdocument.exceptions.EntityNotFoundException;
-import com.example.oasisdocument.model.docs.Author;
+import com.example.oasisdocument.model.VO.extendVO.GeneralJsonVO;
+import com.example.oasisdocument.model.docs.counter.CounterBaseEntity;
 import com.example.oasisdocument.model.docs.extendDoc.Affiliation;
 import com.example.oasisdocument.service.AffiliationService;
+import com.example.oasisdocument.service.CounterService;
+import com.example.oasisdocument.utils.PageHelper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.Cacheable;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.data.mongodb.core.MongoTemplate;
-import org.springframework.data.mongodb.core.query.Criteria;
-import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -18,6 +19,12 @@ import java.util.List;
 public class AffiliationServiceImpl implements AffiliationService {
 	@Autowired
 	private MongoTemplate mongoTemplate;
+	@Autowired
+	private GeneralJsonVO generalJsonVO;
+	@Autowired
+	private PageHelper pageHelper;
+	@Autowired
+	private CounterService counterService;
 
 	@Override
 	@Cacheable(cacheNames = "fetchEnById", unless = "#result==null")
@@ -27,17 +34,16 @@ public class AffiliationServiceImpl implements AffiliationService {
 		return en;
 	}
 
-	@Override
-	@Cacheable(cacheNames = "fetchAuthorsByAffiliationName", unless = "#result==null")
-	public List<Author> fetchAuthorsByAffiliationName(String affName) {
-		return mongoTemplate.find(new Query(new Criteria("affiliationName").is(affName)),
-				Author.class);
-	}
 
 	@Override
 	@Cacheable(cacheNames = "fetchAffiliationList", unless = "#result==null")
-	public List<Affiliation> fetchAffiliationList(int pageNum, int pageSize) {
-		return mongoTemplate.find(new Query().with(PageRequest.of(pageNum, pageSize)),
-				Affiliation.class);
+	public JSONArray fetchAffiliationList(int pageNum, int pageSize) {
+		List<Affiliation> affiliationList = mongoTemplate.findAll(Affiliation.class);
+		JSONArray array = new JSONArray();
+		for (Affiliation affiliation : affiliationList) {
+			CounterBaseEntity baseEntity = counterService.getSummaryInfo(affiliation.getId());
+			array.add(generalJsonVO.affiliation2VO(affiliation, baseEntity));
+		}
+		return pageHelper.sortAndPage(array, pageSize, pageNum);
 	}
 }

@@ -55,7 +55,6 @@ public class CounterServiceImpl implements CounterService {
 	@Async
 	public void initCounterPOJOSummary() {
 		new Thread(()->{
-
 			//作者
 			for (Author entity : mongoTemplate.findAll(Author.class)) {
 				List<Paper> papers = baseService.getPapersByAuthorName(entity.getAuthorName());
@@ -152,13 +151,17 @@ public class CounterServiceImpl implements CounterService {
 		CounterBaseEntity totalPOJO = new CounterBaseEntity();
 		totalPOJO.setCheckId(id);
 		totalPOJO.setYear(year);        // year < 0 denotes the total
-		totalPOJO.setActiveness(computeUtil.getActiveness(papers));
+		if (year == -1)
+			totalPOJO.setActiveness(computeUtil.getActiveness(papers));
+		else
+			totalPOJO.setActiveness(computeUtil.getActiveness(year, id)); //single one
 		//设置所有的论文id
 		totalPOJO.setPaperList(papers.stream().map(Paper::getId).collect(Collectors.toList()));
 		totalPOJO.setPaperCount(computeUtil.getPaperCount(papers));
 		totalPOJO.setCitationCount(computeUtil.getCitationCount(papers));
 		totalPOJO.setH_index(computeUtil.getH_index(papers));
 		totalPOJO.setHeat(computeUtil.getHeat(papers));
+		totalPOJO.setAuthorCount(computeUtil.getAuthorCnt(papers));
 		//save
 		mongoTemplate.save(totalPOJO);
 	}

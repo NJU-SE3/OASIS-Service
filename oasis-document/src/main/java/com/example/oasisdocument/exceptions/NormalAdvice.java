@@ -1,6 +1,5 @@
 package com.example.oasisdocument.exceptions;
 
-import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -19,7 +18,7 @@ public class NormalAdvice {
     @ExceptionHandler(EntityNotFoundException.class)
     @ResponseStatus(code = NOT_FOUND)
     private String entityNotFoundHandler(EntityNotFoundException e) {
-        return e.getMessage();
+        return NOT_FOUND.getReasonPhrase();
     }
 
 
@@ -30,7 +29,7 @@ public class NormalAdvice {
     @ExceptionHandler(BadReqException.class)
     @ResponseStatus(code = BAD_REQUEST)
     private String badRequest(BadReqException e) {
-        return "bad request";
+        return BAD_REQUEST.getReasonPhrase();
     }
 
 
@@ -41,7 +40,6 @@ public class NormalAdvice {
     @ExceptionHandler(Exception.class)
     @ResponseStatus(code = INTERNAL_SERVER_ERROR)
     private String exceptionHandler(Exception e) {
-        e.printStackTrace();
-        return e.getMessage();
+        return INTERNAL_SERVER_ERROR.getReasonPhrase();
     }
 }

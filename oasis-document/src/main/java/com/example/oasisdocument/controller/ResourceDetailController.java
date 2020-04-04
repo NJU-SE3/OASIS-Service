@@ -4,13 +4,13 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.example.oasisdocument.model.VO.extendVO.GeneralJsonVO;
-import com.example.oasisdocument.model.docs.Author;
 import com.example.oasisdocument.model.docs.counter.CounterBaseEntity;
 import com.example.oasisdocument.model.docs.extendDoc.Affiliation;
 import com.example.oasisdocument.model.docs.extendDoc.Conference;
 import com.example.oasisdocument.model.docs.extendDoc.Field;
 import com.example.oasisdocument.service.*;
 import com.example.oasisdocument.utils.JsonUtil;
+import com.example.oasisdocument.utils.PageHelper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -34,7 +34,8 @@ public class ResourceDetailController {
 	private PaperService paperService;
 	@Autowired
 	private GeneralJsonVO generalJsonVO;
-
+	@Autowired
+	private PageHelper pageHelper;
 	@Autowired
 	private JsonUtil jsonUtil;
 
@@ -53,9 +54,7 @@ public class ResourceDetailController {
 	 */
 	@GetMapping("/author/detail")
 	public JSONObject fetchAuthorDetail(@RequestParam(name = "id") String id) {
-		Author en = authorService.fetchEnById(id);
-		CounterBaseEntity baseEntity = counterService.getSummaryInfo(id);
-		return generalJsonVO.author2VO(en, baseEntity);
+		return authorService.fetchEnById(id);
 	}
 
 	/**
@@ -98,14 +97,8 @@ public class ResourceDetailController {
 									 @RequestParam(name = "pageNum", defaultValue = "0") int pageNum,
 									 @RequestParam(name = "pageSize", defaultValue = "20") int pageSize) {
 		//需要考察是否需要筛选
-		List<Author> authorList = refinement.isEmpty() ? authorService.fetchAuthorList(pageNum, pageSize) :
-				authorService.fetchAuthorList(refinement);
-		JSONArray array = new JSONArray();
-		for (Author author : authorList) {
-			CounterBaseEntity baseEntity = counterService.getSummaryInfo(author.getId());
-			array.add(generalJsonVO.author2VO(author, baseEntity));
-		}
-		return array;
+		return refinement.isEmpty() ? authorService.fetchAuthorList(pageNum, pageSize) :
+				authorService.fetchAuthorList(refinement, pageNum, pageSize);
 	}
 
 	/**
@@ -116,32 +109,19 @@ public class ResourceDetailController {
 	public JSONArray fetchAffiliationList(
 			@RequestParam(name = "pageNum", defaultValue = "0") int pageNum,
 			@RequestParam(name = "pageSize", defaultValue = "20") int pageSize) {
-		List<Affiliation> affiliationList = affiliationService.fetchAffiliationList(pageNum, pageSize);
-
-		JSONArray array = new JSONArray();
-		for (Affiliation affiliation : affiliationList) {
-			CounterBaseEntity baseEntity = counterService.getSummaryInfo(affiliation.getId());
-			array.add(generalJsonVO.affiliation2VO(affiliation, baseEntity));
-		}
-		return array;
+		return affiliationService.fetchAffiliationList(pageNum, pageSize);
 	}
 
 	/**
 	 * 领域列表获取
-	 * 可以按照会议 id 获取
+	 * 可以按照会议 id / 机构 id 获取
 	 */
 	@GetMapping("/field/list")
-	public JSONArray fetchFieldList(@RequestParam(name = "refinement", defaultValue = "") String refinement,
-									@RequestParam(name = "pageNum", defaultValue = "0") int pageNum,
-									@RequestParam(name = "pageSize", defaultValue = "20") int pageSize) {
-		List<Field> fieldList = refinement.isEmpty() ? fieldService.fetchFieldList(pageNum, pageSize) :
-				fieldService.fetchFieldList(refinement);
-		JSONArray array = new JSONArray();
-		for (Field field : fieldList) {
-			CounterBaseEntity baseEntity = counterService.getSummaryInfo(field.getId());
-			array.add(generalJsonVO.field2VO(field, baseEntity));
-		}
-		return array;
+	public JSONArray fetchFieldList(@RequestParam(name = "refinement", defaultValue = "") final String refinement,
+									@RequestParam(name = "pageNum", defaultValue = "0") final int pageNum,
+									@RequestParam(name = "pageSize", defaultValue = "20") final int pageSize) {
+		return refinement.isEmpty() ? fieldService.fetchFieldList(pageNum, pageSize) :
+				fieldService.fetchFieldList(refinement, pageNum, pageSize);
 	}
 
 	/**
@@ -151,15 +131,7 @@ public class ResourceDetailController {
 	public JSONArray fetchConferenceList(@RequestParam(name = "refinement", defaultValue = "") String refinement,
 										 @RequestParam(name = "pageNum", defaultValue = "0") int pageNum,
 										 @RequestParam(name = "pageSize", defaultValue = "20") int pageSize) {
-		List<Conference> conferenceList =
-				refinement.isEmpty() ? conferenceService.fetchConferenceList(pageNum, pageSize) :
-						conferenceService.fetchConferenceList(refinement);
-		//Construct conference to result
-		JSONArray array = new JSONArray();
-		for (Conference conference : conferenceList) {
-			CounterBaseEntity baseEntity = counterService.getSummaryInfo(conference.getId());
-			array.add(generalJsonVO.conference2VO(conference, baseEntity));
-		}
-		return array;
+		return refinement.isEmpty() ? conferenceService.fetchConferenceList(pageNum, pageSize) :
+						conferenceService.fetchConferenceList(refinement,pageNum,pageSize);
 	}
 }
