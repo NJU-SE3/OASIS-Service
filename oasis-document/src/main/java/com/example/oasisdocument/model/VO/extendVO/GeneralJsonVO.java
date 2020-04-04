@@ -53,6 +53,7 @@ public class GeneralJsonVO {
 		res.put("trends", en.getPaperTrends());
 		res.put("affiliationName", en.getAffiliationName());
 		res.put("bioParagraphs", en.getBioParagraphs());
+		res.put("field", en.getField());
 		updateCounter(res, baseEntity);
 		return res;
 	}

@@ -94,9 +94,11 @@ public class ResourceDetailController {
 	 * 可以按照领域、机构进行额外的筛选
 	 */
 	@GetMapping("/author/list")
-	public JSONArray fetchAuthorList(@RequestParam(name = "refinement", defaultValue = "") String refinement) {
+	public JSONArray fetchAuthorList(@RequestParam(name = "refinement", defaultValue = "") String refinement,
+									 @RequestParam(name = "pageNum", defaultValue = "0") int pageNum,
+									 @RequestParam(name = "pageSize", defaultValue = "20") int pageSize) {
 		//需要考察是否需要筛选
-		List<Author> authorList = refinement.isEmpty() ? authorService.fetchAuthorList(0, 10) :
+		List<Author> authorList = refinement.isEmpty() ? authorService.fetchAuthorList(pageNum, pageSize) :
 				authorService.fetchAuthorList(refinement);
 		JSONArray array = new JSONArray();
 		for (Author author : authorList) {
@@ -111,8 +113,10 @@ public class ResourceDetailController {
 	 * 分页 , 按照最多的引用数划分
 	 */
 	@GetMapping("/affiliation/list")
-	public JSONArray fetchAffiliationList() {
-		List<Affiliation> affiliationList = affiliationService.fetchAffiliationList(0, 10);
+	public JSONArray fetchAffiliationList(
+			@RequestParam(name = "pageNum", defaultValue = "0") int pageNum,
+			@RequestParam(name = "pageSize", defaultValue = "20") int pageSize) {
+		List<Affiliation> affiliationList = affiliationService.fetchAffiliationList(pageNum, pageSize);
 
 		JSONArray array = new JSONArray();
 		for (Affiliation affiliation : affiliationList) {
@@ -127,8 +131,10 @@ public class ResourceDetailController {
 	 * 可以按照会议 id 获取
 	 */
 	@GetMapping("/field/list")
-	public JSONArray fetchFieldList(@RequestParam(name = "refinement", defaultValue = "") String refinement) {
-		List<Field> fieldList = refinement.isEmpty() ? fieldService.fetchFieldList(0, 10) :
+	public JSONArray fetchFieldList(@RequestParam(name = "refinement", defaultValue = "") String refinement,
+									@RequestParam(name = "pageNum", defaultValue = "0") int pageNum,
+									@RequestParam(name = "pageSize", defaultValue = "20") int pageSize) {
+		List<Field> fieldList = refinement.isEmpty() ? fieldService.fetchFieldList(pageNum, pageSize) :
 				fieldService.fetchFieldList(refinement);
 		JSONArray array = new JSONArray();
 		for (Field field : fieldList) {
@@ -142,10 +148,13 @@ public class ResourceDetailController {
 	 * 会议列表获取
 	 */
 	@GetMapping("/conference/list")
-	public JSONArray fetchConferenceList(@RequestParam(name = "refinement", defaultValue = "") String refinement) {
+	public JSONArray fetchConferenceList(@RequestParam(name = "refinement", defaultValue = "") String refinement,
+										 @RequestParam(name = "pageNum", defaultValue = "0") int pageNum,
+										 @RequestParam(name = "pageSize", defaultValue = "20") int pageSize) {
 		List<Conference> conferenceList =
-				refinement.isEmpty() ? conferenceService.fetchConferenceList(0, 10) :
+				refinement.isEmpty() ? conferenceService.fetchConferenceList(pageNum, pageSize) :
 						conferenceService.fetchConferenceList(refinement);
+		//Construct conference to result
 		JSONArray array = new JSONArray();
 		for (Conference conference : conferenceList) {
 			CounterBaseEntity baseEntity = counterService.getSummaryInfo(conference.getId());

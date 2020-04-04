@@ -37,7 +37,8 @@ public class ConferenceServiceImpl implements ConferenceService {
 	@Override
 	@Cacheable(cacheNames = "fetchConferenceList", unless = "#result==null")
 	public List<Conference> fetchConferenceList(int pageNum, int pageSize) {
-		return mongoTemplate.find(new Query().with(PageRequest.of(pageNum, pageSize)), Conference.class);
+		return mongoTemplate.find(new Query().with(PageRequest.of(pageNum, pageSize)),
+				Conference.class);
 	}
 
 	@Override

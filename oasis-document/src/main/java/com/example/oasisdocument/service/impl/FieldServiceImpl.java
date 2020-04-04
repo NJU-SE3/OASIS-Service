@@ -1,5 +1,7 @@
 package com.example.oasisdocument.service.impl;
 
+import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson.JSONObject;
 import com.example.oasisdocument.exceptions.BadReqException;
 import com.example.oasisdocument.exceptions.EntityNotFoundException;
 import com.example.oasisdocument.model.docs.Paper;
@@ -15,8 +17,10 @@ import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Service;
 
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 
@@ -81,6 +85,29 @@ public class FieldServiceImpl implements FieldService {
 				mongoTemplate.save(field);
 			}
 		}
+	}
+
+	@Override
+	public JSONArray fetchFieldDistribution(String id) {
+		CounterBaseEntity en = counterService.getSummaryInfo(id);
+		List<Paper> papers = en.getPaperList()
+				.stream()
+				.map((String pid) -> mongoTemplate.findById(pid, Paper.class))
+				.collect(Collectors.toList());
+		Map<String, Integer> hash = new HashMap<>();
+		for (Paper paper : papers) {
+			for (String term : Paper.getAllTerms(paper)) {
+				hash.put(term, hash.getOrDefault(term, 0) + 1);
+			}
+		}
+		JSONArray ans = new JSONArray();
+		for (String key : hash.keySet()) {
+			JSONObject obj = new JSONObject();
+			obj.put("fieldName", key);
+			obj.put("count",hash.getOrDefault(key,0));
+			ans.add(obj);
+		}
+		return ans;
 	}
 
 }
