@@ -93,7 +93,7 @@ public class ResourceDetailController {
 	 * 可以按照领域、机构进行额外的筛选
 	 */
 	@GetMapping("/author/list")
-	public JSONArray fetchAuthorList(@RequestParam(name = "refinement", defaultValue = "") String refinement,
+	public Object fetchAuthorList(@RequestParam(name = "refinement", defaultValue = "") String refinement,
 									 @RequestParam(name = "pageNum", defaultValue = "0") int pageNum,
 									 @RequestParam(name = "pageSize", defaultValue = "20") int pageSize) {
 		//需要考察是否需要筛选
@@ -106,7 +106,7 @@ public class ResourceDetailController {
 	 * 分页 , 按照最多的引用数划分
 	 */
 	@GetMapping("/affiliation/list")
-	public JSONArray fetchAffiliationList(
+	public Object fetchAffiliationList(
 			@RequestParam(name = "refinement", defaultValue = "") final String refinement,
 			@RequestParam(name = "pageNum", defaultValue = "0") int pageNum,
 			@RequestParam(name = "pageSize", defaultValue = "20") int pageSize) {
@@ -119,7 +119,7 @@ public class ResourceDetailController {
 	 * 可以按照会议 id / 机构 id 获取
 	 */
 	@GetMapping("/field/list")
-	public JSONArray fetchFieldList(@RequestParam(name = "refinement", defaultValue = "") final String refinement,
+	public Object fetchFieldList(@RequestParam(name = "refinement", defaultValue = "") final String refinement,
 									@RequestParam(name = "pageNum", defaultValue = "0") final int pageNum,
 									@RequestParam(name = "pageSize", defaultValue = "20") final int pageSize) {
 		return refinement.isEmpty() ? reportService.getRankViaType("field", pageNum, pageSize) :
@@ -130,7 +130,7 @@ public class ResourceDetailController {
 	 * 会议列表获取
 	 */
 	@GetMapping("/conference/list")
-	public JSONArray fetchConferenceList(@RequestParam(name = "refinement", defaultValue = "") String refinement,
+	public Object fetchConferenceList(@RequestParam(name = "refinement", defaultValue = "") String refinement,
 										 @RequestParam(name = "pageNum", defaultValue = "0") int pageNum,
 										 @RequestParam(name = "pageSize", defaultValue = "20") int pageSize) {
 		return refinement.isEmpty() ? reportService.getRankViaType("conference", pageNum, pageSize) :

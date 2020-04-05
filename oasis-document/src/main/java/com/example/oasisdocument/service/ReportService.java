@@ -2,6 +2,7 @@ package com.example.oasisdocument.service;
 
 
 import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson.JSONObject;
 import com.example.oasisdocument.model.docs.Paper;
 import com.example.oasisdocument.utils.Pair;
 
@@ -47,5 +48,5 @@ public interface ReportService {
     /**
      * 获取基本排名数据
      */
-    JSONArray getRankViaType(String type, int pageNum, int pageSize);
+    JSONObject getRankViaType(String type, int pageNum, int pageSize);
 }

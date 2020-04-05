@@ -194,10 +194,12 @@ public class ReportServiceImpl implements ReportService {
     }
 
     @Override
-    public JSONArray getRankViaType(String type, int pageNum, int pageSize) {
-        List<NormalBuffer> buffers = mongoTemplate.find(Query.query(new Criteria("type").is(type)), NormalBuffer.class);
+    public JSONObject getRankViaType(String type, int pageNum, int pageSize) {
+        List<NormalBuffer> buffers = mongoTemplate.find(Query.query(new Criteria("type").is(type)),
+                NormalBuffer.class);
         //Not init yet
         JSONArray array = new JSONArray();
+        long itemCnt = 0;
 
         if (buffers.isEmpty()) {
             // On the one hand , return the data back
@@ -212,6 +214,7 @@ public class ReportServiceImpl implements ReportService {
                         CounterBaseEntity baseEntity = counterService.getSummaryInfo(author.getId());
                         array.add(generalJsonVO.author2VO(author, baseEntity));
                     }
+                    itemCnt = mongoTemplate.count(new Query(), Author.class);
                     break;
                 case "affiliation":
                     baseService.initAffiliationRanks();
@@ -223,6 +226,8 @@ public class ReportServiceImpl implements ReportService {
                         CounterBaseEntity baseEntity = counterService.getSummaryInfo(affiliation.getId());
                         array.add(generalJsonVO.affiliation2VO(affiliation, baseEntity));
                     }
+                    itemCnt = mongoTemplate.count(new Query(), Affiliation.class);
+
                     break;
                 case "field":
                     baseService.initFieldRanks();
@@ -233,6 +238,7 @@ public class ReportServiceImpl implements ReportService {
                         CounterBaseEntity baseEntity = counterService.getSummaryInfo(field.getId());
                         array.add(generalJsonVO.field2VO(field, baseEntity));
                     }
+                    itemCnt = mongoTemplate.count(new Query(), Field.class);
                     break;
                 case "conference":
                     baseService.initConferenceRanks();
@@ -243,6 +249,7 @@ public class ReportServiceImpl implements ReportService {
                         CounterBaseEntity baseEntity = counterService.getSummaryInfo(conference.getId());
                         array.add(generalJsonVO.conference2VO(conference, baseEntity));
                     }
+                    itemCnt = mongoTemplate.count(new Query(), Conference.class);
                     break;
                 default:
                     throw new BadReqException();
@@ -253,6 +260,10 @@ public class ReportServiceImpl implements ReportService {
                 array.add(obj);
             }
         }
-        return pageHelper.sortAndPage(array, 0, -1);
+        JSONArray arr = pageHelper.sortAndPage(array, 0, -1);
+        JSONObject ans = new JSONObject();
+        ans.put("data",arr);
+        ans.put("itemCnt",itemCnt);
+        return ans;
     }
 }

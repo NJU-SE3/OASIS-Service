@@ -88,11 +88,6 @@ public class ReportController {
                 }).collect(Collectors.toCollection(JSONArray::new));
     }
 
-    @GetMapping("/rank/{type}")
-    public JSONArray getRankViaType(@PathVariable String type) {
-        return reportService.getRankViaType(type , 0 , 20);
-    }
-
     private JSONObject simplifyPaper(Paper paper) {
         JSONObject ans = new JSONObject();
         //标题、作者、引用数、PDF link , year
