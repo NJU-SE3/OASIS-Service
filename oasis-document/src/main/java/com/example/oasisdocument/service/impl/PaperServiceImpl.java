@@ -15,6 +15,8 @@ import com.example.oasisdocument.repository.docs.AuthorRepository;
 import com.example.oasisdocument.repository.docs.PaperRepository;
 import com.example.oasisdocument.service.CounterService;
 import com.example.oasisdocument.service.PaperService;
+import com.example.oasisdocument.utils.CookieUtil;
+import com.example.oasisdocument.utils.PageHelper;
 import com.example.oasisdocument.utils.Pair;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.Cacheable;
@@ -23,11 +25,16 @@ import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
+@Transactional
 public class PaperServiceImpl implements PaperService {
     private static final String authorSplitter = ";";
     private static final String affiliationSplitter = ";";
@@ -35,17 +42,18 @@ public class PaperServiceImpl implements PaperService {
 
     @Autowired
     private PaperRepository paperRepository;
-
+    @Autowired
+    private AuthorRepository authorRepository;
+    @Autowired
+    private CounterService counterService;
     @Autowired
     private MongoTemplate mongoTemplate;
     @Autowired
     private GeneralJsonVO generalJsonVO;
-
     @Autowired
-    private AuthorRepository authorRepository;
-
+    private CookieUtil cookieUtil;
     @Autowired
-    private CounterService counterService;
+    private PageHelper pageHelper;
 
     /**
      * 内部类, 专门用于实现
@@ -80,15 +88,41 @@ public class PaperServiceImpl implements PaperService {
 
     @Override
     @Cacheable(cacheNames = "queryPaper", unless = "#result==null")
-    public JSONArray queryPaper(final String key, final String returnFacets)
+    public JSONObject queryPaper(final String key, final String returnFacets,
+                                 int pageSize, int pageNum,
+                                 HttpServletRequest request,
+                                 HttpServletResponse response)
             throws BadReqException {
+        //set id
+        String qid = UUID.randomUUID().toString().replaceAll("-", "");
         Criteria criteria = fetchCriteriaViaKey(key, returnFacets);
         List<Paper> papers = mongoTemplate.find(new Query(criteria), Paper.class);
         if (returnFacets.equals("all"))
             papers.sort(new PaperRanker(key));
+        List<String> wholeList = papers.stream().map(JSON::toJSONString).collect(Collectors.toList());
+
+        if (wholeList.isEmpty()) {
+            JSONObject ans = new JSONObject();
+            ans.put("papers", wholeList);
+            ans.put("itemCnt", wholeList.size());
+            return ans;
+        }
+        //分页
+        List<String> pagedList = pageHelper.of(wholeList, pageSize, pageNum);
+        if (null == pagedList) throw new BadReqException();
         JSONArray arr = new JSONArray();
-        for (Paper p : papers) arr.add(JSON.toJSONString(p));
-        return arr;
+        //convert from paged list
+        pagedList.forEach((String str) -> {
+            Paper paper = JSON.parseObject(str, Paper.class);
+            arr.add(generalJsonVO.paper2BriefVO(paper));
+        });
+        //Store into the ids
+        request.getSession().setAttribute(qid, wholeList);
+        cookieUtil.set(response, "qid", qid);
+        JSONObject ans = new JSONObject();
+        ans.put("papers", arr);
+        ans.put("itemCnt", wholeList.size());
+        return ans;
     }
 
     //paper 导入
@@ -133,86 +167,48 @@ public class PaperServiceImpl implements PaperService {
     }
 
     @Override
-    public JSONArray queryPaperRefine(JSONArray papers, List<String> refinements) {
-        //conference , term , author , affiliation , year
-        Map<String, List<String>> hash = refineAnalysis(refinements);
-        if (null == papers || papers.isEmpty()) return new JSONArray();
-        if (hash.containsKey("year")) {
-            papers = papers.stream()
-                    .filter((Object obj) -> {
-                        String val = hash.get("year").get(0);
-                        String[] set = val.split("_");
-                        if (set.length != 2) throw new BadReqException();
-                        int start = Integer.parseInt(set[0]),
-                                end = Integer.parseInt(set[1]);
-                        int year = JSON.parseObject(String.valueOf(obj)).getInteger("year");
-                        return year <= end && year >= start;
-                    })
-                    .map((Object obj) -> JSON.parse(String.valueOf(obj)))
-                    .collect(Collectors.toCollection(JSONArray::new));
-            if (papers.isEmpty()) return papers;
+    @Cacheable(cacheNames = "queryPaperRefine", unless = "#result==null")
+    public JSONObject queryPaperRefine(String qid, List<String> refinements,
+                                       int pageNum, int pageSize, HttpServletRequest request) {
+        HttpSession session = request.getSession();
+        //查询全集
+        List<String> cachedList = (List<String>) session.getAttribute(qid);
+        //添加新限制
+        JSONArray array = queryPaperRefine(cachedList, refinements);
+        if (cachedList.isEmpty()) {
+            JSONObject obj = new JSONObject();
+            obj.put("papers", cachedList);
+            obj.put("itemCnt", cachedList.size());
+            return obj;
         }
-        if (hash.containsKey("author")) {
-            papers = papers.stream().filter((Object obj) -> {
-                String line = JSON.parseObject(String.valueOf(obj)).getString("authors");
-                for (String v : hash.get("author")) {
-                    if (line.contains(v)) return true;
-                }
-                return false;
-            }).map((Object obj) -> JSON.parse(String.valueOf(obj)))
-                    .collect(Collectors.toCollection(JSONArray::new));
-            if (papers.isEmpty()) return papers;
-        }
+        //需要用到分页信息
+        List<Object> pagedList = pageHelper.of(array, pageSize, pageNum);
+        if (null == pagedList) throw new BadReqException();
+        JSONArray paperArr = pagedList.stream()
+                .map((Object line) -> {
+                    Paper paper = JSON.parseObject(String.valueOf(line), Paper.class);
+                    return generalJsonVO.paper2BriefVO(paper);
+                }).collect(Collectors.toCollection(JSONArray::new));
+        // return
+        JSONObject ans = new JSONObject();
+        ans.put("papers", paperArr);
+        ans.put("itemCnt", cachedList.size());
+        return ans;
 
-        if (hash.containsKey("term")) {
-            papers = papers.stream().filter((Object obj) -> {
-                String termsLine = JSON.parseObject(String.valueOf(obj)).getString("terms");
-                Set<String> targetSet = Arrays.stream(termsLine.split(termSplitter))
-                        .map(String::trim).collect(Collectors.toSet());
-                for (String v : hash.get("term")) {
-                    if (targetSet.contains(v)) return true;
-                }
-                return false;
-            }).map((Object obj) -> JSON.parse(String.valueOf(obj)))
-                    .collect(Collectors.toCollection(JSONArray::new));
-            if (papers.isEmpty()) return papers;
-        }
-        if (hash.containsKey("conference")) {
-            papers = papers.stream().filter((Object obj) -> {
-                String line = JSON.parseObject(String.valueOf(obj)).getString("conference");
-                for (String v : hash.get("conference")) {
-                    if (line.contains(v)) return true;
-                }
-                return false;
-            }).map((Object obj) -> JSON.parse(String.valueOf(obj)))
-                    .collect(Collectors.toCollection(JSONArray::new));
-            if (papers.isEmpty()) return papers;
-        }
-        if (hash.containsKey("affiliation")) {
-            papers = papers.stream().filter((Object obj) -> {
-                String line = JSON.parseObject(String.valueOf(obj)).getString("affiliations");
-                Set<String> targetSet = Arrays.stream(line.split(affiliationSplitter))
-                        .map(String::trim)
-                        .collect(Collectors.toSet());
-                for (String v : hash.get("affiliation")) {
-                    if (targetSet.contains(v)) return true;
-                }
-                return false;
-            }).map((Object obj) -> JSON.parse(String.valueOf(obj)))
-                    .collect(Collectors.toCollection(JSONArray::new));
-        }
-        return papers;
     }
 
     @Override
-    public JSONObject papersSummary(JSONArray list) {
+    @Cacheable(cacheNames = "papersSummary", unless = "#result==null")
+    public JSONObject papersSummary(String qid, HttpServletRequest request) {
         //conference , term , author , affiliation
+        List<String> list = (List<String>) request.getSession().getAttribute(qid);
+
         JSONObject ans = new JSONObject();
         final int limit = 5;
         if (list == null || list.isEmpty()) return ans;
         List<PaperBriefVO> papers = new LinkedList<>();
-        list.forEach((Object obj) -> {
-            PaperBriefVO vo = JSON.parseObject(String.valueOf(obj), PaperBriefVO.class);
+        list.forEach((String obj) -> {
+            PaperBriefVO vo = JSON.parseObject(obj, PaperBriefVO.class);
             papers.add(vo);
         });
         //author
@@ -280,6 +276,78 @@ public class PaperServiceImpl implements PaperService {
                 .collect(Collectors.toList());
         //Sort by citation count
         ans.sort((o1, o2) -> o2.getCitationCount() - o1.getCitationCount());
+        return ans;
+    }
+
+    private JSONArray queryPaperRefine(List<String> papers, List<String> refinements) {
+        //conference , term , author , affiliation , year
+        Map<String, List<String>> hash = refineAnalysis(refinements);
+        JSONArray ans = new JSONArray();
+        if (null == papers || papers.isEmpty()) return new JSONArray();
+        if (hash.containsKey("year")) {
+            ans = papers.stream()
+                    .filter((String line) -> {
+                        String val = hash.get("year").get(0);
+                        String[] set = val.split("_");
+                        if (set.length != 2) throw new BadReqException();
+                        int start = Integer.parseInt(set[0]),
+                                end = Integer.parseInt(set[1]);
+                        int year = JSON.parseObject(line).getInteger("year");
+                        return year <= end && year >= start;
+                    })
+                    .map(JSON::parse)
+                    .collect(Collectors.toCollection(JSONArray::new));
+            if (papers.isEmpty()) return ans;
+        }
+        if (hash.containsKey("author")) {
+            ans = papers.stream().filter((String obj) -> {
+                String line = JSON.parseObject(obj).getString("authors");
+                for (String v : hash.get("author")) {
+                    if (line.contains(v)) return true;
+                }
+                return false;
+            }).map(JSON::parse)
+                    .collect(Collectors.toCollection(JSONArray::new));
+            if (papers.isEmpty()) return ans;
+        }
+
+        if (hash.containsKey("term")) {
+            ans = papers.stream().filter((String obj) -> {
+                String termsLine = JSON.parseObject(obj).getString("terms");
+                Set<String> targetSet = Arrays.stream(termsLine.split(termSplitter))
+                        .map(String::trim).collect(Collectors.toSet());
+                for (String v : hash.get("term")) {
+                    if (targetSet.contains(v)) return true;
+                }
+                return false;
+            }).map(JSON::parse)
+                    .collect(Collectors.toCollection(JSONArray::new));
+            if (papers.isEmpty()) return ans;
+        }
+        if (hash.containsKey("conference")) {
+            ans = papers.stream().filter((String obj) -> {
+                String line = JSON.parseObject(obj).getString("conference");
+                for (String v : hash.get("conference")) {
+                    if (line.contains(v)) return true;
+                }
+                return false;
+            }).map(JSON::parse)
+                    .collect(Collectors.toCollection(JSONArray::new));
+            if (papers.isEmpty()) return ans;
+        }
+        if (hash.containsKey("affiliation")) {
+            ans = papers.stream().filter((String obj) -> {
+                String line = JSON.parseObject(obj).getString("affiliations");
+                Set<String> targetSet = Arrays.stream(line.split(affiliationSplitter))
+                        .map(String::trim)
+                        .collect(Collectors.toSet());
+                for (String v : hash.get("affiliation")) {
+                    if (targetSet.contains(v)) return true;
+                }
+                return false;
+            }).map(JSON::parse)
+                    .collect(Collectors.toCollection(JSONArray::new));
+        }
         return ans;
     }
 
