@@ -2,12 +2,9 @@ package com.example.oasisdocument.controller;
 
 import com.alibaba.fastjson.JSONObject;
 import com.example.oasisdocument.model.VO.PaperInsertVO;
-import com.example.oasisdocument.model.VO.extendVO.GeneralJsonVO;
 import com.example.oasisdocument.model.docs.Author;
 import com.example.oasisdocument.service.AuthorService;
 import com.example.oasisdocument.service.PaperService;
-import com.example.oasisdocument.utils.CookieUtil;
-import com.example.oasisdocument.utils.PageHelper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,20 +20,6 @@ public class PaperController {
     private static final Logger logger = LoggerFactory.getLogger(PaperController.class);
     @Autowired
     private PaperService paperService;
-    @Autowired
-    private AuthorService authorService;
-    @Autowired
-    private CookieUtil cookieUtil;
-    @Autowired
-    private PageHelper pageHelper;
-    @Autowired
-    private GeneralJsonVO generalJsonVO;
-
-    @GetMapping("/")
-    public String run() {
-        return "hello world";
-    }
-
     /**
      * 初次数据查询
      *
@@ -97,21 +80,6 @@ public class PaperController {
         try {
             PaperInsertVO entity = paperVO.toJavaObject(PaperInsertVO.class);
             paperService.insertPaperVOEntity(entity);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
-    /**
-     * 作者添加接口
-     *
-     * @param author : author实体
-     */
-    @PostMapping(path = "/author")
-    public void insertAuthor(@RequestBody JSONObject author) {
-        try {
-            Author entity = author.toJavaObject(Author.class);
-            authorService.insert(entity);
         } catch (Exception e) {
             e.printStackTrace();
         }

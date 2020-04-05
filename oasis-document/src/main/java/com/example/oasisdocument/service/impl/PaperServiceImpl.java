@@ -84,47 +84,8 @@ public class PaperServiceImpl implements PaperService {
             if (paper.getTerms().contains(key)) rank += rankRules[5];
             return rank;
         }
+
     }
-
-    @Override
-    @Cacheable(cacheNames = "queryPaper", unless = "#result==null")
-    public JSONObject queryPaper(final String key, final String returnFacets,
-                                 int pageSize, int pageNum,
-                                 HttpServletRequest request,
-                                 HttpServletResponse response)
-            throws BadReqException {
-        //set id
-        String qid = UUID.randomUUID().toString().replaceAll("-", "");
-        Criteria criteria = fetchCriteriaViaKey(key, returnFacets);
-        List<Paper> papers = mongoTemplate.find(new Query(criteria), Paper.class);
-        if (returnFacets.equals("all"))
-            papers.sort(new PaperRanker(key));
-        List<String> wholeList = papers.stream().map(JSON::toJSONString).collect(Collectors.toList());
-
-        if (wholeList.isEmpty()) {
-            JSONObject ans = new JSONObject();
-            ans.put("papers", wholeList);
-            ans.put("itemCnt", wholeList.size());
-            return ans;
-        }
-        //分页
-        List<String> pagedList = pageHelper.of(wholeList, pageSize, pageNum);
-        if (null == pagedList) throw new BadReqException();
-        JSONArray arr = new JSONArray();
-        //convert from paged list
-        pagedList.forEach((String str) -> {
-            Paper paper = JSON.parseObject(str, Paper.class);
-            arr.add(generalJsonVO.paper2BriefVO(paper));
-        });
-        //Store into the ids
-        request.getSession().setAttribute(qid, wholeList);
-        cookieUtil.set(response, "qid", qid);
-        JSONObject ans = new JSONObject();
-        ans.put("papers", arr);
-        ans.put("itemCnt", wholeList.size());
-        return ans;
-    }
-
     //paper 导入
     @Override
     @Async
@@ -164,6 +125,45 @@ public class PaperServiceImpl implements PaperService {
             paper.setConferenceEntity(conEn);
             paperRepository.save(paper);
         }
+    }
+
+    @Override
+    @Cacheable(cacheNames = "queryPaper", unless = "#result==null")
+    public JSONObject queryPaper(final String key, final String returnFacets,
+                                 int pageSize, int pageNum,
+                                 HttpServletRequest request,
+                                 HttpServletResponse response)
+            throws BadReqException {
+        //set id
+        String qid = UUID.randomUUID().toString().replaceAll("-", "");
+        Criteria criteria = fetchCriteriaViaKey(key, returnFacets);
+        List<Paper> papers = mongoTemplate.find(new Query(criteria), Paper.class);
+        if (returnFacets.equals("all"))
+            papers.sort(new PaperRanker(key));
+        List<String> wholeList = papers.stream().map(JSON::toJSONString).collect(Collectors.toList());
+
+        if (wholeList.isEmpty()) {
+            JSONObject ans = new JSONObject();
+            ans.put("papers", wholeList);
+            ans.put("itemCnt", wholeList.size());
+            return ans;
+        }
+        //分页
+        List<String> pagedList = pageHelper.of(wholeList, pageSize, pageNum);
+        if (null == pagedList) throw new BadReqException();
+        JSONArray arr = new JSONArray();
+        //convert from paged list
+        pagedList.forEach((String str) -> {
+            Paper paper = JSON.parseObject(str, Paper.class);
+            arr.add(generalJsonVO.paper2BriefVO(paper));
+        });
+        //Store into the ids
+        request.getSession().setAttribute(qid, wholeList);
+        cookieUtil.set(response, "qid", qid);
+        JSONObject ans = new JSONObject();
+        ans.put("papers", arr);
+        ans.put("itemCnt", wholeList.size());
+        return ans;
     }
 
     @Override

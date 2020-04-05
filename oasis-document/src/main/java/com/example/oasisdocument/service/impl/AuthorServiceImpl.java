@@ -21,9 +21,8 @@ import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
-import java.util.Comparator;
-import java.util.LinkedList;
-import java.util.List;
+import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 public class AuthorServiceImpl implements AuthorService {
@@ -57,7 +56,6 @@ public class AuthorServiceImpl implements AuthorService {
 					affEn = mongoTemplate.save(affEn);
 				}
 			}
-			entity.setAffiliationEntity(affEn);
 			authorRepository.save(entity);
 		}
 	}
@@ -120,4 +118,48 @@ public class AuthorServiceImpl implements AuthorService {
 		}
 		return pageHelper.sortAndPage(array, pageSize, pageNum);
 	}
+
+	@Override
+	public JSONArray fetchAuthorSummaryUponField() {
+		JSONArray ans = new JSONArray();
+		Set<String> fieldWholeSet = new HashSet<>();
+		for (Author author : authorRepository.findAll()) {
+			fieldWholeSet.addAll(Author.getAllFields(author));
+		}
+		Map<String, Long> hash = new HashMap<>();
+		for (String fieldName : fieldWholeSet) {
+			long count = mongoTemplate.count(Query.query(new Criteria("field").regex(fieldName)),
+					Author.class);
+			hash.put(fieldName, count);
+		}
+		for (String key : hash.keySet()) {
+			JSONObject obj = new JSONObject();
+			obj.put("fieldName", key);
+			obj.put("count", hash.get(key));
+			ans.add(obj);
+		}
+		return ans;
+	}
+
+	@Override
+	public JSONArray fetchAuthorWithRefine(List<String> fieldNames, int pageNum, int pageSize) {
+		List<Author> authors = authorRepository.findAll();
+		Set<String> fieldSet = new HashSet<>(fieldNames);
+		authors = authors.stream()
+				.filter((Author author) -> {
+					for (String name : Author.getAllFields(author)) {
+						if (!fieldSet.contains(name)) return false;
+					}
+					return true;
+				}).collect(Collectors.toList());
+		JSONArray ans = new JSONArray();
+		if (authors.isEmpty()) return ans;
+		for (Author author : authors) {
+			CounterBaseEntity en = counterService.getSummaryInfo(author.getId());
+			ans.add(generalJsonVO.author2VO(author, en));
+		}
+		return pageHelper.sortAndPage(ans, pageSize, pageNum);
+	}
+
+
 }

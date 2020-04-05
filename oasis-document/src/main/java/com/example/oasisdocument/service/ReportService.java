@@ -6,6 +6,8 @@ import com.alibaba.fastjson.JSONObject;
 import com.example.oasisdocument.model.docs.Paper;
 import com.example.oasisdocument.utils.Pair;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.util.List;
 
 public interface ReportService {

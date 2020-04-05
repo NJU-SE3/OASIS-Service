@@ -50,14 +50,6 @@ public class ResourceDetailController {
 	}
 
 	/**
-	 * 获取单个作者具体信息
-	 */
-	@GetMapping("/author/detail")
-	public JSONObject fetchAuthorDetail(@RequestParam(name = "id") String id) {
-		return authorService.fetchEnById(id);
-	}
-
-	/**
 	 * 获取单个机构具体信息
 	 */
 	@GetMapping("/affiliation/detail")
@@ -87,20 +79,6 @@ public class ResourceDetailController {
 		return JSONArray.parseArray(JSON.toJSONString(paperService.fetchPaperList(id)));
 	}
 //======================================================================================================================================================
-
-	/**
-	 * 获取作者列表
-	 * 可以按照领域、机构进行额外的筛选
-	 */
-	@GetMapping("/author/list")
-	public Object fetchAuthorList(@RequestParam(name = "refinement", defaultValue = "") String refinement,
-									 @RequestParam(name = "pageNum", defaultValue = "0") int pageNum,
-									 @RequestParam(name = "pageSize", defaultValue = "20") int pageSize) {
-		//需要考察是否需要筛选
-		return refinement.isEmpty() ? reportService.getRankViaType("author", pageNum, pageSize) :
-				authorService.fetchAuthorList(refinement, pageNum, pageSize);
-	}
-
 	/**
 	 * 机构列表获取
 	 * 分页 , 按照最多的引用数划分

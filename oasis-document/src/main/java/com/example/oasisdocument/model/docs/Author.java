@@ -1,12 +1,12 @@
 package com.example.oasisdocument.model.docs;
 
-import com.example.oasisdocument.model.docs.extendDoc.Affiliation;
-import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
 import org.springframework.data.redis.core.index.Indexed;
 
-import java.util.List;
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Set;
 
 @Document(collection = "authors")
 public class Author extends BaseEntity {
@@ -23,8 +23,10 @@ public class Author extends BaseEntity {
 	private String terms;
 	private String photoUrl;
 
-	@DBRef(lazy = true)
-	private Affiliation affiliationEntity;
+	public static Set<String> getAllFields(Author entity) {
+		final String splitter = ",";
+		return new HashSet<>(Arrays.asList(entity.field.split(splitter)));
+	}
 
 	public Author() {
 	}
@@ -99,14 +101,6 @@ public class Author extends BaseEntity {
 
 	public void setPhotoUrl(String photoUrl) {
 		this.photoUrl = photoUrl;
-	}
-
-	public Affiliation getAffiliationEntity() {
-		return affiliationEntity;
-	}
-
-	public void setAffiliationEntity(Affiliation affiliationEntity) {
-		this.affiliationEntity = affiliationEntity;
 	}
 
 }

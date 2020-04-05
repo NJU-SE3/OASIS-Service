@@ -101,20 +101,8 @@ public class BaseService {
 
 	@Async
 	public void initAuthorRanks() {
-//		final String type = "rank";
-//		List<Author> total = mongoTemplate.findAll(Author.class);
-//
-//		JSONArray arr = new JSONArray();
-//		for (Author author : total) {
-//			CounterBaseEntity en = counterService.getSummaryInfo(author.getId());
-//			arr.add(generalJsonVO.author2VO(author, en));
-//		}
-//		JSONArray ans = pageHelper.sortAndPage(arr, 0, -1);
-//		for (Object obj : ans) {
-//			String content = JSONObject.toJSONString(obj);
-//			NormalBuffer buf = new NormalBuffer();
-//		}
 	}
+
 
 	@Async
 	public void initAffiliationRanks() {
