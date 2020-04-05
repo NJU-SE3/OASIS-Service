@@ -1,5 +1,6 @@
 package com.example.oasisdocument.service.impl;
 
+import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.example.oasisdocument.exceptions.BadReqException;
@@ -120,28 +121,35 @@ public class AuthorServiceImpl implements AuthorService {
 	}
 
 	@Override
+	@Cacheable(cacheNames = "authorFieldSummary", unless = "#result==null")
 	public JSONArray fetchAuthorSummaryUponField() {
+		final int pageSize = 10;
 		JSONArray ans = new JSONArray();
-		Set<String> fieldWholeSet = new HashSet<>();
-		for (Author author : authorRepository.findAll()) {
-			fieldWholeSet.addAll(Author.getAllFields(author));
-		}
+
 		Map<String, Long> hash = new HashMap<>();
-		for (String fieldName : fieldWholeSet) {
-			long count = mongoTemplate.count(Query.query(new Criteria("field").regex(fieldName)),
-					Author.class);
-			hash.put(fieldName, count);
+		for (Author author : authorRepository.findAll()) {
+			for (String fieldName : Author.getAllFields(author)) {
+				hash.put(fieldName, hash.getOrDefault(fieldName, 0L) + 1);
+			}
 		}
+
 		for (String key : hash.keySet()) {
 			JSONObject obj = new JSONObject();
 			obj.put("fieldName", key);
 			obj.put("count", hash.get(key));
 			ans.add(obj);
 		}
-		return ans;
+		ans.sort((o1, o2) -> {
+			JSONObject ob1 = JSONObject.parseObject(JSON.toJSONString(o1)),
+					ob2 = JSONObject.parseObject(JSON.toJSONString(o2));
+			return (int) (ob2.getDouble("count") - ob1.getDouble("count"));
+		});
+		List<Object> li = pageHelper.of(ans, pageSize, 0);
+		return JSONArray.parseArray(JSON.toJSONString(li));
 	}
 
 	@Override
+	@Cacheable(cacheNames = "authorFieldSummary", unless = "#result==null")
 	public JSONArray fetchAuthorWithRefine(List<String> fieldNames, int pageNum, int pageSize) {
 		List<Author> authors = authorRepository.findAll();
 		Set<String> fieldSet = new HashSet<>(fieldNames);

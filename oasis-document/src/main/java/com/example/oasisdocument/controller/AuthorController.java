@@ -4,6 +4,7 @@ import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.example.oasisdocument.model.docs.Author;
 import com.example.oasisdocument.service.AuthorService;
+import com.example.oasisdocument.service.NormalBufferSerivce;
 import com.example.oasisdocument.service.ReportService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -18,6 +19,8 @@ public class AuthorController {
 	private AuthorService authorService;
 	@Autowired
 	private ReportService reportService;
+	@Autowired
+	private NormalBufferSerivce normalBufferSerivce;
 
 	/**
 	 * 作者添加接口
@@ -59,7 +62,7 @@ public class AuthorController {
 
 	@GetMapping("/author/fieldSummary")
 	public JSONArray fetchAuthorSummaryUponField() {
-		return authorService.fetchAuthorSummaryUponField();
+		return normalBufferSerivce.loadAuthorFieldSummary();
 	}
 
 	@GetMapping("/author/list/refine")
@@ -67,5 +70,10 @@ public class AuthorController {
 										   @RequestParam(name = "pageNum", defaultValue = "0") int pageNum,
 										   @RequestParam(name = "pageSize", defaultValue = "20") int pageSize) {
 		return authorService.fetchAuthorWithRefine(fieldName, pageNum, pageSize);
+	}
+
+	@PostMapping("/author/fieldSummary")
+	public void initSummary() {
+		normalBufferSerivce.storeAuthorFieldSummary();
 	}
 }

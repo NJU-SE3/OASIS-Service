@@ -12,7 +12,7 @@ APP_DOCKER_COMPOSE = docker-compose-app.yml
 DATA_DOCKER_COMPOSE = docker-compose-data.yml
 MONGO_FLAGS = -u root -p mongo -d se
 BACK_FILES = author paper authorCitation
-EXTEND_DOCS = affiliation conference field
+EXTEND_DOCS = affiliation conference field NormalBuffer
 COUNTER_DOCS = counterBase
 
 local-set:

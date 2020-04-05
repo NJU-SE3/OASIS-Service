@@ -1,4 +1,9 @@
 package com.example.oasisdocument.service;
 
-public class NormalBufferSerivce {
+import com.alibaba.fastjson.JSONArray;
+
+public interface NormalBufferSerivce {
+	void storeAuthorFieldSummary();
+
+	JSONArray loadAuthorFieldSummary();
 }

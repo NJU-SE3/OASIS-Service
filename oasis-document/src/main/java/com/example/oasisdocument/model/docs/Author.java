@@ -25,7 +25,12 @@ public class Author extends BaseEntity {
 
 	public static Set<String> getAllFields(Author entity) {
 		final String splitter = ",";
-		return new HashSet<>(Arrays.asList(entity.field.split(splitter)));
+		String[] spl = entity.field.split(splitter);
+		Set<String> ans = new HashSet<>();
+		for (String s : spl){
+			if (!s.isEmpty()) ans.add(s);
+		}
+		return ans;
 	}
 
 	public Author() {

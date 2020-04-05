@@ -41,4 +41,9 @@ public class AuthorServiceTest {
 		Field field = mongoTemplate.findOne(new Query(), Field.class);
 		assertThat(field).isNotNull();
 	}
+
+	@Test
+	public  void getSummaryTest1(){
+		authorService.fetchAuthorSummaryUponField();
+	}
 }

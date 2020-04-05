@@ -2,7 +2,7 @@ package com.example.oasisdocument.model.docs.analysis;
 
 import org.springframework.data.mongodb.core.mapping.Document;
 
-@Document(collection = "NormalBuffer")
+@Document(collection = "NormalBuffers")
 public class NormalBuffer extends BaseDoc {
 	private String type;
 	private String content;

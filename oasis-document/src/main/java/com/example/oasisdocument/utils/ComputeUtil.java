@@ -27,23 +27,18 @@ public class ComputeUtil {
 		paperList.sort(Comparator.comparingInt(Paper::getYear));
 		int end = paperList.get(paperList.size() - 1).getYear();
 		//store the map from gap to paperNum
-		Map<Integer, List<Integer>> hash = new HashMap<>();
+		Map<Integer, Integer> hash = new HashMap<>();
 		for (int idx = paperList.size() - 2; idx >= 0; --idx) {
 			Paper p = paperList.get(idx);
 			int gap = (int) Math.ceil((double) (end - p.getYear()) / 3);
-			List<Integer> years = hash.getOrDefault(gap, new LinkedList<>());
-			years.add(p.getYear());
-			hash.put(gap, years);
+
+			hash.put(gap, hash.getOrDefault(gap, 0) + 1);
 		}
-		double heat = 0.0;
+		double ans = 0.0;
 		for (int gap : hash.keySet()) {
-			double incr = 0.0;
-			for (int year : hash.get(gap)) {
-				incr += (int) Math.ceil((double) (end - year) / 3);
-			}
-			heat += incr;
+			ans += hash.get(gap) / (double) (gap == 0 ? 1 : gap);
 		}
-		return heat;
+		return ans;
 	}
 
 	/**
