@@ -15,18 +15,18 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/data/initialization")
 public class DataAnalysisInitController {
-	@Autowired
-	private CounterService counterService;
-	@Autowired
-	private FieldService fieldService;
+//	@Autowired
+//	private CounterService counterService;
+//	@Autowired
+//	private FieldService fieldService;
 
 	/**
 	 * 计数分析初始化
 	 * 由于时间耗费较大,这一步进行每一个实体的summary初始化, 而不精确到年份
 	 */
-	@PostMapping("/counter/base")
-	public void initCounterPOJO() {
-		counterService.initCounterPOJOSummary();
-	}
+//	@PostMapping("/counter/base")
+//	public void initCounterPOJO() {
+//		counterService.initCounterPOJOSummary();
+//	}
 
 }

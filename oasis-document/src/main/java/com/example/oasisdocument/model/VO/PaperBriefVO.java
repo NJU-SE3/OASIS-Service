@@ -3,7 +3,6 @@ package com.example.oasisdocument.model.VO;
 import com.example.oasisdocument.model.docs.Paper;
 
 import java.io.Serializable;
-import java.math.BigInteger;
 
 public class PaperBriefVO implements Serializable {
 	private String id;

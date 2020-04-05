@@ -1,10 +1,13 @@
 package com.example.oasisdocument.controller;
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.example.oasisdocument.exceptions.BadReqException;
-import com.example.oasisdocument.model.VO.PaperBriefVO;
 import com.example.oasisdocument.model.VO.PaperInsertVO;
+import com.example.oasisdocument.model.VO.extendVO.GeneralJsonVO;
 import com.example.oasisdocument.model.docs.Author;
+import com.example.oasisdocument.model.docs.Paper;
 import com.example.oasisdocument.service.AuthorService;
 import com.example.oasisdocument.service.PaperService;
 import com.example.oasisdocument.utils.CookieUtil;
@@ -25,16 +28,15 @@ import java.util.UUID;
 public class PaperController {
     private static final Logger logger = LoggerFactory.getLogger(PaperController.class);
     @Autowired
-    private CookieUtil cookieUtil;
-
-    @Autowired
     private PaperService paperService;
-
-    @Autowired
-    private PageHelper pageHelper;
-
     @Autowired
     private AuthorService authorService;
+    @Autowired
+    private CookieUtil cookieUtil;
+    @Autowired
+    private PageHelper pageHelper;
+    @Autowired
+    private GeneralJsonVO generalJsonVO;
 
     @GetMapping("/")
     public String run() {
@@ -60,7 +62,7 @@ public class PaperController {
             HttpServletResponse response) {
         //set id
         String qid = UUID.randomUUID().toString().replaceAll("-", "");
-        List<PaperBriefVO> list = paperService.queryPaper(query.toLowerCase(),
+        JSONArray list = paperService.queryPaper(query.toLowerCase(),
                 returnFacets.toLowerCase());
         if (list.isEmpty()) {
             JSONObject ans = new JSONObject();
@@ -69,12 +71,18 @@ public class PaperController {
             return ans;
         }
         //分页
-        List<PaperBriefVO> pagedList = pageHelper.of(list, pageSize, pageNum);
+        List<Object> pagedList = pageHelper.of(list, pageSize, pageNum);
         if (null == pagedList) throw new BadReqException();
+        JSONArray arr = new JSONArray();
+        //convert from paged list
+        pagedList.forEach((Object obj) -> {
+            Paper paper = JSON.parseObject(String.valueOf(obj), Paper.class);
+            arr.add(generalJsonVO.paper2BriefVO(paper));
+        });
         request.getSession().setAttribute(qid, list);
         cookieUtil.set(response, "qid", qid);
         JSONObject ans = new JSONObject();
-        ans.put("papers", pagedList);
+        ans.put("papers", arr);
         ans.put("itemCnt", list.size());
         return ans;
     }
@@ -96,7 +104,7 @@ public class PaperController {
         HttpSession session = request.getSession();
         try {
             //查询全集
-            List<PaperBriefVO> list = (List<PaperBriefVO>) session.getAttribute(qid);
+            JSONArray list = (JSONArray) session.getAttribute(qid);
             //添加新限制
             list = paperService.queryPaperRefine(list, refinements);
             if (list.isEmpty()) {
@@ -106,10 +114,17 @@ public class PaperController {
                 return ans;
             }
             //需要用到分页信息
-            List<PaperBriefVO> ans = pageHelper.of(list, pageSize, pageNum);
-            if (null == ans) throw new BadReqException();
+            List<Object> pagedList = pageHelper.of(list, pageSize, pageNum);
+            if (null == pagedList) throw new BadReqException();
+
             JSONObject t = new JSONObject();
-            t.put("papers", ans);
+            JSONArray arr = new JSONArray();
+            //convert from paged list
+            pagedList.forEach((Object obj) -> {
+                Paper paper = JSON.parseObject(String.valueOf(obj), Paper.class);
+                arr.add(generalJsonVO.paper2BriefVO(paper));
+            });
+            t.put("papers", arr);
             t.put("itemCnt", list.size());
             return t;
         } catch (BadReqException e) {
@@ -130,7 +145,7 @@ public class PaperController {
     public JSONObject getPaperSummary(@CookieValue(name = "qid") String qid,
                                       HttpServletRequest request) {
         //fetch list
-        List<PaperBriefVO> list = (List<PaperBriefVO>) request.getSession().getAttribute(qid);
+        JSONArray list = (JSONArray) request.getSession().getAttribute(qid);
         return paperService.papersSummary(list);
     }
 

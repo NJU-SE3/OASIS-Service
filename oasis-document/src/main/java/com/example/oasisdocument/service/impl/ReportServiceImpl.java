@@ -203,6 +203,8 @@ public class ReportServiceImpl implements ReportService {
             // On the one hand , return the data back
             switch (type) {
                 case "author":
+                    //init the true data async
+                    baseService.initAuthorRanks();
                     List<Author> authorList = mongoTemplate.find(
                             new Query().with(PageRequest.of(pageNum, pageSize)), Author.class
                     );
@@ -212,6 +214,8 @@ public class ReportServiceImpl implements ReportService {
                     }
                     break;
                 case "affiliation":
+                    baseService.initAffiliationRanks();
+
                     List<Affiliation> affiliationList = mongoTemplate.find(
                             new Query().with(PageRequest.of(pageNum, pageSize)), Affiliation.class
                     );
@@ -221,6 +225,7 @@ public class ReportServiceImpl implements ReportService {
                     }
                     break;
                 case "field":
+                    baseService.initFieldRanks();
                     List<Field> fieldList = mongoTemplate.find(
                             new Query().with(PageRequest.of(pageNum, pageSize)), Field.class
                     );
@@ -230,6 +235,7 @@ public class ReportServiceImpl implements ReportService {
                     }
                     break;
                 case "conference":
+                    baseService.initConferenceRanks();
                     List<Conference> conferenceList = mongoTemplate.find(
                             new Query().with(PageRequest.of(pageNum, pageSize)), Conference.class
                     );
@@ -241,8 +247,6 @@ public class ReportServiceImpl implements ReportService {
                 default:
                     throw new BadReqException();
             }
-            //init the true data async
-            baseService.initEntityRank(type);
         } else {
             for (NormalBuffer buf : buffers) {
                 JSONObject obj = (JSONObject) JSON.parse(buf.getContent());

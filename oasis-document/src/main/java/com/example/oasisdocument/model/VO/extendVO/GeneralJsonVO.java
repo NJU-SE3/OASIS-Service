@@ -1,8 +1,9 @@
 package com.example.oasisdocument.model.VO.extendVO;
 
+import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.example.oasisdocument.model.docs.Author;
-import com.example.oasisdocument.model.docs.analysis.GraphEdge;
+import com.example.oasisdocument.model.docs.Paper;
 import com.example.oasisdocument.model.docs.counter.CounterBaseEntity;
 import com.example.oasisdocument.model.docs.extendDoc.Affiliation;
 import com.example.oasisdocument.model.docs.extendDoc.Conference;
@@ -10,20 +11,18 @@ import com.example.oasisdocument.model.docs.extendDoc.Field;
 import com.example.oasisdocument.model.graph.nodes.AffiliationNeo;
 import com.example.oasisdocument.model.graph.nodes.AuthorNeo;
 import com.example.oasisdocument.model.graph.nodes.FieldNeo;
-import com.example.oasisdocument.service.AffiliationService;
-import com.example.oasisdocument.service.CounterService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoTemplate;
+import org.springframework.data.mongodb.core.query.Criteria;
+import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Component;
+
+import java.util.Set;
 
 @Component
 public class GeneralJsonVO {
 	@Autowired
-	private AffiliationService affiliationService;
-	@Autowired
 	private MongoTemplate mongoTemplate;
-	@Autowired
-	private CounterService counterService;
 
 	public JSONObject authorNeo2VO(AuthorNeo entity) {
 		JSONObject res = new JSONObject();
@@ -83,36 +82,6 @@ public class GeneralJsonVO {
 		return res;
 	}
 
-	public JSONObject authorEdge2VO(GraphEdge en) {
-		Author begin = mongoTemplate.findById(en.getBegin(), Author.class),
-				end = mongoTemplate.findById(en.getEnd(), Author.class);
-		JSONObject ans = new JSONObject();
-		ans.put("begin", author2VO(begin, counterService.getSummaryInfo(en.getBegin())));
-		ans.put("end", author2VO(end, counterService.getSummaryInfo(en.getEnd())));
-		ans.put("weight", en.getWeight());
-		return ans;
-	}
-
-	public JSONObject fieldEdge2VO(GraphEdge edge) {
-		Field begin = mongoTemplate.findById(edge.getBegin(), Field.class),
-				end = mongoTemplate.findById(edge.getEnd(), Field.class);
-		JSONObject ans = new JSONObject();
-		ans.put("begin", field2VO(begin, counterService.getSummaryInfo(edge.getBegin())));
-		ans.put("end", field2VO(end, counterService.getSummaryInfo(edge.getEnd())));
-		ans.put("weight", edge.getWeight());
-		return ans;
-	}
-
-	public JSONObject affiliationEdge2VO(GraphEdge edge) {
-		Affiliation begin = mongoTemplate.findById(edge.getBegin(), Affiliation.class),
-				end = mongoTemplate.findById(edge.getEnd(), Affiliation.class);
-		JSONObject ans = new JSONObject();
-		ans.put("begin", affiliation2VO(begin, counterService.getSummaryInfo(edge.getBegin())));
-		ans.put("end", affiliation2VO(end, counterService.getSummaryInfo(edge.getEnd())));
-		ans.put("weight", edge.getWeight());
-		return ans;
-	}
-
 	private void updateCounter(JSONObject res, CounterBaseEntity baseEntity) {
 		res.put("heat", baseEntity.getHeat());
 		res.put("paperCount", baseEntity.getPaperCount());
@@ -122,5 +91,64 @@ public class GeneralJsonVO {
 		res.put("authorCount", baseEntity.getAuthorCount());
 	}
 
+	public JSONObject paper2BriefVO(Paper paper) {
+		JSONObject ans = new JSONObject();
+		ans.put("id", paper.getId());
+		ans.put("title", paper.getTitle());
+		ans.put("conference", paper.getConference());
+		ans.put("terms", Paper.getAllTerms(paper));
+		ans.put("keywords", paper.getKeywords());
+		ans.put("pdfLink", paper.getPdfLink());
+		ans.put("citationCount", paper.getCitationCount());
+		ans.put("referenceCount", paper.getReferenceCount());
+		ans.put("year", paper.getYear());
+		ans.put("authors", paper.getAuthors());
+		ans.put("affiliations", paper.getAffiliations());
+		// put conference
+		String conName = paper.getConference();
+		Conference con = mongoTemplate.findOne(Query.query(new Criteria("conferenceName").is(conName)),
+				Conference.class);
+		JSONObject confObj = new JSONObject();
+		confObj.put("conferenceName", conName);
+		confObj.put("id", con != null ? con.getId() : "NAN");
+		ans.put("conferenceLink", confObj);
+		// put author
+		Set<String> authorNames = Paper.getAllAuthors(paper);
+		JSONArray authorArr = new JSONArray();
+		for (String name : authorNames) {
+			Author author = mongoTemplate.findOne(Query.query(new Criteria("authorName").is(name)),
+					Author.class);
+			JSONObject authorObj = new JSONObject();
+			authorObj.put("authorName", name);
+			authorObj.put("id", author != null ? author.getId() : "NAN");
+			authorArr.add(authorObj);
+		}
+		ans.put("authorLink", authorArr);
+		//put affiliation
+		Set<String> affiliationNames = Paper.getAllAffiliations(paper);
+		JSONArray affArr = new JSONArray();
+		for (String name : affiliationNames) {
+			Affiliation affiliation = mongoTemplate.findOne(
+					Query.query(new Criteria("affiliationName").is(name)), Affiliation.class);
+			JSONObject affObj = new JSONObject();
+			affObj.put("affiliationName", name);
+			affObj.put("id", affiliation != null ? affiliation.getId() : "NAN");
+			affArr.add(affObj);
+		}
+		ans.put("affiliationLink", affArr);
+		//put field
+		Set<String> fieldNames = Paper.getAllTerms(paper);
+		JSONArray fieldArr = new JSONArray();
+		for (String name : fieldNames) {
+			Field field = mongoTemplate.findOne(
+					Query.query(new Criteria("fieldName").is(name)), Field.class);
+			JSONObject obj = new JSONObject();
+			obj.put("id", field != null ? field.getId() : "NAN");
+			obj.put("fieldName", name);
+			fieldArr.add(obj);
+		}
+		ans.put("fieldLink", fieldArr);
+		return ans;
+	}
 
 }

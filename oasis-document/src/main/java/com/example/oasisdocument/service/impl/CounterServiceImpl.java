@@ -35,9 +35,9 @@ public class CounterServiceImpl implements CounterService {
 	@Autowired
 	private ComputeUtil computeUtil;
 	@Autowired
-	private PaperRepository paperRepository;
-	@Autowired
 	private BaseService baseService;
+	@Autowired
+	private PaperRepository paperRepository;
 
 	@Override
 	public CounterBaseEntity getSummaryInfo(String id) {

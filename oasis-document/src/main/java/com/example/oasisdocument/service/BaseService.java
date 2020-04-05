@@ -1,10 +1,16 @@
 package com.example.oasisdocument.service;
 
+import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson.JSONObject;
 import com.example.oasisdocument.exceptions.EntityNotFoundException;
+import com.example.oasisdocument.model.VO.extendVO.GeneralJsonVO;
 import com.example.oasisdocument.model.docs.Author;
 import com.example.oasisdocument.model.docs.Paper;
+import com.example.oasisdocument.model.docs.analysis.NormalBuffer;
+import com.example.oasisdocument.model.docs.counter.CounterBaseEntity;
 import com.example.oasisdocument.model.docs.extendDoc.Affiliation;
 import com.example.oasisdocument.model.docs.extendDoc.Conference;
+import com.example.oasisdocument.utils.PageHelper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
@@ -21,6 +27,10 @@ import java.util.List;
 public class BaseService {
 	@Autowired
 	private MongoTemplate mongoTemplate;
+	@Autowired
+	GeneralJsonVO generalJsonVO;
+	@Autowired
+	private PageHelper pageHelper;
 
 	/**
 	 * 根据作者id获取所有论文
@@ -90,8 +100,34 @@ public class BaseService {
 	}
 
 	@Async
-	public void initEntityRank(String type) {
-		
+	public void initAuthorRanks() {
+//		final String type = "rank";
+//		List<Author> total = mongoTemplate.findAll(Author.class);
+//
+//		JSONArray arr = new JSONArray();
+//		for (Author author : total) {
+//			CounterBaseEntity en = counterService.getSummaryInfo(author.getId());
+//			arr.add(generalJsonVO.author2VO(author, en));
+//		}
+//		JSONArray ans = pageHelper.sortAndPage(arr, 0, -1);
+//		for (Object obj : ans) {
+//			String content = JSONObject.toJSONString(obj);
+//			NormalBuffer buf = new NormalBuffer();
+//		}
 	}
 
+	@Async
+	public void initAffiliationRanks() {
+
+	}
+
+	@Async
+	public void initFieldRanks() {
+
+	}
+
+	@Async
+	public void initConferenceRanks() {
+
+	}
 }
