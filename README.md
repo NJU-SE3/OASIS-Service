@@ -1,6 +1,8 @@
 # OASIS-Service
 
-服务端业务逻辑模块
+## OASIS 论文知识图谱平台 【服务端业务逻辑模块】
+
+![image.png](https://i.loli.net/2020/04/06/G1bQCMipzvXxrSq.png)
 
 ### 1. 本地运行指南
 
@@ -75,6 +77,4 @@
 
 - 全Docker化
 - Docker-compose 容器编排
-
-![image-20200307120717961](/Users/mac/Library/Application Support/typora-user-images/image-20200307120717961.png)
 
