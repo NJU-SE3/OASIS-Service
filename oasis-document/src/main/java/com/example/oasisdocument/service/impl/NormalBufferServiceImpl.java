@@ -10,6 +10,7 @@ import com.example.oasisdocument.repository.docs.AuthorRepository;
 import com.example.oasisdocument.service.NormalBufferSerivce;
 import com.example.oasisdocument.utils.PageHelper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
@@ -66,6 +67,7 @@ public class NormalBufferServiceImpl implements NormalBufferSerivce {
 	}
 
 	@Override
+	@Cacheable(cacheNames = "loadAuthorFieldSummary", unless = "#result==null")
 	public JSONArray loadAuthorFieldSummary() {
 		final String type = "author_field_summary";
 		NormalBuffer buffer =

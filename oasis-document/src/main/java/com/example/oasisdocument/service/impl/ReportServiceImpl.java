@@ -153,7 +153,7 @@ public class ReportServiceImpl implements ReportService {
     }
 
     @Override
-//    @Cacheable(cacheNames = "getPaperTrend", unless = "#result==null")
+    @Cacheable(cacheNames = "getPaperTrend", unless = "#result==null")
     public List<Pair<Integer, Double>> getPaperTrend(String type, String id) {
         //指标类型. 可以取值 count , heat , citation , activeness , H_index
         //把所有年份相关的查询

@@ -17,8 +17,9 @@ import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Service;
 
-import java.util.LinkedList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Service
 public class AffiliationServiceImpl implements AffiliationService {
@@ -55,30 +56,39 @@ public class AffiliationServiceImpl implements AffiliationService {
 	}
 
 	@Override
+	@Cacheable(cacheNames = "fetchAffiliationList", unless = "#result==null")
 	public JSONArray fetchAffiliationList(String refinement, int pageNum, int pageSize) {
 		String[] strings = refinement.split(refineSplitter);
 		if (strings.length != 2) throw new BadReqException();
-		List<Affiliation> affiliationList;
+		Set<Affiliation> affiliationList;
 		String id = strings[1];
 		if (strings[0].equals("field")) {
+			Set<String> names = new HashSet<>();
 			CounterBaseEntity entity = counterService.getSummaryInfo(id);
 			if (null == entity) throw new EntityNotFoundException();
-			affiliationList = new LinkedList<>();
+			affiliationList = new HashSet<>();
 			for (String pid : entity.getPaperList()) {
 				Paper paper = mongoTemplate.findById(pid, Paper.class);
 				for (String name : Paper.getAllAffiliations(paper)) {
 					Affiliation affiliation = mongoTemplate
 							.findOne(Query.query(new Criteria("affiliationName").is(name)),
 									Affiliation.class);
-					if (affiliation != null)
+					if (affiliation != null && !names.contains(name)) {
 						affiliationList.add(affiliation);
+						names.add(name);
+					}
 				}
 			}
 		} else throw new BadReqException();
 
 		JSONArray array = new JSONArray();
 		for (Affiliation affiliation : affiliationList) {
-			CounterBaseEntity baseEntity = counterService.getSummaryInfo(affiliation.getId());
+			CounterBaseEntity baseEntity;
+			try {
+				baseEntity = counterService.getSummaryInfo(affiliation.getId());
+			} catch (EntityNotFoundException e) {
+				baseEntity =new CounterBaseEntity();
+			}
 			array.add(generalJsonVO.affiliation2VO(affiliation, baseEntity));
 		}
 		return pageHelper.sortAndPage(array, pageSize, pageNum);

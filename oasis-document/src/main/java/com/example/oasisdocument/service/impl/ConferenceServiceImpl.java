@@ -18,6 +18,7 @@ import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 @Service
@@ -34,6 +35,7 @@ public class ConferenceServiceImpl implements ConferenceService {
 	private PageHelper pageHelper;
 
 	@Override
+	@Cacheable(cacheNames = "fetchEnById", unless = "#result==null")
 	public Conference fetchEnById(String id) {
 		Conference en = mongoTemplate.findById(id, Conference.class);
 		if (null == en) throw new EntityNotFoundException();
@@ -69,12 +71,12 @@ public class ConferenceServiceImpl implements ConferenceService {
 					Paper paper = mongoTemplate.findById(pid, Paper.class);
 					return paper.getConference();
 				}).collect(Collectors.toList());
-		List<Conference> conferenceList = confNames.stream()
+		Set<Conference> conferenceList = confNames.stream()
 				.map((String name) -> {
 					List<Conference> conferences = mongoTemplate
 							.find(Query.query(new Criteria(conNameCol).is(name)), Conference.class);
 					return conferences.get(0);
-				}).collect(Collectors.toList());
+				}).collect(Collectors.toSet());
 		JSONArray array = new JSONArray();
 		for (Conference conference : conferenceList) {
 			CounterBaseEntity baseEntity = counterService.getSummaryInfo(conference.getId());

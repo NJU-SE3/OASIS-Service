@@ -16,7 +16,9 @@ public class PageHelper {
         public int compare(Object o1, Object o2) {
             JSONObject obj1 = (JSONObject) o1;
             JSONObject obj2 = (JSONObject) o2;
-            return (int) (obj2.getDouble(activeKey) - obj1.getDouble(activeKey));
+            double res = obj2.getDouble(activeKey) - obj1.getDouble(activeKey);
+            if (res == 0) return 0;
+            else return res > 0 ? 1 : -1;
         }
     }
 
