@@ -24,7 +24,6 @@ import java.util.Set;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
-@ActiveProfiles("dev")
 public class InitServiceTest {
 	private static final Logger logger = LoggerFactory.getLogger(InitServiceTest.class);
 	@Autowired

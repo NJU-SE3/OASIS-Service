@@ -20,7 +20,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
-@ActiveProfiles("test")
 public class GraphServiceTest {
 	private static final Logger logger = LoggerFactory.getLogger(GraphServiceTest.class);
 	@Autowired
@@ -32,7 +31,7 @@ public class GraphServiceTest {
 	@Test
 	public void fieldMapVIaIdTest1() {
 		final String xid = mongoTemplate.findOne(new Query(), Field.class).getId();
-		JSONObject o = graphService.fieldMapViaId("5e7a232db04a431baf379654");
+		JSONObject o = graphService.fieldMapViaId(xid);
 		assertThat(o).isNotNull();
 		logger.info(o.toJSONString());
 	}

@@ -16,7 +16,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
-@ActiveProfiles("test")
 public class GraphNeoDaoTest {
 	private Logger logger = LoggerFactory.getLogger(GraphNeoDaoTest.class);
 	@Autowired

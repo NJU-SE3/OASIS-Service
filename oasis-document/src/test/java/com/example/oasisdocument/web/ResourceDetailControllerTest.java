@@ -31,7 +31,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
-@ActiveProfiles("test")
 public class ResourceDetailControllerTest {
 	private static final Logger logger = LoggerFactory.getLogger(ReportControllerTest.class);
 	private MockMvc mockMvc;

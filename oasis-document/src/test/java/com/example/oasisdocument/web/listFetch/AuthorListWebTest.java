@@ -30,7 +30,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
-@ActiveProfiles("test")
 public class AuthorListWebTest {
 	private static final Logger logger = LoggerFactory.getLogger(AuthorListWebTest.class);
 	//默认以json传输

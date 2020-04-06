@@ -20,7 +20,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
-@ActiveProfiles("test")
 public class AuthorServiceTest {
 	private static final Logger logger = LoggerFactory.getLogger(AuthorServiceTest.class);
 
@@ -32,18 +31,8 @@ public class AuthorServiceTest {
 
 	@Test
 	public void fetchAuthorListTest1() {
-		JSONArray authorList = authorService.fetchAuthorList(0,10);
-		assertThat(authorList.size()).isGreaterThanOrEqualTo(0);
-	}
-
-	@Test
-	public void fetchAuthorListTest2() {
 		Field field = mongoTemplate.findOne(new Query(), Field.class);
 		assertThat(field).isNotNull();
 	}
 
-	@Test
-	public  void getSummaryTest1(){
-		authorService.fetchAuthorSummaryUponField();
-	}
 }

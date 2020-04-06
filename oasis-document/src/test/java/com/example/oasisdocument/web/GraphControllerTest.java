@@ -24,7 +24,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
-@ActiveProfiles("test")
 public class GraphControllerTest {
 	private final static Logger logger = LoggerFactory.getLogger(GraphControllerTest.class);
 	private MockMvc mockMvc;
@@ -49,6 +48,5 @@ public class GraphControllerTest {
 				.andExpect(status().isOk())
 				.andReturn();
 		String body = result.getResponse().getContentAsString();
-		logger.info(body);
 	}
 }

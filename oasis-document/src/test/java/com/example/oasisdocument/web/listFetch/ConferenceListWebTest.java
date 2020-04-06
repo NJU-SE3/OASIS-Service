@@ -28,7 +28,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
-@ActiveProfiles("test")
 public class ConferenceListWebTest {
 	private static final Logger logger = LoggerFactory.getLogger(ConferenceListWebTest.class);
 	private static final String uri = "/conference/list";

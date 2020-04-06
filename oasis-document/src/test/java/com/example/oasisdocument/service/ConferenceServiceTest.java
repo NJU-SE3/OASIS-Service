@@ -21,7 +21,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
-@ActiveProfiles("test")
 public class ConferenceServiceTest {
 	private static final int pageNum = 0;
 	private static final int pageSize = 10;

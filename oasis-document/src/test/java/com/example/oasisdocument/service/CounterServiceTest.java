@@ -11,7 +11,6 @@ import org.springframework.test.context.junit4.SpringRunner;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
-@ActiveProfiles("test")
 public class CounterServiceTest {
 	private static final Logger logger = LoggerFactory.getLogger(CounterServiceTest.class);
 

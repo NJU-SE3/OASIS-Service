@@ -29,7 +29,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
-@ActiveProfiles("test")
 public class FieldListWebTest {
 	private final static String uri = "/field/list";
 	private static final Logger logger = LoggerFactory.getLogger(FieldListWebTest.class);
@@ -47,22 +46,6 @@ public class FieldListWebTest {
 	@Before
 	public void prepare() {
 		mockMvc = MockMvcBuilders.webAppContextSetup(wac).build();
-	}
-
-	@Test
-	public void fetchFieldListTest1() throws Exception {
-		final Conference en = mongoTemplate.findOne(new Query(new Criteria("conferenceName").regex("h")),
-				Conference.class);
-		assertThat(en).isNotNull();
-		MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
-		params.put("refinement", Collections.singletonList("conference:" + en.getId()));
-		MvcResult result = mockMvc.perform(get(uri)
-				.params(params)
-				.contentType(defaultContentType))
-				.andExpect(status().isOk())
-				.andReturn();
-		assertThat(result.getResponse()).isNotNull();
-		logger.info(result.getResponse().getContentAsString());
 	}
 
 	@Test
