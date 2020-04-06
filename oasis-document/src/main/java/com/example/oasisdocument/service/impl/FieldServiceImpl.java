@@ -18,10 +18,7 @@ import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Service;
 
-import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 
 
@@ -42,6 +39,7 @@ public class FieldServiceImpl implements FieldService {
 	private PageHelper pageHelper;
 
 	@Override
+	@Cacheable(cacheNames = "fetchEnById", unless = "#result==null")
 	public Field fetchEnById(String id) {
 		Field en = mongoTemplate.findById(id, Field.class);
 		if (null == en) throw new EntityNotFoundException();
@@ -57,7 +55,7 @@ public class FieldServiceImpl implements FieldService {
 		if (datas.length != 2)
 			throw new BadReqException();
 		String id = datas[1];
-		List<Field> fieldList;
+		Set<Field> fieldSet;
 		if (datas[0].equals(conKey) || datas[0].equals(affKey)) {
 			//找到全部关联的作者
 			CounterBaseEntity en =
@@ -66,12 +64,16 @@ public class FieldServiceImpl implements FieldService {
 				throw new EntityNotFoundException();
 			List<Paper> papers = en.getPaperList().stream()
 					.map((String pid) -> mongoTemplate.findById(pid, Paper.class)).collect(Collectors.toList());
-			fieldList = new LinkedList<>();
+			fieldSet = new HashSet<>();
 			for (Paper paper : papers) {
+				Set<String> fieldIdSet = new HashSet<>();
 				for (String name : Paper.getAllTerms(paper)) {
 					Field field = mongoTemplate.findOne(Query.query(new Criteria("fieldName").is(name)),
 							Field.class);
-					if (field != null) fieldList.add(field);
+					if (field != null && !fieldIdSet.contains(field.getId())) {
+						fieldSet.add(field);
+						fieldIdSet.add(field.getId());
+					}
 				}
 			}
 			//return ans;
@@ -79,7 +81,7 @@ public class FieldServiceImpl implements FieldService {
 			throw new BadReqException();
 
 		JSONArray array = new JSONArray();
-		for (Field field : fieldList) {
+		for (Field field : fieldSet) {
 			CounterBaseEntity baseEntity = counterService.getSummaryInfo(field.getId());
 			array.add(generalJsonVO.field2VO(field, baseEntity));
 		}
@@ -114,6 +116,7 @@ public class FieldServiceImpl implements FieldService {
 	}
 
 	@Override
+	@Cacheable(cacheNames = "fetchFieldDistribution", unless = "#result==null")
 	public JSONArray fetchFieldDistribution(String id) {
 		CounterBaseEntity en = counterService.getSummaryInfo(id);
 		List<Paper> papers = en.getPaperList()

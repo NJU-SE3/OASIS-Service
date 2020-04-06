@@ -100,13 +100,17 @@ public class AuthorServiceImpl implements AuthorService {
 			CounterBaseEntity entity = counterService.getSummaryInfo(id);
 			if (null == entity) throw new EntityNotFoundException();
 			authorList = new LinkedList<>();
+			Set<String> authorIds = new HashSet<>();
+
 			for (String pid : entity.getPaperList()) {
 				Paper paper = mongoTemplate.findById(pid, Paper.class);
 				for (String name : Paper.getAllAuthors(paper)) {
 					Author author = mongoTemplate.findOne(Query.query(new Criteria(auName).is(name)),
 							Author.class);
-					if (author != null)
+					if (author != null && !authorIds.contains(author.getId())) {
+						authorIds.add(author.getId());
 						authorList.add(author);
+					}
 				}
 			}
 		} else throw new BadReqException();
