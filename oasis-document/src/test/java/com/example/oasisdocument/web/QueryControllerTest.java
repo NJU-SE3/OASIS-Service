@@ -3,7 +3,7 @@ package com.example.oasisdocument.web;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
-import com.example.oasisdocument.docs.Paper;
+import com.example.oasisdocument.model.docs.Paper;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -28,7 +28,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
-@ActiveProfiles("test")
 public class QueryControllerTest {
 
     private MockMvc mockMvc;

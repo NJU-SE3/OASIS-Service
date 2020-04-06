@@ -1,9 +1,13 @@
 package com.example.oasisdocument.service;
 
 
-import com.example.oasisdocument.docs.Paper;
+import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson.JSONObject;
+import com.example.oasisdocument.model.docs.Paper;
 import com.example.oasisdocument.utils.Pair;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.util.List;
 
 public interface ReportService {
@@ -26,7 +30,25 @@ public interface ReportService {
      */
     List<Pair<Integer, Integer>> getPaperTrend();
 
-    List<Pair<String, List<Paper>>> getAuthorOfMostPaper(int rank);
+    /**
+     * 获取引用数最多作者排名
+     */
+    List<Pair<String, List<Paper>>> getAuthorOfMostCitation(int rank);
+
 
     List<Paper> getPapersViaAuthor(String authorName);
+
+    void constructPaperCitations();
+
+    /**
+     * 获取趋势
+     *
+     * @param type : 指标类型. 可以取值 count , heat , citation , activeness , H_index
+     */
+    List<Pair<Integer, Double>> getPaperTrend(String type, String id);
+
+    /**
+     * 获取基本排名数据
+     */
+    JSONObject getRankViaType(String type, int pageNum, int pageSize);
 }

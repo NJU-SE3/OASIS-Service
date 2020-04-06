@@ -3,7 +3,6 @@ version: '2'
 services:
   spider:
     image: oasis/spider
-    restart: always
     build:
       context: .
       dockerfile: Dockerfile

@@ -4,6 +4,7 @@ services:
   redis: # Redis缓存
     image: redis
     container_name: oasis-redis
+    restart: always
     command: redis-server
     ports:
       - "6379:6379"
@@ -14,17 +15,6 @@ services:
       - 15672:15672
       - 5672:5672
     restart: always
-  oasis-mysql:
-    image: caribouf/oasis-mysql
-    container_name: oasis-mysql
-    restart: always
-    environment:
-      - MYSQL_ROOT_PASSWORD=mysql
-      - MYSQL_DATABASE=se
-    ports:
-      - "3306:3306"
-    command: ['mysqld', '--character-set-server=utf8mb4', '--collation-server=utf8mb4_unicode_ci']
-
   mongodb:
     image: bitnami/mongodb:4.0
     container_name: oasis-mongo
@@ -36,3 +26,12 @@ services:
       - MONGODB_USERNAME=root
       - MONGODB_PASSWORD=mongo
       - MONGODB_DATABASE=se
+  neo4j:
+    image: neo4j:3.5.1
+    restart: always
+    ports:
+      - "7473:7473"
+      - "7474:7474"
+      - "7687:7687"
+    environment:
+      - NEO4J_AUTH=none

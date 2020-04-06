@@ -1,5 +1,0 @@
-flask
-flask_restplus
-pandas
-requests
-sqlalchemy

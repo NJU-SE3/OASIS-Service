@@ -1,7 +1,7 @@
 package com.example.oasisdocument.service.impl;
 
-import com.example.oasisdocument.docs.Authority;
-import com.example.oasisdocument.repository.AuthorityRepository;
+import com.example.oasisdocument.model.docs.Authority;
+import com.example.oasisdocument.repository.docs.AuthorityRepository;
 import com.example.oasisdocument.service.PermissionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

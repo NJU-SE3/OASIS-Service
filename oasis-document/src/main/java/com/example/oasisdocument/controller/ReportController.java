@@ -3,14 +3,11 @@ package com.example.oasisdocument.controller;
 
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
-import com.example.oasisdocument.docs.Paper;
+import com.example.oasisdocument.model.docs.Paper;
 import com.example.oasisdocument.service.ReportService;
 import com.example.oasisdocument.utils.Pair;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -24,33 +21,49 @@ public class ReportController {
     @Autowired
     private ReportService reportService;
 
-    //论文总数折线图 , 按照年份排
+    /**
+     * 论文总数折线图 , 按照年份排
+     */
     @GetMapping("/paper/trend/year")
-    public JSONArray getPaperTrend() {
-        return reportService.getPaperTrend().stream()
-                .map((Pair<Integer, Integer> pair) -> {
-                    JSONObject object = new JSONObject();
-                    object.put("year", String.valueOf(pair.getFirst()));
-                    object.put("count", String.valueOf(pair.getSecond()));
-                    return object;
-                }).collect(Collectors.toCollection(JSONArray::new));
+    public JSONArray getPaperTrend(@RequestParam(name = "baseline", defaultValue = "count") String baseLine,
+                                   @RequestParam(name = "refinement", defaultValue = "") String refineId) {
+        if (refineId.isEmpty())
+            return reportService.getPaperTrend().stream()
+                    .map((Pair<Integer, Integer> pair) -> {
+                        JSONObject object = new JSONObject();
+                        object.put("year", String.valueOf(pair.getFirst()));
+                        object.put("count", String.valueOf(pair.getSecond()));
+                        return object;
+                    }).collect(Collectors.toCollection(JSONArray::new));
+        else
+            return reportService.getPaperTrend(baseLine, refineId).stream()
+                    .map((Pair<Integer, Double> pair) -> {
+                        JSONObject object = new JSONObject();
+                        object.put("year", String.valueOf(pair.getFirst()));
+                        object.put("count", String.valueOf(pair.getSecond()));
+                        return object;
+                    }).collect(Collectors.toCollection(JSONArray::new));
     }
 
     //被引用论文数最多作者TOP10的堆叠柱状图
-    //TODO: 修改为持久化, 并且删减paper内容
     @GetMapping("/author/rank/paper_cnt")
     public JSONArray getAuthorOfMostPaper(@RequestParam(name = "rank", defaultValue = "10") int rank) {
-        List<Pair<String, List<Paper>>> list = reportService.getAuthorOfMostPaper(rank);
+        List<Pair<String, List<Paper>>> list = reportService.getAuthorOfMostCitation(rank);
         return list.stream()
                 .map((Pair<String, List<Paper>> pair) -> {
                     List<Paper> papers = pair.getSecond();
                     JSONObject object = new JSONObject();
-                    object.put("author",pair.getFirst());
-                    object.put("papers",papers.stream()
+                    object.put("author", pair.getFirst());
+                    object.put("papers", papers.stream()
                             .map(this::simplifyPaper)
                             .collect(Collectors.toCollection(JSONArray::new)));
                     return object;
                 }).collect(Collectors.toCollection(JSONArray::new));
+    }
+
+    @PostMapping("/author/rank/paper_cnt")
+    public void constructPaperCitations() {
+        reportService.constructPaperCitations();
     }
 
     //被引用数最多的论文TOP K

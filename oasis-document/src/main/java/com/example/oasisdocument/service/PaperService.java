@@ -1,16 +1,29 @@
 package com.example.oasisdocument.service;
 
+import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
-import com.example.oasisdocument.docs.Paper;
+import com.example.oasisdocument.model.VO.PaperBriefVO;
+import com.example.oasisdocument.model.VO.PaperInsertVO;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.util.List;
 
 public interface PaperService {
-    List<Paper> queryPaper(String key, String returnFacets);
 
-    List<Paper> queryPaperRefine(List<Paper> papers, List<String> refinements);
+	JSONObject queryPaper(final String key, final String returnFacets,
+								 int pageSize, int pageNum,
+								 HttpServletRequest request,
+								 HttpServletResponse response);
 
-    void insert(Paper entity);
+	JSONObject queryPaperRefine(String qid, List<String> refinements,
+							   int pageNum, int pageSize, HttpServletRequest request);
 
-    JSONObject papersSummary(List<Paper> papers);
+	void insertPaperVOEntity(PaperInsertVO entity);
+
+	JSONObject papersSummary( String qid,
+							  HttpServletRequest request);
+
+	List<PaperBriefVO> fetchPaperList(String id);
+
 }

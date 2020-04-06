@@ -5,4 +5,4 @@ COPY ./requirements.txt ./
 RUN pip install -i https://pypi.tuna.tsinghua.edu.cn/simple --no-cache-dir -r requirements.txt
 COPY ./ ./
 
-CMD ["scrapy","crawl","spider"]
+CMD ["scrapy","crawl","graphSpider"]
