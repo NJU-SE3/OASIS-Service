@@ -40,6 +40,7 @@ public class CounterServiceImpl implements CounterService {
 	private PaperRepository paperRepository;
 
 	@Override
+	//37087230617
 	public CounterBaseEntity getSummaryInfo(String id) {
 		CounterBaseEntity en = mongoTemplate.findOne(Query.query(new Criteria("checkId").is(id)
 				.and("year").is(-1)), CounterBaseEntity.class);
