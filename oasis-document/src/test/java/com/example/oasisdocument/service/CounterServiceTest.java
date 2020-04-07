@@ -21,6 +21,6 @@ public class CounterServiceTest {
 
 	@Test
 	public void counterServiceTest1() {
-		counterService.getSummaryInfo("5e8331c1982a43f4fd446d12");
+		counterService.getSummaryInfo("37087230617");
 	}
 }

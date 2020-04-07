@@ -37,20 +37,20 @@ public class GraphServiceImpl implements GraphService {
 	@Autowired
 	private FieldNeoRepo fieldNeoRepo;
 	@Autowired
-	private MongoTemplate mongoTemplate;
-	@Autowired
 	private CounterService counterService;
+	@Autowired
+	private MongoTemplate mongoTemplate;
 	@Autowired
 	private GeneralJsonVO generalJsonVO;
 
 	@Override
-	@Cacheable(cacheNames = "centeralAuthor", unless = "#result==null")
+	@Cacheable(cacheNames = "graph", unless = "#result==null")
 	public JSONObject centeralAuthor(String authorId) {
 		AuthorNeo centerEntity = authorNeoRepo.findByXid(authorId);
 		if (null == centerEntity) throw new EntityNotFoundException();
 		// 寻找一度关系作者
 		Set<AuthorNeo> neighbors = new HashSet<>();
-
+		if (null == centerEntity.getPaperNeoSet()) centerEntity.setPaperNeoSet(new HashSet<>());
 		for (PaperNeo paper : centerEntity.getPaperNeoSet()) {
 			paper = paperNeoRepo.findByXid(paper.getXid());
 			for (AuthorNeo neo : paper.getAuthorNeoSet()) {
@@ -81,10 +81,11 @@ public class GraphServiceImpl implements GraphService {
 	}
 
 	@Override
-	@Cacheable(cacheNames = "fieldMapViaId", unless = "#result==null")
+	@Cacheable(cacheNames = "graph", unless = "#result==null")
 	public JSONObject fieldMapViaId(String fieldId) {
 		FieldNeo centerEntity = fieldNeoRepo.findByXid(fieldId);
 		if (null == centerEntity) throw new EntityNotFoundException();
+		if (null == centerEntity.getPaperNeoSet()) centerEntity.setPaperNeoSet(new HashSet<>());
 		// One neighbour
 		Set<FieldNeo> neighbors = new HashSet<>();
 		for (PaperNeo paper : centerEntity.getPaperNeoSet()) {
@@ -107,19 +108,20 @@ public class GraphServiceImpl implements GraphService {
 			edges.add(obj);
 		}
 		JSONObject ans = new JSONObject();
+		ans.put("edges", edges);
 		ans.put("nodes", nodes.stream()
 				.map((FieldNeo neo) -> appendActiveness(generalJsonVO.fieldNeo2VO(neo)))
 				.collect(Collectors.toList()));
-		ans.put("edges", edges);
 
 		return ans;
 	}
 
 	@Override
-	@Cacheable(cacheNames = "affMapViaId", unless = "#result==null")
+	@Cacheable(cacheNames = "graph", unless = "#result==null")
 	public JSONObject affMapViaId(String affId) {
 		AffiliationNeo centerEntity = affiliationNeoRepo.findByXid(affId);
 		if (null == centerEntity) throw new EntityNotFoundException();
+		if (null == centerEntity.getAuthorNeoSet()) centerEntity.setAuthorNeoSet(new HashSet<>());
 		Set<AffiliationNeo> neighbors = new HashSet<>();
 		for (AuthorNeo authorNeo : centerEntity.getAuthorNeoSet()) {
 			//Search into author

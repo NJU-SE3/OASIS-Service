@@ -19,12 +19,26 @@
 
 - 安装maven并且配置相关的阿里云代理
 
+#### 1.2 数据环境配置
+
+根目录下，运行
+
+```
+make local-set
+make data-init
+```
+
+可启动 `mongodb` , `redis` , `RabbitMQ` ，并且实现数据的导入
+
 #### 1.2 本地运行spring
 
-根目录下，开启两个 *terminal*，分别输入
+根目录下，运行
 
-- `mvn install -Dmaven.test.skip=true`
--  `mvn spring-boot:run -f oasis-document`
+```
+mvn spring-boot:run -f oasis-document
+```
+
+即可在 `8081` 端口启动服务，由于 `eureka` ，`zuul` 均在云服务器上搭建，无需本地启动
 
 ---
 
