@@ -6,22 +6,8 @@ spring:
   # mvn clean package -P<profile name>
   profiles:
     active: '@spring.profiles.active@'
-  application:
-    name: oasis-document
   session:
     store-type: redis
   data:
     neo4j:
       uri: http://116.62.7.102:7474
-spring.main.allow-bean-definition-overriding: true
-
-
-
-
-eureka:
-  port: 8761
-  instance:
-    hostname: 106.14.140.93
-  client:
-    serviceUrl:
-      defaultZone: http://${eureka.instance.hostname}:8761/eureka/

@@ -1,11 +1,13 @@
 spring:
-  # Profile 动态环境调整
-  # mvn clean package -P<profile name>
   profiles:
     active: '@spring.profiles.active@'
-  application:
-    name: zuul
-spring.main.allow-bean-definition-overriding: true
 
+document: 39.96.75.119:8081
 zuul:
-  sensitive-headers: "*"
+  host:
+    connect-timeout-millis: 20000
+    socket-timeout-millis: 20000
+  routes:
+    oasis-document:
+      path: /api/**
+      url: http://${document}
