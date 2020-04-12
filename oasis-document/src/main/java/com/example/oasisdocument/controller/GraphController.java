@@ -15,8 +15,6 @@ import org.springframework.web.bind.annotation.RestController;
 public class GraphController {
 	@Autowired
 	private GraphService graphService;
-	@Autowired
-	private GeneralJsonVO generalJsonVO;
 
 	@GetMapping("/author")
 	public JSONObject authorMapViaId(@RequestParam(name = "id") String authorId) {
