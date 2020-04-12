@@ -2,22 +2,12 @@ version: '2'
 
 # lfm
 services:
-  oasis-eureka:
-    image: 'registry.cn-shanghai.aliyuncs.com/caribou/oasis-eureka:latest'
-    container_name: oasis-eureka
-    restart: always
-    ports:
-      - "8761:8080"
-    networks:
-      - oasis
   oasis-zuul:
     image: 'registry.cn-shanghai.aliyuncs.com/caribou/oasis-zuul'
     container_name: oasis-zuul
     restart: always
     ports:
       - "8081:8080"
-    depends_on:
-      - oasis-eureka
     networks:
       - oasis
       - proxy

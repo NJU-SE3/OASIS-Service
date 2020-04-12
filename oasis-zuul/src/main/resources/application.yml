@@ -2,4 +2,12 @@ spring:
   profiles:
     active: '@spring.profiles.active@'
 
-
+document: 39.96.75.119:8081
+zuul:
+  host:
+    connect-timeout-millis: 20000
+    socket-timeout-millis: 20000
+  routes:
+    oasis-document:
+      path: /api/**
+      url: http://${document}
