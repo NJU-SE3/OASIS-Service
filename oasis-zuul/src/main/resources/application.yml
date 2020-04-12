@@ -1,11 +1,5 @@
 spring:
-  # Profile 动态环境调整
-  # mvn clean package -P<profile name>
   profiles:
     active: '@spring.profiles.active@'
-  application:
-    name: zuul
-spring.main.allow-bean-definition-overriding: true
 
-zuul:
-  sensitive-headers: "*"
+
