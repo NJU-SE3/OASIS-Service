@@ -65,6 +65,12 @@ mvn spring-boot:run -f oasis-document
   - [x] RabbitMQ消息队列
 - [x] 测试
 
+下一轮迭代TODO
+
+- [ ] 优化实体建模设
+- [ ] 细化服务粒度，引入dubbo进行服务治理
+- [ ] 
+
 ----
 
 ### 3. 架构设计与技术选型
