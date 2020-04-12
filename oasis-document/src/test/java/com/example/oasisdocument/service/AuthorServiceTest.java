@@ -24,9 +24,6 @@ public class AuthorServiceTest {
 	private static final Logger logger = LoggerFactory.getLogger(AuthorServiceTest.class);
 
 	@Autowired
-	private AuthorService authorService;
-
-	@Autowired
 	private MongoTemplate mongoTemplate;
 
 	@Test

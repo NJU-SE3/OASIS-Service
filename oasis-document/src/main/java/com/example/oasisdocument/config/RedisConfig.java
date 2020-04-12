@@ -52,11 +52,10 @@ public class RedisConfig extends CachingConfigurerSupport {
         // 对每个缓存空间应用不同的配置
         Map<String, RedisCacheConfiguration> configMap = new HashMap<>();
 
-        RedisCacheManager cacheManager = RedisCacheManager.builder(lettuceConnectionFactory)
+        return RedisCacheManager.builder(lettuceConnectionFactory)
                 .cacheDefaults(defaultCacheConfig)
                 .withInitialCacheConfigurations(configMap)
                 .build();
-        return cacheManager;
     }
     @Bean
     @ConditionalOnMissingBean(name = "redisTemplate")

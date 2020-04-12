@@ -33,7 +33,6 @@ public class GraphServiceTest {
 		final String xid = mongoTemplate.findOne(new Query(), Field.class).getId();
 		JSONObject o = graphService.fieldMapViaId(xid);
 		assertThat(o).isNotNull();
-		logger.info(o.toJSONString());
 	}
 
 	@Test
@@ -48,7 +47,6 @@ public class GraphServiceTest {
 		final String xid = mongoTemplate.findOne(new Query(), Affiliation.class).getId();
 		JSONObject o = graphService.affMapViaId(xid);
 		assertThat(o).isNotNull();
-		logger.info(o.toJSONString());
 	}
 
 }

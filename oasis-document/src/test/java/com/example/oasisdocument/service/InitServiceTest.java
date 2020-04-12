@@ -26,23 +26,6 @@ import java.util.Set;
 @SpringBootTest
 public class InitServiceTest {
 	private static final Logger logger = LoggerFactory.getLogger(InitServiceTest.class);
-	@Autowired
-	private MongoTemplate mongoTemplate;
-	@Autowired
-	private ReportService reportService;
-	@Autowired
-	private AuthorRepository authorRepository;
-	@Autowired
-	private PaperRepository paperRepository;
-	@Autowired
-	private FieldService fieldService;
-	@Autowired
-	private CounterService counterService;
-	@Autowired
-	private BaseService baseService;
-	@Autowired
-	private ComputeUtil computeUtil;
-
 	@Test
 	public void initCounterTest() {
 
