@@ -17,8 +17,6 @@ import org.springframework.web.bind.annotation.RestController;
 public class DataAnalysisInitController {
 	@Autowired
 	private CounterService counterService;
-	@Autowired
-	private FieldService fieldService;
 
 	/**
 	 * 计数分析初始化

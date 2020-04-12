@@ -9,7 +9,6 @@ import com.example.oasisdocument.model.docs.extendDoc.Affiliation;
 import com.example.oasisdocument.model.docs.extendDoc.Conference;
 import com.example.oasisdocument.model.docs.extendDoc.Field;
 import com.example.oasisdocument.service.*;
-import com.example.oasisdocument.utils.JsonUtil;
 import com.example.oasisdocument.utils.PageHelper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -34,10 +33,6 @@ public class ResourceDetailController {
 	private ReportService reportService;
 	@Autowired
 	private GeneralJsonVO generalJsonVO;
-	@Autowired
-	private PageHelper pageHelper;
-	@Autowired
-	private JsonUtil jsonUtil;
 
 	/**
 	 * 获取单个领域具体信息
