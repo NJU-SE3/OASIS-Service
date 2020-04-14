@@ -1,14 +1,14 @@
 spring:
-  application:
-    name: oasis-document
-  cloud:
-    nacos:
-      discovery:
-        server-addr: 101.37.116.201:8848
-      config:
-        prefix: ${spring.application.name}
-        server-addr: ${spring.cloud.nacos.discovery.server-addr}
-        file-extension: yaml
+    application:
+        name: oasis-document
+    cloud:
+        nacos:
+            discovery:
+                server-addr: 101.37.116.201:8848
+            config:
+                prefix: ${spring.application.name}
+                server-addr: ${spring.cloud.nacos.discovery.server-addr}
+                file-extension: yaml
 server:
-  port: 8080
+    port: 8080
 spring.main.allow-bean-definition-overriding: true
