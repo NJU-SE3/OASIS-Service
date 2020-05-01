@@ -9,6 +9,8 @@ spring:
                 prefix: ${spring.application.name}
                 server-addr: ${spring.cloud.nacos.discovery.server-addr}
                 file-extension: yaml
+    main:
+        allow-bean-definition-overriding: true
 server:
     port: 8080
-spring.main.allow-bean-definition-overriding: true
+
