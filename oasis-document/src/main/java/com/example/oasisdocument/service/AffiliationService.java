@@ -7,9 +7,9 @@ import com.example.oasisdocument.model.docs.extendDoc.Affiliation;
 import java.util.List;
 
 public interface AffiliationService {
-	Affiliation fetchEnById(String id);
+    Affiliation fetchEnById(String id);
 
-	JSONArray fetchAffiliationList(int pageNum, int pageSize);
+    JSONArray fetchAffiliationList(int pageNum, int pageSize, String rankKey);
 
-	JSONArray fetchAffiliationList(String refinement, int pageNum, int pageSize);
+    JSONArray fetchAffiliationList(String refinement, int pageNum, int pageSize);
 }

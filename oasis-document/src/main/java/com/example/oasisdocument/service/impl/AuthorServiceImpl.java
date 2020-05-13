@@ -16,7 +16,11 @@ import com.example.oasisdocument.service.CounterService;
 import com.example.oasisdocument.utils.PageHelper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.Cacheable;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.mongodb.core.MongoTemplate;
+import org.springframework.data.mongodb.core.aggregation.Aggregation;
+import org.springframework.data.mongodb.core.aggregation.AggregationResults;
+import org.springframework.data.mongodb.core.aggregation.LookupOperation;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.scheduling.annotation.Async;
@@ -73,13 +77,29 @@ public class AuthorServiceImpl implements AuthorService {
 	@Override
 	@Cacheable(cacheNames = "fetchAuthorList", unless = "#result==null")
 	public JSONArray fetchAuthorList(int pageNum, int pageSize) {
-		List<Author> authorList = mongoTemplate.findAll(Author.class);
-		JSONArray array = new JSONArray();
-		for (Author author : authorList) {
-			CounterBaseEntity baseEntity = counterService.getSummaryInfo(author.getId());
-			array.add(generalJsonVO.author2VO(author, baseEntity));
-		}
-		return pageHelper.sortAndPage(array, pageSize, pageNum);
+
+		//conduct the author find
+		LookupOperation counterLookUp = LookupOperation.newLookup()
+				.from("authors")
+				.localField("_id")
+				.foreignField("checkId")
+				.as("author");
+		Aggregation aggregation = Aggregation.newAggregation(counterLookUp,
+				Aggregation.sort(Sort.Direction.DESC,"activeness"),
+				Aggregation.limit(pageSize),
+				Aggregation.skip(new Long(pageNum))
+				);
+		AggregationResults<CounterBaseEntity> authorRes =
+				mongoTemplate.aggregate(aggregation,"counterBases",CounterBaseEntity.class);
+		List<CounterBaseEntity> counterList = authorRes.getMappedResults();
+
+//		JSONArray array = new JSONArray();
+//		for (Author author : authorList) {
+//			CounterBaseEntity baseEntity = counterService.getSummaryInfo(author.getId());
+//			array.add(generalJsonVO.author2VO(author, baseEntity));
+//		}
+//		return pageHelper.sortAndPage(array, pageSize, pageNum);
+		return null;
 	}
 
 	//查找某一个限定条件下的作者列表 , 可以是机构 , 领域限制
