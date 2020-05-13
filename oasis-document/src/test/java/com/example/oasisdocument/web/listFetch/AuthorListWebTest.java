@@ -61,7 +61,6 @@ public class AuthorListWebTest {
 				.andExpect(status().isOk())
 				.andReturn();
 		assertThat(result.getResponse()).isNotNull();
-		logger.info(result.getResponse().getContentAsString());
 	}
 
 	@Test
@@ -89,7 +88,6 @@ public class AuthorListWebTest {
 				.andExpect(status().isOk())
 				.andReturn();
 		assertThat(result.getResponse()).isNotNull();
-		logger.info(result.getResponse().getContentAsString());
 	}
 
 	@Test
