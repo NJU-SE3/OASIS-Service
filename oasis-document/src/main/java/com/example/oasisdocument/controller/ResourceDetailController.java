@@ -102,8 +102,10 @@ public class ResourceDetailController {
     @GetMapping("/field/list")
     public Object fetchFieldList(@RequestParam(name = "refinement", defaultValue = "") final String refinement,
                                  @RequestParam(name = "pageNum", defaultValue = "0") final int pageNum,
-                                 @RequestParam(name = "pageSize", defaultValue = "20") final int pageSize) {
-        return refinement.isEmpty() ? reportService.getRankViaType("field", pageNum, pageSize) :
+                                 @RequestParam(name = "pageSize", defaultValue = "20") final int pageSize,
+                                 @RequestParam(name = "rankKey", defaultValue = "activeness") String rankKey) {
+        return refinement.isEmpty() ?
+                fieldService.fetchFieldList(pageNum, pageSize, rankKey) :
                 fieldService.fetchFieldList(refinement, pageNum, pageSize);
     }
 
@@ -113,8 +115,10 @@ public class ResourceDetailController {
     @GetMapping("/conference/list")
     public Object fetchConferenceList(@RequestParam(name = "refinement", defaultValue = "") String refinement,
                                       @RequestParam(name = "pageNum", defaultValue = "0") int pageNum,
-                                      @RequestParam(name = "pageSize", defaultValue = "20") int pageSize) {
-        return refinement.isEmpty() ? reportService.getRankViaType("conference", pageNum, pageSize) :
+                                      @RequestParam(name = "pageSize", defaultValue = "20") int pageSize,
+                                      @RequestParam(name = "rankKey", defaultValue = "activeness") String rankKey) {
+        return refinement.isEmpty() ?
+                conferenceService.fetchConferenceList(pageNum, pageSize, rankKey) :
                 conferenceService.fetchConferenceList(refinement, pageNum, pageSize);
     }
 }

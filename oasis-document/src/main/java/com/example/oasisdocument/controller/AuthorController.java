@@ -53,10 +53,11 @@ public class AuthorController {
 	public Object fetchAuthorList(@RequestParam(name = "refinement", defaultValue = "") String refinement,
 								  @RequestParam(name = "pageNum", defaultValue = "0") int pageNum,
 								  @RequestParam(name = "pageSize", defaultValue = "20") int pageSize,
+								  @RequestParam(name = "rankKey", defaultValue = "activeness") String rankKey,
 								  HttpServletRequest request,
 								  HttpServletResponse response) {
 		//需要考察是否需要筛选
-		return refinement.isEmpty() ? reportService.getRankViaType("author", pageNum, pageSize) :
+		return refinement.isEmpty() ? authorService.fetchAuthorList(pageNum, pageSize,rankKey) :
 				authorService.fetchAuthorList(refinement, pageNum, pageSize);
 	}
 

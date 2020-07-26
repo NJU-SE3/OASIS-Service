@@ -48,12 +48,12 @@ public class IntermeService {
                 continue;
             mongoTemplate.save(entity, colName);
         }
+        logger.info("affiliation counter rank generate success");
     }
 
     @Async
     public void genAuthorCounter() {
         final String colName = authorCounterCollection;
-
         //建立document
         if (!intermeExist(colName))
             mongoTemplate.createCollection(colName);
@@ -61,8 +61,11 @@ public class IntermeService {
         for (Author en : authorList) {
             CounterBaseEntity entity = findViaCheckId(en.getId());
             if (null == entity) continue;
+            if (mongoTemplate.exists(new Query(Criteria.where("id").is(en.getId())), colName))
+                continue;
             mongoTemplate.save(entity, colName);
         }
+        logger.info("author counter rank generate success");
     }
 
     @Async
@@ -70,28 +73,35 @@ public class IntermeService {
         final String colName = fieldCounterCollection;
         if (!intermeExist(colName))
             mongoTemplate.createCollection(colName);
-        List<com.example.oasisdocument.model.docs.extendDoc.Field> authorList =
+        List<com.example.oasisdocument.model.docs.extendDoc.Field> fieldList =
                 mongoTemplate.findAll(com.example.oasisdocument.model.docs.extendDoc.Field.class);
-        for (com.example.oasisdocument.model.docs.extendDoc.Field en : authorList) {
+        for (com.example.oasisdocument.model.docs.extendDoc.Field en : fieldList) {
             CounterBaseEntity entity = findViaCheckId(en.getId());
             if (null == entity) continue;
+            if (mongoTemplate.exists(new Query(Criteria.where("id").is(en.getId())), colName))
+                continue;
             mongoTemplate.save(entity, colName);
         }
+        logger.info("field counter rank generate success");
+
     }
 
     @Async
-    public void getConferenceCounter() {
+    public void genConferenceCounter() {
         final String colName = conferenceCounterCollection;
         if (!intermeExist(colName))
             mongoTemplate.createCollection(colName);
-        List<Conference> authorList =
+        List<Conference> conferenceList =
                 mongoTemplate.findAll(Conference.class);
-        for (Conference en : authorList) {
+        for (Conference en : conferenceList) {
             CounterBaseEntity entity = findViaCheckId(en.getId());
             if (null == entity) continue;
+            if (mongoTemplate.exists(new Query(Criteria.where("id").is(en.getId())), colName))
+                continue;
             mongoTemplate.save(entity, colName);
 
         }
+        logger.info("conference counter rank generate success");
     }
 
 

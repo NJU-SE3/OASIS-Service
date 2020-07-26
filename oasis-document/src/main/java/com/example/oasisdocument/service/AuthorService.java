@@ -13,7 +13,7 @@ public interface AuthorService {
 
 	JSONObject fetchEnById(String id);
 
-	JSONArray fetchAuthorList(int pageNum, int pageSize);
+	JSONObject fetchAuthorList(int pageNum, int pageSize,String rankKey);
 
 	JSONArray fetchAuthorList(String refinement, int pageNum, int pageSize);
 

@@ -29,12 +29,6 @@ public class ConferenceServiceTest {
 	@Autowired
 	private MongoTemplate mongoTemplate;
 
-	@Test
-	public void fetchConferenceListTest1() {
-		JSONArray conferenceList = conferenceService.fetchConferenceList(pageNum, pageSize);
-		assertThat(conferenceList).isNotNull();
-		assertThat(conferenceList.size()).isGreaterThanOrEqualTo(1);
-	}
 
 	@Test
 	public void fetchConferenceListTest2() {

@@ -10,9 +10,13 @@ import com.example.oasisdocument.model.docs.counter.CounterBaseEntity;
 import com.example.oasisdocument.model.docs.extendDoc.Field;
 import com.example.oasisdocument.service.CounterService;
 import com.example.oasisdocument.service.FieldService;
+import com.example.oasisdocument.service.IntermeService;
 import com.example.oasisdocument.utils.PageHelper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.Cacheable;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
@@ -20,6 +24,9 @@ import org.springframework.stereotype.Service;
 
 import java.util.*;
 import java.util.stream.Collectors;
+
+import static com.example.oasisdocument.service.IntermeService.affCounterCollection;
+import static com.example.oasisdocument.service.IntermeService.fieldCounterCollection;
 
 
 @Service
@@ -32,7 +39,8 @@ public class FieldServiceImpl implements FieldService {
 
 	@Autowired
 	private CounterService counterService;
-
+	@Autowired
+	private IntermeService intermeService;
 	@Autowired
 	private GeneralJsonVO generalJsonVO;
 	@Autowired
@@ -89,15 +97,44 @@ public class FieldServiceImpl implements FieldService {
 	}
 
 	@Override
-	@Cacheable(cacheNames = "fetchFieldList", unless = "#result==null")
-	public JSONArray fetchFieldList(int pageNum, int pageSize) {
-		List<Field> fieldList = mongoTemplate.findAll(Field.class);
-		JSONArray array = new JSONArray();
-		for (Field field : fieldList) {
-			CounterBaseEntity baseEntity = counterService.getSummaryInfo(field.getId());
-			array.add(generalJsonVO.field2VO(field, baseEntity));
+	public JSONObject fetchFieldList(int pageNum, int pageSize, String rankKey) {
+		//一级缓存命中
+		Pageable pageable = PageRequest.of(pageNum, pageSize);
+		JSONArray data = new JSONArray();
+		long itemCnt = mongoTemplate.count(new Query(), Field.class);
+		Sort sort = Sort.by(Sort.Direction.DESC, rankKey);
+		if (intermeService.intermeExist(fieldCounterCollection)) {
+			List<CounterBaseEntity> bufferList = mongoTemplate.find(new Query()
+							.with(sort)
+							.with(pageable),
+					CounterBaseEntity.class, fieldCounterCollection);
+			for (CounterBaseEntity entity : bufferList) {
+				data.add(fieldBuffer2VO(entity));
+			}
+		} else {
+			//缓存未命中 , 随机返回
+			//异步缓存
+			intermeService.genFiledCounter();
+			//随机返回pageable条目
+			List<Field> entities = mongoTemplate.find(new Query()
+					.with(pageable).with(sort), Field.class);
+			for (Field en : entities) {
+				CounterBaseEntity baseEntity = counterService.getSummaryInfo(en.getId());
+				data.add(generalJsonVO.field2VO(en, baseEntity));
+			}
 		}
-		return (JSONArray) pageHelper.of(array, pageSize, pageNum);
+		JSONObject ans = new JSONObject();
+		ans.put("data", data);
+		ans.put("itemCnt", itemCnt);
+		return ans;
+	}
+
+	private JSONObject fieldBuffer2VO(CounterBaseEntity entity) {
+		String uid = entity.getCheckId();
+		Field field = mongoTemplate.findById(uid, Field.class);
+		if (null == field) return new JSONObject();
+
+		return generalJsonVO.field2VO(field, entity);
 	}
 
 	@Override

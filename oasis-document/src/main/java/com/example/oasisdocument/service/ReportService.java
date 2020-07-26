@@ -50,5 +50,6 @@ public interface ReportService {
     /**
      * 获取基本排名数据
      */
+    @Deprecated
     JSONObject getRankViaType(String type, int pageNum, int pageSize);
 }

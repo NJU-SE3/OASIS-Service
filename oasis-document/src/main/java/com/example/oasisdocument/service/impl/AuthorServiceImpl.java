@@ -13,9 +13,12 @@ import com.example.oasisdocument.model.docs.extendDoc.Affiliation;
 import com.example.oasisdocument.repository.docs.AuthorRepository;
 import com.example.oasisdocument.service.AuthorService;
 import com.example.oasisdocument.service.CounterService;
+import com.example.oasisdocument.service.IntermeService;
 import com.example.oasisdocument.utils.PageHelper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.Cacheable;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.aggregation.Aggregation;
@@ -29,6 +32,9 @@ import org.springframework.stereotype.Service;
 import java.util.*;
 import java.util.stream.Collectors;
 
+import static com.example.oasisdocument.service.IntermeService.affCounterCollection;
+import static com.example.oasisdocument.service.IntermeService.authorCounterCollection;
+
 @Service
 public class AuthorServiceImpl implements AuthorService {
 	private static final String refineSplitter = ":";
@@ -39,6 +45,8 @@ public class AuthorServiceImpl implements AuthorService {
 	private MongoTemplate mongoTemplate;
 	@Autowired
 	private CounterService counterService;
+	@Autowired
+	private IntermeService intermeService;
 	@Autowired
 	private GeneralJsonVO generalJsonVO;
 	@Autowired
@@ -75,31 +83,45 @@ public class AuthorServiceImpl implements AuthorService {
 	}
 
 	@Override
-	@Cacheable(cacheNames = "fetchAuthorList", unless = "#result==null")
-	public JSONArray fetchAuthorList(int pageNum, int pageSize) {
+	public JSONObject fetchAuthorList(int pageNum, int pageSize, String rankKey) {
+//一级缓存命中
+		Pageable pageable = PageRequest.of(pageNum, pageSize);
+		JSONArray data = new JSONArray();
+		long itemCnt = mongoTemplate.count(new Query(), Author.class);
+		Sort sort = Sort.by(Sort.Direction.DESC, rankKey);
+		if (intermeService.intermeExist(authorCounterCollection)) {
+			List<CounterBaseEntity> bufferList = mongoTemplate.find(new Query()
+							.with(sort)
+							.with(pageable),
+					CounterBaseEntity.class, authorCounterCollection);
+			for (CounterBaseEntity entity : bufferList) {
+				data.add(authorBuffer2VO(entity));
+			}
+		} else {
+			//缓存未命中 , 随机返回
+			//异步缓存
+			intermeService.genAuthorCounter();
+			//随机返回pageable条目
+			List<Author> entities = mongoTemplate.find(new Query()
+					.with(pageable).with(sort), Author.class);
+			for (Author en : entities) {
+				CounterBaseEntity baseEntity = counterService.getSummaryInfo(en.getId());
+				data.add(generalJsonVO.author2VO(en, baseEntity));
+			}
+		}
+		JSONObject ans = new JSONObject();
+		ans.put("data", data);
+		ans.put("itemCnt", itemCnt);
+		return ans;
 
-		//conduct the author find
-		LookupOperation counterLookUp = LookupOperation.newLookup()
-				.from("authors")
-				.localField("_id")
-				.foreignField("checkId")
-				.as("author");
-		Aggregation aggregation = Aggregation.newAggregation(counterLookUp,
-				Aggregation.sort(Sort.Direction.DESC,"activeness"),
-				Aggregation.limit(pageSize),
-				Aggregation.skip(new Long(pageNum))
-				);
-		AggregationResults<CounterBaseEntity> authorRes =
-				mongoTemplate.aggregate(aggregation,"counterBases",CounterBaseEntity.class);
-		List<CounterBaseEntity> counterList = authorRes.getMappedResults();
+	}
 
-//		JSONArray array = new JSONArray();
-//		for (Author author : authorList) {
-//			CounterBaseEntity baseEntity = counterService.getSummaryInfo(author.getId());
-//			array.add(generalJsonVO.author2VO(author, baseEntity));
-//		}
-//		return pageHelper.sortAndPage(array, pageSize, pageNum);
-		return null;
+	private JSONObject authorBuffer2VO(CounterBaseEntity entity) {
+		String uid = entity.getCheckId();
+		Author en = mongoTemplate.findById(uid, Author.class);
+		if (null == en) return new JSONObject();
+
+		return generalJsonVO.author2VO(en, entity);
 	}
 
 	//查找某一个限定条件下的作者列表 , 可以是机构 , 领域限制
