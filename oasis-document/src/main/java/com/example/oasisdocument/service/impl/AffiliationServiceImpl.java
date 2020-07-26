@@ -1,6 +1,5 @@
 package com.example.oasisdocument.service.impl;
 
-import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.example.oasisdocument.exceptions.BadReqException;
@@ -26,7 +25,6 @@ import org.springframework.stereotype.Service;
 
 import java.util.HashSet;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
 
 import static com.example.oasisdocument.service.IntermeService.affCounterCollection;
@@ -57,20 +55,20 @@ public class AffiliationServiceImpl implements AffiliationService {
     }
 
     @Override
-    public JSONArray fetchAffiliationList(int pageNum, int pageSize, String rankKey) {
+    public JSONObject fetchAffiliationList(int pageNum, int pageSize, String rankKey) {
         //一级缓存命中
         Pageable pageable = PageRequest.of(pageNum, pageSize);
+        JSONArray data = new JSONArray();
+        long itemCnt = mongoTemplate.count(new Query(), Affiliation.class);
         Sort sort = Sort.by(Sort.Direction.DESC, rankKey);
         if (intermeService.intermeExist(affCounterCollection)) {
             List<CounterBaseEntity> bufferList = mongoTemplate.find(new Query()
                             .with(sort)
                             .with(pageable),
                     CounterBaseEntity.class, affCounterCollection);
-            JSONArray arr = new JSONArray();
             for (CounterBaseEntity entity : bufferList) {
-                arr.add(affBuffer2VO(entity));
+                data.add(affBuffer2VO(entity));
             }
-            return arr;
         } else {
             //缓存未命中 , 随机返回
             //异步缓存
@@ -78,13 +76,15 @@ public class AffiliationServiceImpl implements AffiliationService {
             //随机返回pageable条目
             List<Affiliation> entities = mongoTemplate.find(new Query()
                     .with(pageable).with(sort), Affiliation.class);
-            JSONArray array = new JSONArray();
             for (Affiliation en : entities) {
                 CounterBaseEntity baseEntity = counterService.getSummaryInfo(en.getId());
-                array.add(generalJsonVO.affiliation2VO(en, baseEntity));
+                data.add(generalJsonVO.affiliation2VO(en, baseEntity));
             }
-            return array;
         }
+        JSONObject ans = new JSONObject();
+        ans.put("data", data);
+        ans.put("itemCnt", itemCnt);
+        return ans;
     }
 
     @Override
