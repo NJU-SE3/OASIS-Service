@@ -17,4 +17,5 @@ public interface FieldService {
 
 	JSONArray fetchFieldDistribution(String id);
 
+    JSONArray fetchFieldByName(String fieldName, int pageNum, int pageSize);
 }

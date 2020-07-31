@@ -18,4 +18,11 @@ public class FieldController {
 	public JSONArray fetchFieldDistribution(@RequestParam(name = "id") String id) {
 		return fieldService.fetchFieldDistribution(id);
 	}
+
+	@GetMapping("/search")
+	public JSONArray fetchFieldByName(@RequestParam(name = "query")String fieldName,
+									  @RequestParam(name = "pageNum",defaultValue = "0")int pageNum,
+									  @RequestParam(name = "pageSize",defaultValue = "20") int pageSize){
+		return fieldService.fetchFieldByName(fieldName,pageNum,pageSize);
+	}
 }
