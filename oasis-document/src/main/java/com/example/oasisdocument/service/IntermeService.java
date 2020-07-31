@@ -4,6 +4,7 @@ import com.example.oasisdocument.model.docs.Author;
 import com.example.oasisdocument.model.docs.counter.CounterBaseEntity;
 import com.example.oasisdocument.model.docs.extendDoc.Affiliation;
 import com.example.oasisdocument.model.docs.extendDoc.Conference;
+import com.example.oasisdocument.options.AttentionDTO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -115,4 +116,5 @@ public class IntermeService {
                         Criteria.where("checkId").is(checkId).and("year").is(-1)),
                         CounterBaseEntity.class);
     }
+
 }
