@@ -22,7 +22,7 @@ public class FieldController {
 	@GetMapping("/search")
 	public JSONArray fetchFieldByName(@RequestParam(name = "query")String fieldName,
 									  @RequestParam(name = "pageNum",defaultValue = "0")int pageNum,
-									  @RequestParam(name = "pageSize",defaultValue = "20") int pageSize){
+									  @RequestParam(name = "pageSize",defaultValue = "10") int pageSize){
 		return fieldService.fetchFieldByName(fieldName,pageNum,pageSize);
 	}
 }

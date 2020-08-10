@@ -31,9 +31,4 @@ public class TableQueryTest {
     public void twoTableQuery() {
         mongoTemplate.dropCollection(affCounterCollection);
     }
-
-    @After
-    public void clean() {
-        mongoTemplate.dropCollection(affCounterCollection);
-    }
 }

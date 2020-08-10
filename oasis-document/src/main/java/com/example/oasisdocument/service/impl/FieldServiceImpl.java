@@ -182,6 +182,8 @@ public class FieldServiceImpl implements FieldService {
         Pageable pageable = PageRequest.of(pageNum, pageSize);
         Query query = Query.query(Criteria.where(fieldCol).regex(fieldName)).with(pageable);
         List<Field> fields = mongoTemplate.find(query, Field.class);
+        // field名称字典序
+        fields.sort(Comparator.comparing(Field::getFieldName));
         return JSONArray.parseArray(JSON.toJSONString(fields));
     }
 
