@@ -1116,7 +1116,6 @@
 {"_id":{"$oid":"5e8331df982a43f4fd446fb7"},"fieldName":"Multiprocessor interconnection networks","_class":"com.example.oasisdocument.model.docs.extendDoc.Field"}
 {"_id":{"$oid":"5e8331df982a43f4fd446fb8"},"fieldName":"Isolation technology","_class":"com.example.oasisdocument.model.docs.extendDoc.Field"}
 {"_id":{"$oid":"5e8331df982a43f4fd446fb9"},"fieldName":"Visual system","_class":"com.example.oasisdocument.model.docs.extendDoc.Field"}
-{"_id":{"$oid":"5e8331df982a43f4fd446fba"},"fieldName":"Software","_class":"com.example.oasisdocument.model.docs.extendDoc.Field"}
 {"_id":{"$oid":"5e8331df982a43f4fd446fbb"},"fieldName":"Music","_class":"com.example.oasisdocument.model.docs.extendDoc.Field"}
 {"_id":{"$oid":"5e8331df982a43f4fd446fbc"},"fieldName":"Organizations","_class":"com.example.oasisdocument.model.docs.extendDoc.Field"}
 {"_id":{"$oid":"5e8331df982a43f4fd446fbd"},"fieldName":"Book reviews","_class":"com.example.oasisdocument.model.docs.extendDoc.Field"}

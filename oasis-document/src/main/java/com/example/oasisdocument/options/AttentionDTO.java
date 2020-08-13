@@ -10,6 +10,7 @@ import java.io.Serializable;
  */
 public class AttentionDTO implements Serializable {
     private String fieldName;        //领域
+    private String fieldId;         //
     private Author author;      //作者
     private int year;           //年份
     private double score;       //得分
@@ -45,5 +46,13 @@ public class AttentionDTO implements Serializable {
 
     public void setFieldName(String fieldName) {
         this.fieldName = fieldName;
+    }
+
+    public String getFieldId() {
+        return fieldId;
+    }
+
+    public void setFieldId(String fieldId) {
+        this.fieldId = fieldId;
     }
 }

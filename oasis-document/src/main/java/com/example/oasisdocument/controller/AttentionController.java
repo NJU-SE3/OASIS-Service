@@ -20,16 +20,15 @@ public class AttentionController {
 
 
     @GetMapping("/batchQuery")
-    public JSONArray batchQueryAttention(@RequestParam(name = "authorId") String authorId,
-                                         @RequestParam(name = "minYear") int minYear,
-                                         @RequestParam(name = "maxYear") int maxYear) {
-        List<AttentionDTO> attentionDTOS = attentionService.batchQueryMaxAttention(authorId, minYear, maxYear);
+    public JSONArray batchQueryAttention(@RequestParam(name = "authorId") String authorId) {
+        List<AttentionDTO> attentionDTOS = attentionService.batchQueryMaxAttention(authorId);
         JSONArray ans = new JSONArray();
         for (AttentionDTO attentionDTO : attentionDTOS) {
             JSONObject obj = new JSONObject();
             obj.put("year", attentionDTO.getYear());
             obj.put("score", attentionDTO.getScore());
             obj.put("fieldName", attentionDTO.getFieldName());
+            obj.put("fieldId",attentionDTO.getFieldId());
             ans.add(obj);
         }
         return ans;
@@ -44,6 +43,7 @@ public class AttentionController {
             JSONObject obj = new JSONObject();
             obj.put("year", attentionDTO.getYear());
             obj.put("score", attentionDTO.getScore());
+            obj.put("fieldId",attentionDTO.getFieldId());
             obj.put("fieldName", fieldName);
             ans.add(obj);
         }

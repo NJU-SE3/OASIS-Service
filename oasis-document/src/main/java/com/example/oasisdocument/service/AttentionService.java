@@ -1,6 +1,5 @@
 package com.example.oasisdocument.service;
 
-import com.example.oasisdocument.exceptions.BadReqException;
 import com.example.oasisdocument.exceptions.EntityNotFoundException;
 import com.example.oasisdocument.model.docs.Author;
 import com.example.oasisdocument.model.docs.Paper;
@@ -57,25 +56,32 @@ public class AttentionService {
     /**
      * 批量获取最关注领域
      */
-    public List<AttentionDTO> batchQueryMaxAttention(final String authorId, final int minYear, final int maxYear) {
+    public List<AttentionDTO> batchQueryMaxAttention(final String authorId) {
+        Author author = mongoTemplate.findById(authorId, Author.class);
+        if (null == author) {
+            throw new EntityNotFoundException();
+        }
+        List<Paper> papers = mongoTemplate.find(Query.query(Criteria.where("authors")
+                .regex(author.getAuthorName())),Paper.class);
+        int[] minMax = getMinMaxYear(papers);
         List<AttentionDTO> res = new LinkedList<>();
-        for (int y = minYear; y <= maxYear; ++y) {
-            res.add(queryMaxAttention(authorId, y));
+        for (int y = minMax[0]; y <= minMax[1]; ++y) {
+            AttentionDTO dto = queryMaxAttention(author,y);
+            //清除非空
+            if (dto.getFieldName().isEmpty()){
+                continue;
+            }
+            res.add(dto);
         }
         return res;
     }
 
     /**
      * 获取某一个作者在单个年份的最关注领域
-     *
-     * @param authorId: 作者ID
+     *  @param author : 作者
      * @param year      : 年份
      */
-    public AttentionDTO queryMaxAttention(final String authorId, final int year) {
-        Author author = mongoTemplate.findById(authorId, Author.class);
-        if (null == author) {
-            throw new EntityNotFoundException();
-        }
+    public AttentionDTO queryMaxAttention(final Author author, final int year) {
         // 获取所有的领域名
         Set<String> fieldNames = Author.getAllFields(author);
         fieldNames.remove("");
@@ -90,9 +96,14 @@ public class AttentionService {
                             .and("authors").regex(author.getAuthorName())
                             .and("year").is(year)), Paper.class);
             if (cnt > maxScore) {
-                maxScore = cnt;
-                attentionDTO.setFieldName(fieldName);
-                attentionDTO.setScore(cnt);
+                Field field = mongoTemplate.findOne(Query.query(Criteria.where("fieldName").is(fieldName)), Field.class);
+                if (field != null){
+                    maxScore = cnt;
+                    attentionDTO.setFieldName(fieldName);
+                    attentionDTO.setScore(cnt);
+                    attentionDTO.setFieldId(field.getId());
+                }
+
             }
         }
         if (maxScore == 0) {
@@ -106,6 +117,15 @@ public class AttentionService {
         return totalList.stream()
                 .filter((Paper p) -> p.getYear() == year)
                 .collect(Collectors.toList());
+    }
+
+    private int[] getMinMaxYear(List<Paper> totalList){
+        int min = Integer.MAX_VALUE , max = 0 ;
+        for (Paper p : totalList){
+            min = Math.min(min , p.getYear());
+            max = Math.max(max,  p.getYear());
+        }
+        return new int[]{min,max};
     }
 
 }
