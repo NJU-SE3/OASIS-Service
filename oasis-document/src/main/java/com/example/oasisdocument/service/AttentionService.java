@@ -19,6 +19,9 @@ public class AttentionService {
     @Autowired
     private MongoTemplate mongoTemplate;
 
+    @Autowired
+    private CounterService counterService;
+
     /**
      * 作者在某一个领域内的关注度趋势 , 按照年份进行查找
      */
@@ -27,29 +30,40 @@ public class AttentionService {
         if (null == author) {
             throw new EntityNotFoundException();
         }
-        //获取作者关联论文列表
-        List<Paper> papers = mongoTemplate.find(new Query(Criteria.where("authors").regex(author.getAuthorName()).and("terms").regex(fieldName)),
-                Paper.class);
-        List<AttentionDTO> ans = new LinkedList<>();
-        // 按照年份排序
-        papers.sort(Comparator.comparingInt(Paper::getYear));
-        if (papers.isEmpty()) return ans;
-        int minYear = papers.get(0).getYear(), maxYear = papers.get(papers.size() - 1).getYear();
-        for (int year = minYear; year <= maxYear; ++year) {
-            AttentionDTO attentionDTO = new AttentionDTO();
-            attentionDTO.setAuthor(author);
-            attentionDTO.setYear(year);
-            attentionDTO.setFieldName(fieldName);
-            // 获取得分
-            long cnt = mongoTemplate.count(
-                    new Query(Criteria.where("authors")
-                            .regex(author.getAuthorName())
-                            .and("terms").regex(fieldName)
-                            .and("year").is(year)),
-                    Paper.class);
-            attentionDTO.setScore(cnt);
+        Field field = queryFieldByName(fieldName);
+        if (null == field) {
+            throw new EntityNotFoundException();
         }
-
+        List<AttentionDTO> ans = new LinkedList<>();
+        List<String> paperIds = counterService.getSummaryInfo(authorId)
+                .getPaperList();
+        int minYear = Integer.MAX_VALUE, maxYear = 0;
+        List<Paper> paperList = new LinkedList<>();
+        for (String pid : paperIds) {
+            Paper paper = mongoTemplate.findById(pid, Paper.class);
+            if (paper == null) continue;
+            minYear = Math.min(minYear, paper.getYear());
+            maxYear = Math.max(maxYear, paper.getYear());
+            paperList.add(paper);
+        }
+        //年份排序
+        paperList.sort(Comparator.comparingInt(Paper::getYear));
+        Map<Integer, Integer> hash = new HashMap<>();
+        for (Paper paper : paperList) {
+            if (paper.getTerms().contains(fieldName)) {
+                hash.put(paper.getYear(), hash.getOrDefault(paper.getYear(), 0) + 1);
+            }
+        }
+        for (Integer year : hash.keySet()) {
+            AttentionDTO attentionDTO = new AttentionDTO();
+            attentionDTO.setYear(year);
+            attentionDTO.setScore(hash.getOrDefault(year, 0));
+            attentionDTO.setFieldName(fieldName);
+            attentionDTO.setAuthor(author);
+            attentionDTO.setFieldId(field.getId());
+            ans.add(attentionDTO);
+        }
+        ans.sort(Comparator.comparingInt(AttentionDTO::getYear));
         return ans;
     }
 
@@ -61,25 +75,68 @@ public class AttentionService {
         if (null == author) {
             throw new EntityNotFoundException();
         }
-        List<Paper> papers = mongoTemplate.find(Query.query(Criteria.where("authors")
-                .regex(author.getAuthorName())),Paper.class);
-        int[] minMax = getMinMaxYear(papers);
+        List<String> papers = counterService.getSummaryInfo(authorId)
+                .getPaperList();
+        int minYear = Integer.MAX_VALUE, maxYear = 0;
+        List<Paper> paperList = new LinkedList<>();
+        for (String pid : papers) {
+            Paper paper = mongoTemplate.findById(pid, Paper.class);
+            if (paper == null) continue;
+            minYear = Math.min(minYear, paper.getYear());
+            maxYear = Math.max(maxYear, paper.getYear());
+            paperList.add(paper);
+        }
         List<AttentionDTO> res = new LinkedList<>();
-        for (int y = minMax[0]; y <= minMax[1]; ++y) {
-            AttentionDTO dto = queryMaxAttention(author,y);
-            //清除非空
-            if (dto.getFieldName().isEmpty()){
+        // 年份排序
+        paperList.sort(Comparator.comparingInt(Paper::getYear));
+        // 逐年查询
+        for (int y = minYear; y <= maxYear; ++y) {
+            Map<String, Integer> hash = queryAttentionHash(paperList, y);
+            ArrayList<Map.Entry<String, Integer>> list = new ArrayList<>(hash.entrySet());
+            list.sort((o1, o2) -> o2.getValue() - o1.getValue());
+            if (list.isEmpty()) {
                 continue;
             }
-            res.add(dto);
+            int score = list.get(0).getValue();
+            String term = list.get(0).getKey();
+            Field field = queryFieldByName(term);
+            if (field == null) continue;
+            AttentionDTO attentionDTO = new AttentionDTO();
+            attentionDTO.setAuthor(author);
+            attentionDTO.setScore(score);
+            attentionDTO.setFieldName(term);
+            attentionDTO.setFieldId(field.getId());
+            attentionDTO.setYear(y);
+
+            res.add(attentionDTO);
         }
         return res;
     }
 
+
+    private Map<String, Integer> queryAttentionHash(List<Paper> totalList, int year) {
+        Map<String, Integer> ans = new HashMap<>();
+        // 二分查询得到
+        int l = 0, r = totalList.size() - 1;
+        while (l < r) {
+            int mid = l + r - 1 >> 1;
+            if (totalList.get(mid).getYear() >= year) r = mid;
+            else l = mid + 1;
+        }
+        while (l < totalList.size() && totalList.get(l).getYear() == year) {
+            for (String term : Paper.getAllTerms(totalList.get(l))) {
+                ans.put(term, ans.getOrDefault(term, 0) + 1);
+            }
+            ++l;
+        }
+        return ans;
+    }
+
     /**
      * 获取某一个作者在单个年份的最关注领域
-     *  @param author : 作者
-     * @param year      : 年份
+     *
+     * @param author : 作者
+     * @param year   : 年份
      */
     public AttentionDTO queryMaxAttention(final Author author, final int year) {
         // 获取所有的领域名
@@ -119,13 +176,17 @@ public class AttentionService {
                 .collect(Collectors.toList());
     }
 
-    private int[] getMinMaxYear(List<Paper> totalList){
-        int min = Integer.MAX_VALUE , max = 0 ;
-        for (Paper p : totalList){
-            min = Math.min(min , p.getYear());
-            max = Math.max(max,  p.getYear());
+    private int[] getMinMaxYear(List<Paper> totalList) {
+        int min = Integer.MAX_VALUE, max = 0;
+        for (Paper p : totalList) {
+            min = Math.min(min, p.getYear());
+            max = Math.max(max, p.getYear());
         }
-        return new int[]{min,max};
+        return new int[]{min, max};
+    }
+
+    private Field queryFieldByName(String fieldName) {
+        return mongoTemplate.findOne(Query.query(Criteria.where("fieldName").is(fieldName)), Field.class);
     }
 
 }
