@@ -116,12 +116,8 @@ public class AttentionService {
 
     private Map<String, Integer> queryAttentionHash(List<Paper> totalList, int year) {
         Map<String, Integer> ans = new HashMap<>();
-        // 二分查询得到
-        int l = 0, r = totalList.size() - 1;
-        while (l < r) {
-            int mid = l + r - 1 >> 1;
-            if (totalList.get(mid).getYear() >= year) r = mid;
-            else l = mid + 1;
+        int l = 0;
+        for (; l < totalList.size() && totalList.get(l).getYear() < year; ++l) {
         }
         while (l < totalList.size() && totalList.get(l).getYear() == year) {
             for (String term : Paper.getAllTerms(totalList.get(l))) {
@@ -186,7 +182,7 @@ public class AttentionService {
     }
 
     private Field queryFieldByName(String fieldName) {
-        return mongoTemplate.findOne(Query.query(Criteria.where("fieldName").is(fieldName)), Field.class);
+        return mongoTemplate.findOne(Query.query(Criteria.where("fieldName").regex(fieldName)), Field.class);
     }
 
 }
