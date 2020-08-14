@@ -6,6 +6,7 @@ import com.example.oasisdocument.model.docs.Paper;
 import com.example.oasisdocument.model.docs.extendDoc.Field;
 import com.example.oasisdocument.options.AttentionDTO;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
@@ -25,6 +26,7 @@ public class AttentionService {
     /**
      * 作者在某一个领域内的关注度趋势 , 按照年份进行查找
      */
+    @Cacheable(cacheNames = "queryAttentionTrend", unless = "#result==null")
     public List<AttentionDTO> queryAttentionTrend(final String authorId, final String fieldName) {
         Author author = mongoTemplate.findById(authorId, Author.class);
         if (null == author) {
@@ -70,6 +72,7 @@ public class AttentionService {
     /**
      * 批量获取最关注领域
      */
+    @Cacheable(cacheNames = "queryAttentionTrend", unless = "#result==null")
     public List<AttentionDTO> batchQueryMaxAttention(final String authorId) {
         Author author = mongoTemplate.findById(authorId, Author.class);
         if (null == author) {
