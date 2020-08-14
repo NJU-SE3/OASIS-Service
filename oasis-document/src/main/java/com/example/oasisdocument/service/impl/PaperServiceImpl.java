@@ -192,7 +192,7 @@ public class PaperServiceImpl implements PaperService {
         // return
         JSONObject ans = new JSONObject();
         ans.put("papers", paperArr);
-        ans.put("itemCnt", cachedList.size());
+        ans.put("itemCnt", paperArr.size());
         return ans;
 
     }
